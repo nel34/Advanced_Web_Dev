@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sass": "sass --watch src/:dist/ --style=compressed"
   },
   "dependencies": {
     "react": "^19.0.0",
