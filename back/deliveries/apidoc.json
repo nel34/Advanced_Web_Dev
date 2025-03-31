@@ -1,0 +1,7 @@
+{
+    "name": "Delivery Microservice",
+    "version": "1.0.0",
+    "description": "API REST pour la gestion des livraisons",
+    "title": "Delivery Service API Documentation",
+    "url": "http://localhost:3020/api/deliveries"
+}
