@@ -1,0 +1,13 @@
+{
+    "name": "Orders Service API",
+    "version": "0.0.0",
+    "description": "API de gestion des commandes",
+    "title": "Orders Service Documentation",
+    "url": "/api/orders",
+    "sampleUrl": "http://localhost:3030/api/orders",
+    "order": ["GetAll", "GetOne", "Create", "Update", "Delete", "GetByUser"],
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+  }
