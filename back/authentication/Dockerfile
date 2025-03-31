@@ -14,4 +14,4 @@ RUN npm run doc
 
 EXPOSE 4000
 
-CMD ["npm", "run", "dev"]pos
+CMD ["npm", "run", "dev"]

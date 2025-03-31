@@ -1,15 +1,15 @@
 version: '3.8'
 
 services:
-  auth-service:
-    build: ./back/auth-service  
-    container_name: auth-service
+  authentication:
+    build: ./back/authentication 
+    container_name: authentication
     ports:
       - "4000:4000"
     networks:
       - cesieats-network
     env_file:
-      - ./back/auth-service/.env
+      - ./back/authentication/.env
     depends_on:
       - mysql-db
       - mongo-db
@@ -46,7 +46,7 @@ services:
     networks:
       - cesieats-network
     depends_on:
-      - auth-service
+      - authentication
 
 networks:
   cesieats-network:
