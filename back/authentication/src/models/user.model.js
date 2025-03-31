@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/db');
+const { DataTypes } = require('sequelize')
+const { sequelize } = require('../config/db')
 
 const User = sequelize.define('User', {
   username: {
@@ -23,8 +23,8 @@ const User = sequelize.define('User', {
   role: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'client', 
-  },  
-});
+    defaultValue: 'client',
+  },
+})
 
-module.exports = User;
+module.exports = User

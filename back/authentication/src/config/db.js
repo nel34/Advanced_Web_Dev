@@ -1,5 +1,5 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config(); 
+const { Sequelize } = require('sequelize')
+require('dotenv').config()
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -10,15 +10,15 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT,
     dialect: 'mysql',
   }
-);
+)
 
 const connectDB = async () => {
   try {
-    await sequelize.authenticate();
-    console.log('Connexion à MySQL réussie');
+    await sequelize.authenticate()
+    console.log('Connexion à MySQL réussie')
   } catch (error) {
-    console.error('Erreur de connexion à MySQL :', error);
+    console.error('Erreur de connexion à MySQL :', error)
   }
-};
+}
 
-module.exports = { sequelize, connectDB };
+module.exports = { sequelize, connectDB }

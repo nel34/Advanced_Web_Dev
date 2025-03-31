@@ -1,8 +1,8 @@
-const express = require('express');
-const router = express.Router();
-const { register, login, refreshToken, logout, authenticate } = require('../controllers/auth.controller');
-const  authenticateToken  = require('../middlewares/auth.middleware');
-const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.middleware');
+const express = require('express')
+const router = express.Router()
+const { register, login, refreshToken, logout, authenticate } = require('../controllers/auth.controller')
+const  authenticateToken  = require('../middlewares/auth.middleware')
+const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.middleware')
 
 /**
  * @api {post} /auth/register Créer un utilisateur
@@ -17,8 +17,7 @@ const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.mid
  * @apiSuccess {String} message Message de confirmation
  * @apiSuccess {Object} user Données de l'utilisateur créé
  */
-router.post('/register', register);
-
+router.post('/register', register)
 
 /**
  * @api {post} /auth/login Connexion d'un utilisateur
@@ -31,8 +30,7 @@ router.post('/register', register);
  * @apiSuccess {String} accessToken Token JWT d'accès
  * @apiSuccess {String} refreshToken Token de rafraîchissement
  */
-router.post('/login', login);
-
+router.post('/login', login)
 
 /**
  * @api {post} /auth/refresh-token Rafraîchir le token JWT
@@ -43,8 +41,7 @@ router.post('/login', login);
  *
  * @apiSuccess {String} accessToken Nouveau token JWT
  */
-router.post('/refresh-token', refreshToken);
-
+router.post('/refresh-token', refreshToken)
 
 /**
  * @api {post} /auth/logout Déconnexion de l'utilisateur
@@ -55,8 +52,7 @@ router.post('/refresh-token', refreshToken);
  *
  * @apiSuccess {String} message Confirmation de déconnexion
  */
-router.post('/logout', logout);
-
+router.post('/logout', logout)
 
 /**
  * @api {get} /auth/client Accès client
@@ -67,42 +63,39 @@ router.post('/logout', logout);
  *
  * @apiSuccess {String} message Message de bienvenue client
  */
-// Route accessible uniquement au restaurateurs  
+// Route accessible uniquement au restaurateurs
 router.get('/client', authenticateToken, isClient, (req, res) => {
-    res.json({ message: "Bienvenue client !" });
-    });
- 
+  res.json({ message: 'Bienvenue client !' })
+})
 
 /**
- * @api {get} /auth/livreur Accès livreurs 
+ * @api {get} /auth/livreur Accès livreurs
  * @apiName LivreurAccess
  * @apiGroup Roles
  *
  * @apiHeader {String} Authorization Bearer token d'accès
  *
  * @apiSuccess {String} message Message de bienvenue livreur
- */    
-// Route accessible uniquement au livreurs 
+ */
+// Route accessible uniquement au livreurs
 router.get('/livreur', authenticateToken, isLivreur, (req, res) => {
-    res.json({ message: "Bienvenue livreur !" });
-    });
+  res.json({ message: 'Bienvenue livreur !' })
+})
 
-    
 /**
- * @api {get} /auth/restaurateur Accès restaurateurs   
+ * @api {get} /auth/restaurateur Accès restaurateurs
  * @apiName RestaurateurAccess
  * @apiGroup Roles
  *
  * @apiHeader {String} Authorization Bearer token d'accès
  *
  * @apiSuccess {String} message Message de bienvenue restaurateur
- */    
-// Route accessible uniquement au restaurateurs   
+ */
+// Route accessible uniquement au restaurateurs
 router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
-    res.json({ message: "Bienvenue restaurateur !" });
-    });
-  
-    
+  res.json({ message: 'Bienvenue restaurateur !' })
+})
+
 /**
  * @api {get} /auth/authenticate Vérifie la validité d'un token
  * @apiName Authenticate
@@ -113,6 +106,6 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
  * @apiSuccess {String} message Token valide
  * @apiSuccess {Object} user Données utilisateur décodées du token
  */
-router.get('/authenticate', authenticate);
-    
-module.exports = router;
+router.get('/authenticate', authenticate)
+
+module.exports = router
