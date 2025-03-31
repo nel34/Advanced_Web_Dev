@@ -2,20 +2,20 @@ version: '3.8'
 
 services:
   auth-service:
-    build: ./auth-service  
+    build: ./back/auth-service  
     container_name: auth-service
     ports:
       - "4000:4000"
     networks:
       - cesieats-network
     env_file:
-      - ./auth-service/.env
+      - ./back/auth-service/.env
     depends_on:
       - mysql-db
       - mongo-db
 
   mysql-db:
-    image: mysql:latest
+    image: mysql:9
     container_name: mysql-db
     ports:
       - "3306:3306"
@@ -27,7 +27,7 @@ services:
       - .env
 
   mongo-db:
-    image: mongo:latest
+    image: mongo:7
     container_name: mongo-db
     ports:
       - "27017:27017"  
