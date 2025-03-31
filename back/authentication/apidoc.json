@@ -1,0 +1,11 @@
+{
+    "name": "Auth Service - CESI Eats",
+    "version": "0.0.0",
+    "description": "Microservice d'authentification et de gestion des rôles (client, livreur, restaurateur)",
+    "title": "Documentation API - Auth Service",
+    "url": "http://localhost:4000/api",
+    "template": {
+      "forceLanguage": "fr"
+    }
+  }
+  
