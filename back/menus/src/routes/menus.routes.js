@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const {
   getAllMenus,
   getMenuById,
@@ -7,8 +7,7 @@ const {
   updateMenu,
   deleteMenu,
   getAllMenusByRestaurantId
-} = require('../controllers/menus.controllers');
-
+} = require('../controllers/menus.controllers')
 
 /**
  * @api {get} / Récupérer tous les menus
@@ -24,7 +23,7 @@ const {
  *    "restaurantName": "La Bonne Cuisine"
  *  }]
  */
-router.get('/', getAllMenus);
+router.get('/', getAllMenus)
 
 /**
  * @api {get} /:id Récupérer un menu par ID
@@ -34,7 +33,7 @@ router.get('/', getAllMenus);
  * @apiSuccess {Object} menu Détails du menu
  * @apiError {Object} 404 Menu non trouvé
  */
-router.get('/:id', getMenuById);
+router.get('/:id', getMenuById)
 
 /**
  * @api {post} / Créer un nouveau menu
@@ -47,7 +46,7 @@ router.get('/:id', getMenuById);
  * @apiBody {String} [description] Description (optionnel)
  * @apiBody {String} image URL image (requis)
  */
-router.post('/', createMenu);
+router.post('/', createMenu)
 
 /**
  * @api {put} /:id Mettre à jour un menu
@@ -56,7 +55,7 @@ router.post('/', createMenu);
  * @apiParam {String} id ID du menu
  * @apiBody {Object} updates Champs à modifier
  */
-router.put('/:id', updateMenu);
+router.put('/:id', updateMenu)
 
 /**
  * @api {delete} /:id Supprimer un menu
@@ -66,7 +65,7 @@ router.put('/:id', updateMenu);
  * @apiSuccess {Object} 200 Confirmation de suppression
  * @apiError {Object} 404 Menu non trouvé
  */
-router.delete('/:id', deleteMenu);
+router.delete('/:id', deleteMenu)
 
 /**
  * @api {get} /restaurants/:restaurantId Menus par restaurant
@@ -76,6 +75,6 @@ router.delete('/:id', deleteMenu);
  * @apiSuccess {Object[]} menus Liste des menus du restaurant
  * @apiError {Object} 404 Aucun menu trouvé
  */
-router.get('/restaurants/:restaurantId', getAllMenusByRestaurantId);
+router.get('/restaurants/:restaurantId', getAllMenusByRestaurantId)
 
-module.exports = router;
+module.exports = router

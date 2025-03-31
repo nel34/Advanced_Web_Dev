@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const Menus = new mongoose.Schema({
   name: { type: String, required: true },
@@ -7,6 +7,6 @@ const Menus = new mongoose.Schema({
   restaurantId: { type: String, required: true },
   price: { type: Number, required: true },
   image: { type: String, required: true }
-});
+})
 
-module.exports = mongoose.model('Menus', Menus);
+module.exports = mongoose.model('Menus', Menus)
