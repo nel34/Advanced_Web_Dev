@@ -1,18 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
-const menuRoutes = require('./src/routes/menu');
+const menuRoutes = require('./src/routes/menus.routes');
+import('./src/config/db.js');
 
 const app = express();
 app.use(express.json());
 
-// Connexion MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Routes
-app.use('/api/menu', menuRoutes);
+app.use('/api/menus', menuRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
