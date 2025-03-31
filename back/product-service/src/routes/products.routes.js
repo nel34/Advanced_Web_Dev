@@ -8,7 +8,7 @@ const { getAllProducts, getProductById, createProduct, updateProduct, deleteProd
  * @apiGroup Products
  * @apiSuccess {Object[]} products Liste des produits.
  */
-router.get('/products', getAllProducts);
+router.get('/', getAllProducts);
 
 /**
  * @api {get} /products/:id Obtenir un produit par ID
@@ -18,7 +18,7 @@ router.get('/products', getAllProducts);
  * @apiSuccess {Object} product Détails du produit.
  * @apiError 404 Produit non trouvé.
  */
-router.get('/products/:id', getProductById);
+router.get('/:id', getProductById);
 
 /**
  * @api {post} /products Créer un produit
@@ -33,7 +33,7 @@ router.get('/products/:id', getProductById);
  * @apiSuccess {Object} product Produit créé.
  * @apiError 400 Erreur de validation.
  */
-router.post('/products', createProduct);
+router.post('/', createProduct);
 
 /**
  * @api {put} /products/:id Modifier un produit
@@ -43,7 +43,7 @@ router.post('/products', createProduct);
  * @apiSuccess {Object} product Produit mis à jour.
  * @apiError 404 Produit non trouvé.
  */
-router.put('/products/:id', updateProduct);
+router.put('/:id', updateProduct);
 
 /**
  * @api {delete} /products/:id Supprimer un produit
@@ -53,6 +53,6 @@ router.put('/products/:id', updateProduct);
  * @apiSuccess {String} message Produit supprimé.
  * @apiError 404 Produit non trouvé.
  */
-router.delete('/products/:id', deleteProduct);
+router.delete('/:id', deleteProduct);
 
 module.exports = router;

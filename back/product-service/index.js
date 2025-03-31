@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const path = require('path');
 
-
 // Charger les variables d'environnement
 dotenv.config();
 
@@ -12,7 +11,7 @@ dotenv.config();
 require('./src/config/db');
 
 // Import des routes
-const productRoutes = require('./src/routes/product.routes');
+const productRoutes = require('./src/routes/products.routes');
 
 // Initialisation de l'application
 const app = express();
@@ -21,10 +20,10 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/prod/docs', express.static(path.join(__dirname,'docs')))
+app.use('/api/products/docs', express.static(path.join(__dirname,'docs')))
 
 // Utilisation des routes
-app.use('/api/prod', productRoutes);  
+app.use('/api/products', productRoutes);
 
 // Lancement du serveur
 const PORT = process.env.PORT || 3010;
