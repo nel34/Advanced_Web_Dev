@@ -4,6 +4,7 @@ import './main.sass'
 import Home from './pages/Home'
 import Connection from './pages/Connection'
 import Restaurant from './pages/Restaurant'
+import AccueilRestaurateur from './pages/AccueilRestaurateur'
 
 createRoot(document.getElementById('root')).render(
   <Router>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/payment" />
       <Route path="/account" />
       <Route path="/account/orders" />
+      <Route path="/restaurateur" element={<AccueilRestaurateur />} />
     </Routes>
   </Router>,
 )
