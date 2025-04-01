@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/product.controller')
+const express = require('express');
+const router = express.Router();
+const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/product.controller');
 
 /**
  * @api {get} /products Obtenir tous les produits
@@ -8,7 +8,7 @@ const { getAllProducts, getProductById, createProduct, updateProduct, deleteProd
  * @apiGroup Products
  * @apiSuccess {Object[]} products Liste des produits.
  */
-router.get('/', getAllProducts)
+router.get('/', getAllProducts);
 
 /**
  * @api {get} /products/:id Obtenir un produit par ID
@@ -18,7 +18,7 @@ router.get('/', getAllProducts)
  * @apiSuccess {Object} product Détails du produit.
  * @apiError 404 Produit non trouvé.
  */
-router.get('/:id', getProductById)
+router.get('/:id', getProductById);
 
 /**
  * @api {post} /products Créer un produit
@@ -33,7 +33,7 @@ router.get('/:id', getProductById)
  * @apiSuccess {Object} product Produit créé.
  * @apiError 400 Erreur de validation.
  */
-router.post('/', createProduct)
+router.post('/', createProduct);
 
 /**
  * @api {put} /products/:id Modifier un produit
@@ -43,7 +43,7 @@ router.post('/', createProduct)
  * @apiSuccess {Object} product Produit mis à jour.
  * @apiError 404 Produit non trouvé.
  */
-router.put('/:id', updateProduct)
+router.put('/:id', updateProduct);
 
 /**
  * @api {delete} /products/:id Supprimer un produit
@@ -53,6 +53,6 @@ router.put('/:id', updateProduct)
  * @apiSuccess {String} message Produit supprimé.
  * @apiError 404 Produit non trouvé.
  */
-router.delete('/:id', deleteProduct)
+router.delete('/:id', deleteProduct);
 
-module.exports = router
+module.exports = router;
