@@ -25,6 +25,11 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 'client',
   },
+  referralCode: {                    // <-- Ajout ici
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
 })
 
 module.exports = User

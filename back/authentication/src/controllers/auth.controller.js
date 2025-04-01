@@ -13,12 +13,24 @@ exports.register = async (req, res) => {
   }
 
   try {
+    const existingUser = await User.findOne({ where: { email } })
+    if (existingUser) {
+      return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' })
+    }
+
+    const existingUsername = await User.findOne({ where: { username } })
+    if (existingUsername) {
+      return res.status(400).json({ error: "Ce nom d'utilisateur est déjà pris" })
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10)
+    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase()
     const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
       role,
+      referralCode,
     })
 
     res.status(201).json({ message: 'Utilisateur enregistré', user: newUser })
