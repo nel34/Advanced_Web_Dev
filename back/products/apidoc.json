@@ -3,5 +3,12 @@
     "version": "0.0.0",
     "description": "API REST pour la gestion des produits d'un restaurant dans le système de commande.",
     "title": "Products Service API Doc",
-    "url": "http://localhost:3010/api/products"
-}
+    "url": "http://localhost:3010/api/products",
+    "sampleUrl": "http://localhost:3010/api/products",
+    "order": ["GetAllProducts", "GetProductById", "CreateProduct", "UpdateProduct", "DeleteProduct"],
+    "template": {
+      "withCompare": true,
+      "withGenerator": true,
+      "forceLanguage": "fr"
+    }
+  }

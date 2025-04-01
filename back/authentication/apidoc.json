@@ -1,11 +1,14 @@
 {
-    "name": "Auth Service - CESI Eats",
-    "version": "0.0.0",
-    "description": "Microservice d'authentification et de gestion des rôles (client, livreur, restaurateur)",
-    "title": "Documentation API - Auth Service",
-    "url": "http://localhost:4000/api",
-    "template": {
-      "forceLanguage": "fr"
-    }
+  "name": "Auth Service - CESI Eats",
+  "version": "0.0.0",
+  "description": "Microservice d'authentification et de gestion des rôles (client, livreur, restaurateur)",
+  "title": "Auth Service Documentation",
+  "url": "http://localhost:4000/api/auth",
+  "sampleUrl": "http://localhost:4000/api/auth",
+  "order": ["Register", "Login", "RefreshToken", "Logout", "Authenticate", "ClientAccess", "LivreurAccess", "RestaurateurAccess"],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true,
+    "forceLanguage": "fr"
   }
-  
+}
