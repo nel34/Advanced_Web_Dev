@@ -1,9 +1,9 @@
 {
-  "name": "Orders Service API",
+  "name": "Orders Microservice - CESI Eats",
   "version": "0.0.0",
-  "description": "API de gestion des commandes dans le système de restauration CESI Eats.",
+  "description": "API REST de gestion des commandes dans le système de restauration CESI Eats.",
   "title": "Orders Service Documentation",
-  "url": "http://localhost:8080/api/orders",
+  "url": "/api/orders",
   "sampleUrl": "http://localhost:8080/api/orders",
   "order": [ "GetAllOrders", "GetOrderById", "CreateOrder", "UpdateOrder", "DeleteOrder", "GetUserOrders" ],
   "template": {

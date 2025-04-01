@@ -1,10 +1,10 @@
 {
-  "name": "Restaurants Service API",
+  "name": "Restaurants Microservice - CESI Eats",
   "version": "0.0.0",
-  "description": "API de gestion des restaurants",
+  "description": "API REST de gestion des restaurants",
   "title": "Restaurants Service Documentation",
   "url": "/api/restaurants",
-  "sampleUrl": "http://localhost:3050/api/restaurants",
+  "sampleUrl": "http://localhost:8080/api/restaurants",
   "order": [ "CreateRestaurant", "GetAllRestaurants", "GetRestaurantById", "UpdateRestaurant", "DeleteRestaurant" ],
   "template": {
     "withCompare": true,

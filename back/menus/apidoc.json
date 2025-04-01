@@ -1,9 +1,9 @@
 {
-    "name": "Menu Service API",
+    "name": "Menu Microservice - CESI Eats",
     "version": "0.0.0",
-    "description": "API de gestion des menus pour restaurants",
+    "description": "API REST de gestion des menus pour restaurants",
     "title": "Menu Service Documentation",
-    "url": "http://localhost:8080/api/orders",
+    "url": "/api/menus",
     "sampleUrl": "http://localhost:8080/api/menus",
     "order": ["GetAll", "GetOne", "Create", "Update", "Delete", "GetByRestaurant"],
     "template": {

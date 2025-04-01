@@ -50,6 +50,30 @@ services:
     depends_on:
       - mongo-db 
 
+  deliveries:
+    build: ./back/deliveries
+    container_name: deliveries
+    ports:
+      - "3040:3040"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/deliveries/.env
+    depends_on:
+      - mongo-db
+
+  restaurants:
+    build: ./back/restaurants
+    container_name: restaurants
+    ports:
+      - "3050:3050"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/restaurants/.env
+    depends_on:
+      - mongo-db
+
   mysql-db:
     image: mysql:9
     container_name: mysql-db
@@ -86,6 +110,8 @@ services:
       - menus
       - products
       - orders
+      - deliveries
+      - restaurants
 
 networks:
   cesieats-network:

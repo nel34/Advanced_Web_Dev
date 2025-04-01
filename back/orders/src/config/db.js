@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
+const dotenv = require('dotenv')
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB (Orders)'))
-  .catch(err => console.error('MongoDB connection error:', err))
+dotenv.config()
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Connexion réussie à MongoDB'))
+  .catch(err => console.error('Erreur de connexion à MongoDB :', err))
+
+module.exports = mongoose

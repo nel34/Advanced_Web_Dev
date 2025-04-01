@@ -1,9 +1,9 @@
 {
-  "name": "Auth Service - CESI Eats",
+  "name": "Authentification Microservice - CESI Eats",
   "version": "0.0.0",
-  "description": "Microservice d'authentification et de gestion des rôles (client, livreur, restaurateur)",
-  "title": "Auth Service Documentation",
-  "url": "http://localhost:8080/api/auth",
+  "description": "API REST pour l'authentification et de gestion des rôles (client, livreur, restaurateur)",
+  "title": "Authentification Service Documentation",
+  "url": "/api/auth",
   "sampleUrl": "http://localhost:8080/api/auth",
   "order": ["Register", "Login", "RefreshToken", "Logout", "Authenticate", "ClientAccess", "LivreurAccess", "RestaurateurAccess"],
   "template": {
