@@ -5,7 +5,7 @@ const  authenticateToken  = require('../middlewares/auth.middleware')
 const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.middleware')
 
 /**
- * @api {post} /auth/register Créer un utilisateur
+ * @api {post} /register Créer un utilisateur
  * @apiName Register
  * @apiGroup Auth
  *
@@ -20,7 +20,7 @@ const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.mid
 router.post('/register', register)
 
 /**
- * @api {post} /auth/login Connexion d'un utilisateur
+ * @api {post} /login Connexion d'un utilisateur
  * @apiName Login
  * @apiGroup Auth
  *
@@ -33,7 +33,7 @@ router.post('/register', register)
 router.post('/login', login)
 
 /**
- * @api {post} /auth/refresh-token Rafraîchir le token JWT
+ * @api {post} /refresh-token Rafraîchir le token JWT
  * @apiName RefreshToken
  * @apiGroup Auth
  *
@@ -44,7 +44,7 @@ router.post('/login', login)
 router.post('/refresh-token', refreshToken)
 
 /**
- * @api {post} /auth/logout Déconnexion de l'utilisateur
+ * @api {post} /logout Déconnexion de l'utilisateur
  * @apiName Logout
  * @apiGroup Auth
  *
@@ -55,7 +55,7 @@ router.post('/refresh-token', refreshToken)
 router.post('/logout', logout)
 
 /**
- * @api {get} /auth/client Accès client
+ * @api {get} /client Accès client
  * @apiName ClientAccess
  * @apiGroup Roles
  *
@@ -69,7 +69,7 @@ router.get('/client', authenticateToken, isClient, (req, res) => {
 })
 
 /**
- * @api {get} /auth/livreur Accès livreurs
+ * @api {get} /livreur Accès livreurs
  * @apiName LivreurAccess
  * @apiGroup Roles
  *
@@ -83,7 +83,7 @@ router.get('/livreur', authenticateToken, isLivreur, (req, res) => {
 })
 
 /**
- * @api {get} /auth/restaurateur Accès restaurateurs
+ * @api {get} /restaurateur Accès restaurateurs
  * @apiName RestaurateurAccess
  * @apiGroup Roles
  *
@@ -97,7 +97,7 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
 })
 
 /**
- * @api {get} /auth/authenticate Vérifie la validité d'un token
+ * @api {get} /authenticate Vérifie la validité d'un token
  * @apiName Authenticate
  * @apiGroup Auth
  *

@@ -3,13 +3,11 @@
     "version": "0.0.0",
     "description": "API REST pour la gestion des livraisons",
     "title": "Delivery Service API Documentation",
-    "url": "http://localhost:3040/api/deliveries",
-    "sampleUrl": "http://localhost:3040/api/deliveries",
+    "url": "http://localhost:8080/api/deliveries",
+    "sampleUrl": "http://localhost:8080/api/deliveries",
     "order": ["GetAllDeliveries", "GetDeliveryById", "CreateDelivery", "UpdateDelivery", "DeleteDelivery"],
     "template": {
       "withCompare": true,
-      "withGenerator": true,
-      "forceLanguage": "fr"
+      "withGenerator": true
     }
   }
-  
