@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const { getAllDeliveries, getDeliveryById, createDelivery, updateDelivery, deleteDelivery } = require('../controllers/deliveries.controller');
+const express = require('express')
+const router = express.Router()
+const { getAllDeliveries, getDeliveryById, createDelivery, updateDelivery, deleteDelivery } = require('../controllers/deliveries.controller')
 
 /**
  * @api {get} / Get all deliveries
@@ -8,7 +8,7 @@ const { getAllDeliveries, getDeliveryById, createDelivery, updateDelivery, delet
  * @apiGroup Deliveries
  * @apiSuccess {Object[]} deliveries Liste de toutes les livraisons.
  */
-router.get('/', getAllDeliveries);
+router.get('/', getAllDeliveries)
 
 /**
  * @api {get} /:id Get delivery by ID
@@ -18,7 +18,7 @@ router.get('/', getAllDeliveries);
  * @apiSuccess {Object} delivery Informations de la livraison.
  * @apiError 404 Livraison non trouvée.
  */
-router.get('/:id', getDeliveryById);
+router.get('/:id', getDeliveryById)
 
 /**
  * @api {post} / Create a new delivery
@@ -32,7 +32,7 @@ router.get('/:id', getDeliveryById);
  * @apiSuccess {Object} delivery Livraison créée.
  * @apiError 400 Erreur de validation.
  */
-router.post('/', createDelivery);
+router.post('/', createDelivery)
 
 /**
  * @api {put} /:id Update delivery
@@ -42,7 +42,7 @@ router.post('/', createDelivery);
  * @apiSuccess {Object} delivery Livraison mise à jour.
  * @apiError 404 Livraison non trouvée.
  */
-router.put('/:id', updateDelivery);
+router.put('/:id', updateDelivery)
 
 /**
  * @api {delete} /:id Delete delivery
@@ -52,6 +52,6 @@ router.put('/:id', updateDelivery);
  * @apiSuccess {String} message Message de confirmation.
  * @apiError 404 Livraison non trouvée.
  */
-router.delete('/:id', deleteDelivery);
+router.delete('/:id', deleteDelivery)
 
-module.exports = router;
+module.exports = router
