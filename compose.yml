@@ -14,18 +14,6 @@ services:
       - mysql-db
       - mongo-db
 
-  orders:
-    build: ./back/orders
-    container_name: orders
-    ports:
-      - "3030:3030"
-    networks:
-      - cesieats-network
-    env_file:
-      - ./back/orders/.env
-    depends_on:
-      - mongo-db 
-
   mysql-db:
     image: mysql:9
     container_name: mysql-db
@@ -59,7 +47,6 @@ services:
       - cesieats-network
     depends_on:
       - authentication
-      - orders
 
 networks:
   cesieats-network:
