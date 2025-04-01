@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  authentication:
+    build: ./back/authentication 
+    container_name: authentication
+    ports:
+      - "4000:4000"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/authentication/.env
+    depends_on:
+      - mysql-db
+      - mongo-db
+
+  mysql-db:
+    image: mysql:9
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    networks:
+      - cesieats-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+
+  mongo-db:
+    image: mongo:7
+    container_name: mongo-db
+    ports:
+      - "27017:27017"  
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - cesieats-network
+
+  nginx:
+    image: nginx:latest
+    container_name: gateway
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
+    networks:
+      - cesieats-network
+    depends_on:
+      - authentication
+
+networks:
+  cesieats-network:
+
+volumes:
+  mysql_data:
+  mongodb_data:
