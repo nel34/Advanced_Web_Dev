@@ -3,7 +3,7 @@ const router = express.Router()
 const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controller')
 
 /**
- * @api {get} /products Obtenir tous les produits
+ * @api {get} / Obtenir tous les produits
  * @apiName GetAllProducts
  * @apiGroup Products
  * @apiSuccess {Object[]} products Liste des produits.
@@ -11,7 +11,7 @@ const { getAllProducts, getProductById, createProduct, updateProduct, deleteProd
 router.get('/', getAllProducts)
 
 /**
- * @api {get} /products/:id Obtenir un produit par ID
+ * @api {get} /:id Obtenir un produit par ID
  * @apiName GetProductById
  * @apiGroup Products
  * @apiParam {String} id ID du produit.
@@ -21,7 +21,7 @@ router.get('/', getAllProducts)
 router.get('/:id', getProductById)
 
 /**
- * @api {post} /products Créer un produit
+ * @api {post} / Créer un produit
  * @apiName CreateProduct
  * @apiGroup Products
  * @apiBody {String} name
@@ -36,7 +36,7 @@ router.get('/:id', getProductById)
 router.post('/', createProduct)
 
 /**
- * @api {put} /products/:id Modifier un produit
+ * @api {put} /:id Modifier un produit
  * @apiName UpdateProduct
  * @apiGroup Products
  * @apiParam {String} id ID du produit.
@@ -46,7 +46,7 @@ router.post('/', createProduct)
 router.put('/:id', updateProduct)
 
 /**
- * @api {delete} /products/:id Supprimer un produit
+ * @api {delete} /:id Supprimer un produit
  * @apiName DeleteProduct
  * @apiGroup Products
  * @apiParam {String} id ID du produit.

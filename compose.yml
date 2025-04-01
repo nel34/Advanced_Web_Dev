@@ -84,15 +84,46 @@ services:
     env_file:
       - .env
 
+  mysqld-exporter:
+    image: quay.io/prometheus/mysqld-exporter:v0.14.0
+    container_name: mysqld-exporter
+    env_file:
+      - .env
+    environment:
+      - DATA_SOURCE_NAME=${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(mysql-db:3306)/
+    ports:
+      - "9104:9104"
+    networks:
+      - cesieats-network
+    depends_on:
+      - mysql-db
+
   mongo-db:
     image: mongo:7
     container_name: mongo-db
     ports:
       - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
     networks:
       - cesieats-network
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: mongodb-exporter
+    ports:
+      - "9216:9216"
+    environment:
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo-db:27017
+    networks:
+      - cesieats-network
+    depends_on:
+      - mongo-db
 
   nginx:
     image: nginx:latest
@@ -111,9 +142,60 @@ services:
       - deliveries
       - restaurants
 
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    ports:
+      - "9000:9000"
+      - "9010:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - cesieats-network    
+    restart: always
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "9020:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - cesieats-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - cesieats-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "9040:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - cesieats-network
+    depends_on:
+      - prometheus
+
 networks:
   cesieats-network:
 
 volumes:
   mysql_data:
   mongodb_data:
+  portainer_data:
+  grafana_data:
+  prometheus_data:
