@@ -13,6 +13,42 @@ services:
     depends_on:
       - mysql-db
       - mongo-db
+    
+  products:
+    build: ./back/products
+    container_name: products
+    ports:
+      - "3010:3010"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/products/.env
+    depends_on:
+      - mongo-db
+
+  menus:
+    build: ./back/menus
+    container_name: menus
+    ports:
+      - "3020:3020"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/menus/.env
+    depends_on:
+      - mongo-db
+
+  orders:
+    build: ./back/orders
+    container_name: orders
+    ports:
+      - "3030:3030"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/orders/.env
+    depends_on:
+      - mongo-db 
 
   mysql-db:
     image: mysql:9
@@ -47,6 +83,9 @@ services:
       - cesieats-network
     depends_on:
       - authentication
+      - menus
+      - products
+      - orders
 
 networks:
   cesieats-network:
