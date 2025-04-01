@@ -5,7 +5,7 @@
     "title": "Delivery Service Documentation",
     "url": "/api/deliveries",
     "sampleUrl": "http://localhost:8080/api/deliveries",
-    "order": ["GetAllDeliveries", "GetDeliveryById", "CreateDelivery", "UpdateDelivery", "DeleteDelivery"],
+    "order": ["getAllDeliveries", "getDeliveryById", "createDelivery", "updateDelivery", "deleteDelivery"],
     "template": {
       "withCompare": true,
       "withGenerator": true

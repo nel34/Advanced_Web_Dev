@@ -12,7 +12,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.use('/api/deliveries/docs', express.static(path.join(__dirname, 'src/docs')))
+app.use('/api/deliveries/docs', express.static(path.join(__dirname, 'docs')))
 
 app.use('/api/deliveries', deliveriesRoutes)
 

@@ -1,10 +1,10 @@
-const Delivery = require('../models/deliveries.model')
+const Deliveries = require('../models/deliveries.model')
 
 // Récupérer toutes les livraisons
 exports.getAllDeliveries = async (req, res) => {
   try {
-    const deliveries = await Delivery.find()
-    res.status(200).json(deliveries)
+    const allDeliveries = await Deliveries.find()
+    res.status(200).json(allDeliveries)
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
@@ -13,7 +13,7 @@ exports.getAllDeliveries = async (req, res) => {
 // Récupérer une livraison par ID
 exports.getDeliveryById = async (req, res) => {
   try {
-    const delivery = await Delivery.findById(req.params.id)
+    const delivery = await Deliveries.findById(req.params.id)
     if (!delivery) {return res.status(404).json({ message: 'Livraison non trouvée' })}
     res.json(delivery)
   } catch (err) {
@@ -24,7 +24,7 @@ exports.getDeliveryById = async (req, res) => {
 // Créer une nouvelle livraison
 exports.createDelivery = async (req, res) => {
   try {
-    const newDelivery = new Delivery(req.body)
+    const newDelivery = new Deliveries(req.body)
     await newDelivery.save()
     res.status(201).json(newDelivery)
   } catch (err) {
@@ -35,7 +35,7 @@ exports.createDelivery = async (req, res) => {
 // Modifier une livraison
 exports.updateDelivery = async (req, res) => {
   try {
-    const updatedDelivery = await Delivery.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const updatedDelivery = await Deliveries.findByIdAndUpdate(req.params.id, req.body, { new: true })
     if (!updatedDelivery) {return res.status(404).json({ message: 'Livraison non trouvée' })}
     res.status(200).json(updatedDelivery)
   } catch (err) {
@@ -46,7 +46,7 @@ exports.updateDelivery = async (req, res) => {
 // Supprimer une livraison
 exports.deleteDelivery = async (req, res) => {
   try {
-    const deletedDelivery = await Delivery.findByIdAndDelete(req.params.id)
+    const deletedDelivery = await Deliveries.findByIdAndDelete(req.params.id)
     if (!deletedDelivery) {return res.status(404).json({ message: 'Livraison non trouvée' })}
     res.json({ message: 'Livraison supprimée' })
   } catch (err) {
