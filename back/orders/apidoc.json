@@ -1,13 +1,13 @@
 {
-    "name": "Orders Service API",
-    "version": "0.0.0",
-    "description": "API de gestion des commandes",
-    "title": "Orders Service Documentation",
-    "url": "/api/orders",
-    "sampleUrl": "http://localhost:3030/api/orders",
-    "order": ["GetAll", "GetOne", "Create", "Update", "Delete", "GetByUser"],
-    "template": {
-      "withCompare": true,
-      "withGenerator": true
-    }
+  "name": "Orders Service API",
+  "version": "1.0.0",
+  "description": "API de gestion des commandes dans le système de restauration CESI Eats.",
+  "title": "Orders Service Documentation",
+  "url": "http://localhost:3030/api/orders",
+  "sampleUrl": "http://localhost:3030/api/orders",
+  "order": [ "GetAllOrders", "GetOrderById", "CreateOrder", "UpdateOrder", "DeleteOrder", "GetUserOrders" ],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
   }
+}
