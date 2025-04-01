@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   authentication:
     build: ./back/authentication
@@ -13,7 +11,7 @@ services:
     depends_on:
       - mysql-db
       - mongo-db
-    
+
   products:
     build: ./back/products
     container_name: products
@@ -48,7 +46,7 @@ services:
     env_file:
       - ./back/orders/.env
     depends_on:
-      - mongo-db 
+      - mongo-db
 
   deliveries:
     build: ./back/deliveries
