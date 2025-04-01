@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controller');
+const express = require('express')
+const router = express.Router()
+const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controller')
 
 /**
  * @api {get} /products Obtenir tous les produits

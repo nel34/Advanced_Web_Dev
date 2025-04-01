@@ -1,20 +1,22 @@
-require('dotenv').config()
 const express = require('express')
-const menuRoutes = require('./src/routes/menus.routes')
-import('./src/config/db.js')
+const cors = require('cors')
+const dotenv = require('dotenv')
 const path = require('path')
 
+dotenv.config()
+require('./src/config/db')
+
+const menusRoutes = require('./src/routes/menus.routes')
+
 const app = express()
+app.use(cors())
 app.use(express.json())
 
-// Documentation
 app.use('/api/menus/docs', express.static(path.join(__dirname, 'docs')))
 
-// Routes
-app.use('/api/menus', menuRoutes)
+app.use('/api/menus', menusRoutes)
 
 const PORT = process.env.PORT || 3020
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-

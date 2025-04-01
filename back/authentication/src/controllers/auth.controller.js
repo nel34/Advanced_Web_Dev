@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
 
     const existingUsername = await User.findOne({ where: { username } })
     if (existingUsername) {
-      return res.status(400).json({ error: "Ce nom d'utilisateur est déjà pris" })
+      return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)

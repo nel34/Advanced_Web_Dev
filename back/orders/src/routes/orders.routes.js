@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const {getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersByUserId} = require('../controllers/orders.controllers');
+const express = require('express')
+const router = express.Router()
+const {getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersByUserId} = require('../controllers/orders.controllers')
 
 /**
  * @api {get} /users/:idUser Récupérer les commandes d'un utilisateur
@@ -8,14 +8,14 @@ const {getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder, getOrd
  * @apiGroup Orders
  * @apiParam {String} idUser ID de l'utilisateur
  */
-router.get('/users/:idUser', getOrdersByUserId);
+router.get('/users/:idUser', getOrdersByUserId)
 
 /**
  * @api {get} / Récupérer toutes les commandes
  * @apiName GetAllOrders
  * @apiGroup Orders
  */
-router.get('/', getAllOrders);
+router.get('/', getAllOrders)
 
 /**
  * @api {get} /:id Récupérer une commande par ID
@@ -23,7 +23,7 @@ router.get('/', getAllOrders);
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande
  */
-router.get('/:id', getOrderById);
+router.get('/:id', getOrderById)
 
 /**
  * @api {post} / Créer une nouvelle commande
@@ -40,7 +40,7 @@ router.get('/:id', getOrderById);
  * @apiBody {Number} total_price Prix total
  * @apiBody {Date} [created_at] Date de création (optionnel)
  */
-router.post('/', createOrder);
+router.post('/', createOrder)
 
 /**
  * @api {put} /:id Modifier une commande
@@ -56,7 +56,7 @@ router.post('/', createOrder);
  * @apiBody {String="pending","delivered","cancelled"} status Statut de la commande
  * @apiBody {Number} total_price Prix total
  */
-router.put('/:id', updateOrder);
+router.put('/:id', updateOrder)
 
 /**
  * @api {delete} /:id Supprimer une commande
@@ -64,6 +64,6 @@ router.put('/:id', updateOrder);
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande à supprimer
  */
-router.delete('/:id', deleteOrder);
+router.delete('/:id', deleteOrder)
 
-module.exports = router;
+module.exports = router

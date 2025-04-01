@@ -1,19 +1,22 @@
-require('dotenv').config();
-const express = require('express');
-const orderRoutes = require('./src/routes/orders.routes');
-require('./src/config/db');
-const path = require('path');
+const express = require('express')
+const cors = require('cors')
+const dotenv = require('dotenv')
+const path = require('path')
 
-const app = express();
-app.use(express.json());
+dotenv.config()
+require('./src/config/db')
 
-// Documentation
-app.use('/api/orders/docs', express.static(path.join(__dirname, 'docs')));
+const ordersRoutes = require('./src/routes/orders.routes')
 
-// Routes
-app.use('/api/orders', orderRoutes);
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-const PORT = process.env.PORT || 3030;
+app.use('/api/orders/docs', express.static(path.join(__dirname, 'docs')))
+
+app.use('/api/orders', ordersRoutes)
+
+const PORT = process.env.PORT || 3030
 app.listen(PORT, () => {
-  console.log(`Orders service running on port ${PORT}`);
-});
+  console.log(`Orders service running on port ${PORT}`)
+})
