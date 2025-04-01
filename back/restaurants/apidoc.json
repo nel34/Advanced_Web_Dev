@@ -4,8 +4,8 @@
   "description": "API de gestion des restaurants",
   "title": "Restaurants Service Documentation",
   "url": "/api/restaurants",
-  "sampleUrl": "http://localhost:3020/api/restaurants",
-  "order": [],
+  "sampleUrl": "http://localhost:3050/api/restaurants",
+  "order": [ "CreateRestaurant", "GetAllRestaurants", "GetRestaurantById", "UpdateRestaurant", "DeleteRestaurant" ],
   "template": {
     "withCompare": true,
     "withGenerator": true
