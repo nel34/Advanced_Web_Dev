@@ -2,19 +2,16 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import './index.sass';
 
-export default function Header() {
+export default function HeaderRestaurateur() {
     return (
-        <aside className="sidebar">
-            <div className="sidebar__logo">
-                <img src={logo} alt="logo" />
-                <span>Nom restaurant</span>
+        <header className='header'>
+            <Link to='/'>
+                <img src={logo} alt='logo' className='header__logo' />
+            </Link>
+            <div className='header__content'>
+                <p>Icon</p>
+                <p>Icon</p>
             </div>
-            <nav className="sidebar__nav">
-                <Link to="/dashboard" className="sidebar__link">Accueil</Link>
-                <Link to="/menu" className="sidebar__link">Menu</Link>
-                <Link to="/commandes" className="sidebar__link">Commandes</Link>
-                <Link to="/paiements" className="sidebar__link">Paiements</Link>
-            </nav>
-        </aside>
+        </header>
     );
 }
