@@ -175,14 +175,22 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
+    depends_on:
+      - prometheus
     ports:
       - "9040:3000"
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/dashboards
+      - ./monitoring/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    env_file:
+      - .env
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     networks:
       - cesieats-network
-    depends_on:
-      - prometheus
+    restart: always
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2

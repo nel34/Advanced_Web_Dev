@@ -55,6 +55,14 @@ Les dashboards Grafana permettent de visualiser les métriques collectées par P
 
 ---
 
+## ⚙️ Configuration par défaut Grafana
+
+Lors du lancement des services, Grafana est configuré avec :
+- **Source de données par défaut** : Prometheus est automatiquement ajouté comme source de données principale.
+- **Dashboard par défaut** : Un dashboard préconfiguré est importé automatiquement pour visualiser les métriques principales.
+
+---
+
 ## 🛡️ Sécurité & fiabilité
 
 - **Redémarrage automatique** : Les services critiques sont configurés avec `restart: always`.
@@ -89,19 +97,21 @@ docker compose up -d
 - Grafana : `3000`
 - cAdvisor : `8080`
 
+
 ---
 
-## 📜 Schéma de fonctionnement
+## 📜 Schéma de fonctionnement mis à jour
 
 ```mermaid
 graph TD
-        A[Docker Containers] -->|Logs bruts| B[gen-mapping]
-        B -->|Logs enrichis| C[Fluent Bit]
-        C -->|Logs filtrés| D[Graylog]
-        A -->|Métriques| E[cAdvisor]
-        E -->|Métriques| F[Prometheus]
-        F -->|Visualisation| G[Grafana]
-        H[MongoDB/MySQL Exporters] -->|Métriques| F
+    A[Docker Containers] -->|Logs bruts| B[gen-mapping]
+    B -->|Logs enrichis| C[Fluent Bit]
+    C -->|Logs filtrés| D[Graylog]
+    A -->|Métriques| E[cAdvisor]
+    E -->|Métriques| F[Prometheus]
+    F -->|Visualisation| G[Grafana]
+    H[MongoDB/MySQL Exporters] -->|Métriques| F
+    I[MySQL/MongoDB Databases] -->|Données brutes| H
 ```
 
 ---
