@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import './index.sass'
 import pdp from '../../assets/pdp.jpg'
+import { FaHome, FaUtensils, FaShoppingCart, FaCreditCard } from 'react-icons/fa';
 
 
 export default function SidebarRestaurateur() {
@@ -13,10 +14,10 @@ export default function SidebarRestaurateur() {
                 <span className="sidebar__name">Burger & Co</span>
             </div>
             <nav className="sidebar__nav">
-                <Link to="/restaurateur" className="sidebar__link">Accueil</Link>
-                <Link to="/menu" className="sidebar__link">Menu</Link>
-                <Link to="/commandes" className="sidebar__link">Commandes</Link>
-                <Link to="/paiements" className="sidebar__link">Paiements</Link>
+                <Link to="/restaurateur" className="sidebar__link"><FaHome /> Accueil</Link>
+                <Link to="/menu" className="sidebar__link"><FaUtensils /> Menu</Link>
+                <Link to="/commandes" className="sidebar__link"><FaShoppingCart /> Commandes</Link>
+                <Link to="/paiements" className="sidebar__link"><FaCreditCard /> Paiements</Link>
             </nav>
         </div>
     );
