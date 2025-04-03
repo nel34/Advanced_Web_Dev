@@ -1,12 +1,16 @@
+import { Link } from 'react-router-dom'
 import './index.sass'
 
-export default function RestaurantCard({ restaurant }) {
+export default function RestaurantCard({ data }) {
   return (
-    <div className="restaurant-card">
-      <img src={restaurant.image} alt={restaurant.name} />
-      <h3>{restaurant.name}</h3>
-      <p>{restaurant.description}</p>
-      <p>Rating: {restaurant.rating}</p>
-    </div>
+    <Link to={`/restaurants/${data._id}`}>
+      <div className="restaurant-card">
+        <img src={data.image} alt={data.name} className="restaurant-card__image" />
+        <div className="restaurant-card__content">
+          <h3>{data.name}</h3>
+          <p>{data.rating || 4.5}</p>
+        </div>
+      </div>
+    </Link>
   )
 }

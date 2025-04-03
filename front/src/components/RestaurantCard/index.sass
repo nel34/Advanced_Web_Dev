@@ -1,0 +1,23 @@
+.restaurant-card
+    display: flex
+    flex-direction: column
+    gap: 10px
+    height: 185px
+    width: 360px
+
+    &__image
+        height: 150px
+        width: 100%
+        border-radius: var(--rounded-10)
+        object-fit: cover
+
+    &__content
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+        & h3
+            font-weight: 500
+
+        & p
+            font-weight: 600
