@@ -11,15 +11,6 @@ export default function Restaurant() {
   const { isLoading, data, error } = useFetch(`http://localhost:8080/api/restaurants/${idRestaurant}`)
   const { isLoading: isLoadingMenus, data: dataMenus, error: errorMenus } = useFetch(`http://localhost:8080/api/menus/restaurants/${idRestaurant}`)
 
-  const openingHours = {
-    Lundi: '12:00 - 22:00',
-    Mardi: '12:00 - 22:00',
-    Mercredi: '12:00 - 22:00',
-    Jeudi: '12:00 - 23:00',
-    Vendredi: '12:00 - 23:30',
-    Samedi: '12:00 - 23:30',
-    Dimanche: 'Fermé'
-  }
   const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long' })
 
   return (
@@ -40,9 +31,9 @@ export default function Restaurant() {
                 <p>{data.phone}</p>
                 <p>{data.description}</p>
                 <div>
-                  <h3>🕒 Horaires d'ouverture :</h3>
+                  <h3>Horaires d'ouverture :</h3>
                   <ul style={{ listStyle: 'none', padding: 0 }}>
-                    {Object.entries(openingHours).map(([day, time]) => (
+                    {Object.entries(data.opening_hours).map(([day, time]) => (
                       <li
                         key={day}
                         style={{
