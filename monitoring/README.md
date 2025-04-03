@@ -9,6 +9,7 @@ Cette infrastructure de supervision repose sur les outils suivants :
 - **gen-mapping** : Service Node.js personnalisé qui :
     - Génère un fichier `container-map.json` contenant les métadonnées des conteneurs Docker actifs (`container_id`, `container_name`, `ip_address`, `host_port`).
     - Enrichit en temps réel les logs Docker dans `/shared-logs` via `enrich-logs.js`.
+    - Les logs des conteneurs `graylog`, `fluentbit` et `gen-mapping` sont exclus de la collecte pour éviter les boucles ou les logs non pertinents.
 - **Prometheus** : Collecte des métriques système et applicatives.
 - **cAdvisor** : Exportation des métriques des conteneurs Docker vers Prometheus.
 - **Grafana** : Visualisation des métriques Prometheus via des dashboards.

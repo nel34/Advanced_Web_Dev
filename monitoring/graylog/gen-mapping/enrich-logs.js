@@ -5,6 +5,9 @@ const containersDir = '/var/lib/docker/containers';
 const outputDir = '/app/enriched-logs';
 const containerMapPath = '/app/container-map.json';
 
+// Liste des conteneurs à ignorer
+const IGNORED_CONTAINERS = ['graylog', 'fluentbit', 'gen-mapping'];
+
 let containerMap = {};
 
 function loadContainerMap() {
@@ -41,13 +44,13 @@ function enrichInitialLogs() {
 
   const containerDirs = fs.readdirSync(containersDir);
   for (const dir of containerDirs) {
-    const logFile = path.join(containersDir, dir, `${dir}-json.log`);
-    if (!fs.existsSync(logFile)) continue;
-
     const containerId = dir;
     const shortId = containerId.substring(0, 12);
     const meta = containerMap[shortId];
-    if (!meta) continue;
+    if (!meta || IGNORED_CONTAINERS.includes(meta.container_name)) continue;
+
+    const logFile = path.join(containersDir, dir, `${dir}-json.log`);
+    if (!fs.existsSync(logFile)) continue;
 
     const outputFile = path.join(outputDir, `${meta.container_name}.log`);
     const lines = fs.readFileSync(logFile, 'utf-8').split('\n').filter(Boolean);
@@ -71,23 +74,21 @@ function watchLiveLogs() {
 
   const containerDirs = fs.readdirSync(containersDir);
   for (const dir of containerDirs) {
-    const logFile = path.join(containersDir, dir, `${dir}-json.log`);
-    if (!fs.existsSync(logFile)) continue;
-
     const containerId = dir;
     const shortId = containerId.substring(0, 12);
     const meta = containerMap[shortId];
-    if (!meta) continue;
+    if (!meta || IGNORED_CONTAINERS.includes(meta.container_name)) continue;
+
+    const logFile = path.join(containersDir, dir, `${dir}-json.log`);
+    if (!fs.existsSync(logFile)) continue;
 
     const outputFile = path.join(outputDir, `${meta.container_name}.log`);
-
     let lastSize = fs.statSync(logFile).size;
 
     console.log(`📡 Suivi actif pour ${meta.container_name}`);
 
     fs.watchFile(logFile, { interval: 1000 }, (curr, prev) => {
       if (curr.size > lastSize) {
-        console.log(`📝 Modification détectée dans ${meta.container_name}`);
         const stream = fs.createReadStream(logFile, {
           encoding: 'utf-8',
           start: lastSize,
