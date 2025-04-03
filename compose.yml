@@ -107,11 +107,6 @@ services:
       - cesieats-network
     volumes:
       - mongodb_data:/data/db
-    env_file:
-      - .env
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
 
   mongodb-exporter:
     image: bitnami/mongodb-exporter:latest
@@ -119,7 +114,7 @@ services:
     ports:
       - "9216:9216"
     environment:
-      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo-db:27017
+      - MONGODB_URI=mongodb://mongo-db:27017
     networks:
       - cesieats-network
     depends_on:
@@ -153,7 +148,6 @@ services:
       - portainer_data:/data
     networks:
       - cesieats-network    
-    restart: always
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -172,11 +166,11 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
     networks:
-      - cesieats-network
+      - cesieats-network 
 
   grafana:
     image: grafana/grafana:latest
@@ -190,6 +184,81 @@ services:
     depends_on:
       - prometheus
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - network.host=0.0.0.0
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - cesieats-network
+    ports:
+      - "9200:9200" 
+    restart: always
+
+  graylog:
+    image: graylog/graylog:6.1
+    container_name: graylog
+    depends_on:
+      - mongo-db
+      - elasticsearch
+    networks:
+      - cesieats-network
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    ports:
+      - "9050:9000"
+      - "12201:12201/udp"
+    env_file:
+      - .env
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET}
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2}
+      - GRAYLOG_HTTP_EXTERNAL_URI=${GRAYLOG_HTTP_EXTERNAL_URI}
+      - GRAYLOG_MONGODB_URI=${GRAYLOG_MONGODB_URI}
+      - GRAYLOG_ELASTICSEARCH_HOSTS=${GRAYLOG_ELASTICSEARCH_HOSTS}
+    restart: always
+
+  gen-mapping:
+    build: ./monitoring/graylog/gen-mapping
+    container_name: gen-mapping
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./monitoring/graylog/gen-mapping/container-map.json:/app/container-map.json
+      - ./monitoring/graylog/gen-mapping/shared-logs:/app/enriched-logs
+    env_file:
+      - ./monitoring/graylog/gen-mapping/.env
+    depends_on:
+      - graylog
+    networks:
+      - cesieats-network
+
+  fluentbit:
+    image: fluent/fluent-bit:1.8
+    container_name: fluentbit
+    volumes:
+      - ./monitoring/graylog/gen-mapping/shared-logs:/fluent-bit/enriched-logs:ro
+      - ./monitoring/graylog/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./monitoring/graylog/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf
+    depends_on:
+      - graylog
+      - gen-mapping
+    environment:
+      - HOSTNAME=fluentbit-node
+    networks:
+      - cesieats-network
+
 networks:
   cesieats-network:
 
@@ -199,3 +268,5 @@ volumes:
   portainer_data:
   grafana_data:
   prometheus_data:
+  elasticsearch_data:
+  graylog_data:
