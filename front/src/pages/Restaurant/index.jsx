@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom'
+import { useFetch } from '../../utils/hooks'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import SearchBar from '../../components/SearchBar'
@@ -7,34 +8,66 @@ import './index.sass'
 
 export default function Restaurant() {
   const { idRestaurant } = useParams()
+  const { isLoading, data, error } = useFetch(`http://localhost:8080/api/restaurants/${idRestaurant}`)
+  const { isLoading: isLoadingMenus, data: dataMenus, error: errorMenus } = useFetch(`http://localhost:8080/api/menus/restaurants/${idRestaurant}`)
+
+  const openingHours = {
+    Lundi: '12:00 - 22:00',
+    Mardi: '12:00 - 22:00',
+    Mercredi: '12:00 - 22:00',
+    Jeudi: '12:00 - 23:00',
+    Vendredi: '12:00 - 23:30',
+    Samedi: '12:00 - 23:30',
+    Dimanche: 'Fermé'
+  }
+  const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long' })
 
   return (
     <div>
       <Header />
       <div className='home'>
         <div className='restaurant-banner'>
-          <img src='https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvOWM4OGQ3YWZjYjAyNmZkZmNlZTMxNDA4MTgwYjIwYmYvNjNkMTg3NDU4OTJjMTAwYmU5ZTRlZjNjNTYwYzkyMDQuanBlZw==' alt='Restaurant' />
+          <img src={data.image} alt='Restaurant' />
         </div>
         <div className='restaurant-info'>
           <div>
-            <h1>Restaurant {idRestaurant}</h1>
-            <p>fsdfsdfsd</p>
-            <p>fsdfsdfsd</p>
-            <p>fsdfsdfsd</p>
-            <p>fsdfsdfsd</p>
+            { isLoading && <p>Chargement...</p> }
+            { error && <p>Erreur lors du chargement</p> }
+            { data && (
+              <div className='restaurant-info__details'>
+                <h1>{data.name}</h1>
+                <p>{data.address}</p>
+                <p>{data.phone}</p>
+                <p>{data.description}</p>
+                <div>
+                  <h3>🕒 Horaires d'ouverture :</h3>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>
+                    {Object.entries(openingHours).map(([day, time]) => (
+                      <li
+                        key={day}
+                        style={{
+                          fontWeight: day.toLowerCase() === today.toLowerCase() ? 'bold' : 'normal',
+                          color: time === 'Fermé' ? 'red' : 'black',
+                          fontSize: '16px'
+                        }}
+                      >
+                        <strong>{day} :</strong> {time}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
           <SearchBar />
         </div>
         <div className='line'></div>
         <div className='restaurant-products'>
-          <h2>Categories</h2>
-          <div className='restaurant-products__list'>
-            <ProductCard product={{ name: 'Product 1', description: 'Description 1', price: '10,00', image: 'https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvODJkNjEyYzY1ZDNmNTVhNTdlNTZhZTlhZDRjMDE1ZTEvMGZiMzc2ZDFkYTU2YzA1NjQ0NDUwMDYyZDI1YzVjODQuanBlZw==' }} />
-            <ProductCard product={{ name: 'Product 2', description: 'Description 2', price: '20,00', image: 'https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvODJkNjEyYzY1ZDNmNTVhNTdlNTZhZTlhZDRjMDE1ZTEvMGZiMzc2ZDFkYTU2YzA1NjQ0NDUwMDYyZDI1YzVjODQuanBlZw==' }} />
-            <ProductCard product={{ name: 'Product 3', description: 'Description 3', price: '30,00', image: 'https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvODJkNjEyYzY1ZDNmNTVhNTdlNTZhZTlhZDRjMDE1ZTEvMGZiMzc2ZDFkYTU2YzA1NjQ0NDUwMDYyZDI1YzVjODQuanBlZw==' }} />
-            <ProductCard product={{ name: 'Product 4', description: 'Description 4', price: '40,00', image: 'https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvODJkNjEyYzY1ZDNmNTVhNTdlNTZhZTlhZDRjMDE1ZTEvMGZiMzc2ZDFkYTU2YzA1NjQ0NDUwMDYyZDI1YzVjODQuanBlZw==' }} />
-            <ProductCard product={{ name: 'Product 5', description: 'Description 5', price: '50,00', image: 'https://cn-geo1.uber.com/image-proc/resize/eats/format=webp/width=550/height=440/quality=70/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC9pbWFnZS1wcm9jL3Byb2Nlc3NlZF9pbWFnZXMvODJkNjEyYzY1ZDNmNTVhNTdlNTZhZTlhZDRjMDE1ZTEvMGZiMzc2ZDFkYTU2YzA1NjQ0NDUwMDYyZDI1YzVjODQuanBlZw==' }} />
-          </div>
+          { isLoadingMenus && <p>Chargement...</p> }
+          { errorMenus && <p>Erreur lors du chargement</p> }
+          { dataMenus.length > 0 && dataMenus.map((item, index) => (
+            <ProductCard key={index} data={item} />
+          ))}
         </div>
       </div>
       <Footer />
