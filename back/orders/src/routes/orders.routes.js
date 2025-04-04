@@ -30,7 +30,6 @@ router.get('/:id', getOrderById)
  * @apiName CreateOrder
  * @apiGroup Orders
  *
- * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant
  * @apiBody {Object[]} items Liste des articles

@@ -6,7 +6,6 @@ const itemSchema = new mongoose.Schema({
 })
 
 const OrderSchema = new mongoose.Schema({
-  order_id: { type: String, required: true, unique: true },
   user_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },
   items: [itemSchema],
