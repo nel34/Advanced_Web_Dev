@@ -1,4 +1,53 @@
 services:
+
+  mysql-db:
+    image: mysql:9
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    networks:
+      - cesieats-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+
+  mysqld-exporter:
+    image: quay.io/prometheus/mysqld-exporter:v0.14.0
+    container_name: mysqld-exporter
+    env_file:
+      - .env
+    environment:
+      - DATA_SOURCE_NAME=${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(mysql-db:3306)/
+    ports:
+      - "9104:9104"
+    networks:
+      - cesieats-network
+    depends_on:
+      - mysql-db
+
+  mongo-db:
+    image: mongo:7
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    networks:
+      - cesieats-network
+    volumes:
+      - mongodb_data:/data/db
+
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: mongodb-exporter
+    ports:
+      - "9216:9216"
+    environment:
+      - MONGODB_URI=mongodb://mongo-db:27017
+    networks:
+      - cesieats-network
+    depends_on:
+      - mongo-db
+
   authentication:
     build: ./back/authentication
     container_name: authentication
@@ -72,53 +121,21 @@ services:
     depends_on:
       - mongo-db
 
-  mysql-db:
-    image: mysql:9
-    container_name: mysql-db
+  front:
+    build: ./front
+    container_name: front
     ports:
-      - "3306:3306"
-    networks:
-      - cesieats-network
-    volumes:
-      - mysql_data:/var/lib/mysql
-    env_file:
-      - .env
-
-  mysqld-exporter:
-    image: quay.io/prometheus/mysqld-exporter:v0.14.0
-    container_name: mysqld-exporter
-    env_file:
-      - .env
-    environment:
-      - DATA_SOURCE_NAME=${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(mysql-db:3306)/
-    ports:
-      - "9104:9104"
-    networks:
-      - cesieats-network
-    depends_on:
-      - mysql-db
-
-  mongo-db:
-    image: mongo:7
-    container_name: mongo-db
-    ports:
-      - "27017:27017"
-    networks:
-      - cesieats-network
-    volumes:
-      - mongodb_data:/data/db
-
-  mongodb-exporter:
-    image: bitnami/mongodb-exporter:latest
-    container_name: mongodb-exporter
-    ports:
-      - "9216:9216"
-    environment:
-      - MONGODB_URI=mongodb://mongo-db:27017
+      - "80:80"
     networks:
       - cesieats-network
     depends_on:
       - mongo-db
+      - authentication
+      - menus
+      - products
+      - orders
+      - deliveries
+      - restaurants
 
   nginx:
     image: nginx:latest
