@@ -23,30 +23,18 @@ export default function Restaurant() {
               : (
                 <div className='restaurant-info__details'>
                   <h1>{data.name}</h1>
+                  {Object.entries(data.opening_hours).map(([day, time]) => (
+                    day.toLowerCase() === today.toLowerCase() && (
+                      <p>{time}</p>
+                    )
+                  ))}
                   <p>{data.address}</p>
                   <p>{data.phone}</p>
+                  <br/>
                   <p>{data.description}</p>
-                  <div>
-                    <h3>Horaires d'ouverture :</h3>
-                    <ul>
-                      {Object.entries(data.opening_hours).map(([day, time]) => (
-                        <li
-                          key={day}
-                          style={{
-                            fontWeight: day.toLowerCase() === today.toLowerCase() ? 'bold' : 'normal',
-                            color: time === 'Fermé' ? 'red' : 'black',
-                            fontSize: '16px'
-                          }}
-                        >
-                          <strong>{day} :</strong> {time}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
               )}
         </div>
-        <SearchBar />
       </div>
       <div className='line'></div>
       <div className='restaurant-products'>
