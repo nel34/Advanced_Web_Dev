@@ -3,3 +3,5 @@ node_modules
 .env
 package-lock.json
 docs
+shared-logs
+monitoring/graylog/gen-mapping/container-map.json
