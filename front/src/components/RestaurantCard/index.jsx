@@ -3,7 +3,7 @@ import './index.sass'
 
 export default function RestaurantCard({ data }) {
   return (
-    <Link to={`/restaurants/${data._id}`}>
+    <Link to={`/restaurant/${data._id}`}>
       <div className="restaurant-card">
         <img src={data.image} alt={data.name} className="restaurant-card__image" />
         <div className="restaurant-card__content">
