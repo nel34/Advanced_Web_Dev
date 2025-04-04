@@ -1,0 +1,62 @@
+.footer-restaurateur
+    position: relative
+    display: flex
+    justify-content: space-between
+    align-items: center
+    flex-direction: column
+    gap: 25px
+    width: 100vw
+    padding: 50px 150px 25px 150px
+    background: var(--white)
+    border-top: 1px solid var(--grey)
+
+    &__content
+        display: flex
+        justify-content: space-between
+        width: calc(100% - 200px)
+        max-width: 1200px
+        gap: 150px
+
+        &__links
+            display: flex
+            justify-content: space-between
+            gap: 100px
+
+            div
+                display: flex
+                flex-direction: column
+                gap: 8px
+
+        &__logo
+            height: 30px
+
+
+@media (max-width: 768px)
+    .footer-restaurateur
+        width: 100vw
+        margin-left: 0
+        padding: 30px 50px 20px 50px
+
+        &__content
+            width: 100%
+            flex-direction: column
+            align-items: center
+            gap: 30px
+
+            &__links
+                flex-direction: column
+                align-items: center
+                gap: 20px
+
+@media (min-width: 1200px)
+    .footer-restaurateur
+        padding: 60px 200px 35px 200px
+
+        &__content
+            gap: 180px
+
+        &__links
+            gap: 120px
+
+        &__logo
+            height: 40px
