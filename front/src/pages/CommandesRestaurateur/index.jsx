@@ -13,7 +13,10 @@ export default function CommandesRestaurateur() {
     try {
       const res = await axios.get("http://localhost:3040/api/deliveries");
       const filtered = res.data.filter(
-        (delivery) => delivery.restaurant_id === RESTAURANT_ID
+        (delivery) =>
+          delivery.restaurant_id === RESTAURANT_ID &&
+          delivery.status !== "refused" &&
+          delivery.status !== "finished"
       );
       setDeliveries(filtered);
     } catch (err) {
@@ -38,16 +41,14 @@ export default function CommandesRestaurateur() {
         <main className="accueil-restaurateur__content">
           <h2>Vos Commandes :</h2>
           <div className="commande-list">
-            {deliveries.filter(d => d.status !== "refused").length > 0 ? (
-              deliveries
-                .filter(d => d.status !== "refused")
-                .map((delivery) => (
-                  <CommandeCard
-                    key={delivery._id}
-                    delivery={delivery}
-                    onUpdate={fetchDeliveries}
-                  />
-                ))
+            {deliveries.length > 0 ? (
+              deliveries.map((delivery) => (
+                <CommandeCard
+                  key={delivery._id}
+                  delivery={delivery}
+                  onUpdate={fetchDeliveries}
+                />
+              ))
             ) : (
               <p style={{ fontStyle: "italic" }}>Aucune commande en cours.</p>
             )}

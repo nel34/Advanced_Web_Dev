@@ -6,13 +6,14 @@ const Deliveries = new mongoose.Schema({
   delivery_person_id: { type: String, required: true },
   status: {
     type: String,
-    enum: ['in_progress', 'completed', 'failed', 'refused'],
+    enum: ['in_progress', 'completed', 'finished', 'refused'],
     default: 'in_progress',
     required: true
   },
   estimated_time: { type: Date },
   delivery_person_name: { type: String },
   menu_name: { type: String, required: true },
+  menu_price: { type: Number, required: true }
 }, {
   timestamps: true
 })
