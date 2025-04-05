@@ -17,6 +17,7 @@ import PrivacyPolicy from './components/PrivacyPolicy'
 import Cookies from './components/Cookies'
 import LegalNotice from './components/LegalNotice'
 import HelpPage from './components/Help'
+import Delivery from './pages/Delivery'
 
 createRoot(document.getElementById('root')).render(
   <Router>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/" element={<Home />} />
           <Route path="/connection" element={<Connection />} />
           <Route path="/register" />
+          <Route path="/delivery" element={<Delivery />} />
           <Route path="/restaurant/:idRestaurant" element={<Restaurant />} />
           <Route path="/restaurant/:idRestaurant/:idMenu" element={<Menu />} />
           <Route path="/checkout" element={<Checkout />} />
