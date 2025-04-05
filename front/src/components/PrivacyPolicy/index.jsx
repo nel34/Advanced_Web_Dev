@@ -1,4 +1,4 @@
-import './index.sass';
+import './index.sass'
 
 export default function PrivacyPolicy() {
   return (
@@ -107,5 +107,5 @@ export default function PrivacyPolicy() {
         </p>
       </section>
     </div>
-  );
+  )
 }

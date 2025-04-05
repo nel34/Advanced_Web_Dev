@@ -43,13 +43,14 @@ exports.getProductsByRestaurant = async (req, res) => {
 // Créer un produit
 exports.createProduct = async (req, res) => {
   try {
+    /*
     // Vérifier si le restaurant existe via l'API
     const response = await axios.get(`http://nginx:8080/api/restaurants/${req.body.restaurantId}`);
     
     if (response.status !== 200) {
       return res.status(404).json({ error: "Restaurant not found" });
     }
-
+    */
     // Vérifier l'unicité du nom du produit dans ce restaurant
     const duplicateProduct = await Products.findOne({
       name: req.body.name,

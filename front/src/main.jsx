@@ -40,7 +40,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/help" element={<HelpPage />} />
           <Route path="/legal-notice" element={<LegalNotice />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/cookies" element={<Cookies />} />        
+          <Route path="/cookies" element={<Cookies />} />
         </Routes>
       </Layout>
     </CartProvider>

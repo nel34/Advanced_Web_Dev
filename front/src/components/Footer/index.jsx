@@ -12,16 +12,16 @@ export default function Footer() {
         <div className='footer__content__links'>
           <div>
             <ul>
-              <li><Link to='/help'>Obtenir de l'aide</Link></li>          
+              <li><Link to='/help'>Obtenir de l'aide</Link></li>
               <li><a href='/'>Ajouter votre restaurant</a></li>
               <li><a href='/'>Se connecter pour livrer</a></li>
             </ul>
           </div>
           <div>
             <ul>
-              <li><Link to='/legal-notice'>Mentions légales</Link></li>          
-              <li><Link to='/cookies'>Cookies</Link></li>          
-              <li><Link to='/privacy-policy'>Politique de confidentialité</Link></li>            
+              <li><Link to='/legal-notice'>Mentions légales</Link></li>
+              <li><Link to='/cookies'>Cookies</Link></li>
+              <li><Link to='/privacy-policy'>Politique de confidentialité</Link></li>
             </ul>
           </div>
         </div>
