@@ -4,14 +4,14 @@ import TextInput from '../../components/TextInput'
 
 export default function Connection() {
   return (
-    <div className="connection">
+    <div className="home home--center">
       <h1>Se connecter</h1>
-      <form className='connection-form'>
-        <div className='connection-form__input'>
+      <form className='form'>
+        <div className='form__input'>
           <label htmlFor="email">Email</label>
           <TextInput type="email" id="email" required={true} placeholder="Entrer votre email" />
         </div>
-        <div className='connection-form__input'>
+        <div className='form__input'>
           <label htmlFor="password">Mot de passe</label>
           <TextInput type="password" id="password" required={true} placeholder="Entrer votre mot de passe" />
         </div>

@@ -29,6 +29,9 @@ router.post('/register', register)
  *
  * @apiSuccess {String} accessToken Token JWT d'accès
  * @apiSuccess {String} refreshToken Token de rafraîchissement
+ * @apiSuccess {Number} id ID de l'utilisateur
+ * @apiSuccess {String} username Nom d'utilisateur
+ * @apiSuccess {String} referralCode Code de parrainage de l'utilisateur
  */
 router.post('/login', login)
 

@@ -25,7 +25,7 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: 'client',
   },
-  referralCode: {                    // <-- Ajout ici
+  referralCode: {                   
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,

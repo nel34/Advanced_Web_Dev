@@ -44,31 +44,44 @@ exports.login = async (req, res) => {
 
   try {
     const user = await User.findOne({ where: { email } })
-    if (!user) {return res.status(404).json({ error: 'Utilisateur introuvable' })}
+    if (!user) {
+      return res.status(404).json({ error: 'Utilisateur introuvable' })
+    }
 
     const isValid = await bcrypt.compare(password, user.password)
-    if (!isValid) {return res.status(401).json({ error: 'Mot de passe incorrect' })}
+    if (!isValid) {
+      return res.status(401).json({ error: 'Mot de passe incorrect' })
+    }
 
-    const accessToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || '15m',
-    })
+    const accessToken = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
+    )
 
-    const refreshToken = jwt.sign({ id: user.id, role: user.role  }, process.env.JWT_REFRESH_SECRET, {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d',
-    })
+    const refreshToken = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d' }
+    )
 
-    user.refreshToken = refreshToken
     await user.update({ refreshToken })
-    // await user.save();
 
     res.status(200).json({
       accessToken,
-      refreshToken
+      refreshToken,
+      id: user.id,
+      username: user.username,
+      referralCode: user.referralCode 
     })
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de la connexion', details: error.message })
+    res.status(500).json({
+      error: 'Erreur lors de la connexion',
+      details: error.message
+    })
   }
 }
+
 
 exports.refreshToken = async (req, res) => {
   const { refreshToken } = req.body

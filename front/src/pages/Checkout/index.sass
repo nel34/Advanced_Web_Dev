@@ -1,0 +1,15 @@
+.info-section
+    display: flex
+    flex-direction: column
+    gap: 25px
+    width: 100%
+    padding: 25px
+    background: var(--white)
+    border-radius: var(--rounded-10)
+
+@for $i from 1 through 6
+    .info-section-layout--#{$i}
+        display: grid
+        gap: 50px
+        grid-template-columns: repeat($i, 1fr)
+

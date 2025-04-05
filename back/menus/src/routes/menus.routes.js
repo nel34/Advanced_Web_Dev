@@ -20,7 +20,7 @@ const {
  *    "_id": "65a1b2c3d4e5f67890gh123",
  *    "name": "Classic Menu",
  *    "description": "Traditional dishes selection",
- *    "id_products": ["prod_123", "prod_456"],
+ *    "productId": ["prod_123", "prod_456"],
  *    "restaurantId": "rest_789",
  *    "price": 29.90,
  *    "image": "menu.jpg"
@@ -41,7 +41,7 @@ router.get('/', getAllMenus)
  *    "_id": "65a1b2c3d4e5f67890gh123",
  *    "name": "Vegetarian Menu",
  *    "description": "Plant-based options",
- *    "id_products": ["prod_789", "prod_012"],
+ *    "productId": ["prod_789", "prod_012"],
  *    "restaurantId": "rest_345",
  *    "price": 34.90,
  *    "image": "vegetarian.jpg"
@@ -55,7 +55,7 @@ router.get('/:id', getMenuById)
  * @apiGroup Menus
  * @apiBody {String} name Menu name (required)
  * @apiBody {String} [description] Menu description
- * @apiBody {String[]} id_products Array of product IDs (required)
+ * @apiBody {String[]} productId Array of product IDs (required)
  * @apiBody {String} restaurantId Restaurant ID (required)
  * @apiBody {Number} price Price (required)
  * @apiBody {String} image Image URL (required)
