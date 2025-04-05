@@ -19,7 +19,7 @@ export default function AccueilRestaurateur() {
             <LargeSumRestaurateur title="Moyenne commandes" value="17,56€" />
             <LargeSumRestaurateur title="Ventes du mois" value="12 000€" />
             <LargeSumRestaurateur title="Commandes du mois" value="845" />
-            <LargeSumRestaurateur title="Plat du mois" value="blabla bla" />
+            <LargeSumRestaurateur title="Plat du mois" value="Burger" />
           </div>
           <div className="accueil-restaurateur__charts">
             <BarChartRestaurateur />

@@ -1,11 +1,79 @@
 import './index.sass'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
-export default function MenuCardRestaurateur({ name, price, image }) {
+export default function MenuCardRestaurateur({
+  id,
+  name,
+  price,
+  image,
+  description,
+  restaurantId,
+  productId,
+  onUpdate
+}) {
   const [showModal, setShowModal] = useState(false)
+  const [editedData, setEditedData] = useState({
+    name,
+    description: description || '',
+    price,
+    image,
+    product: productId || []
+  })
+  const [availableProducts, setAvailableProducts] = useState([])
 
-  const handleEditClick = () => setShowModal(true)
+  const handleEditClick = () => {
+    fetchAvailableProducts()
+    setShowModal(true)
+  }
+
   const handleClose = () => setShowModal(false)
+
+  const handleChange = (e) => {
+    setEditedData({ ...editedData, [e.target.name]: e.target.value })
+  }
+
+  const handleProductToggle = (productId) => {
+    setEditedData((prev) => {
+      const isSelected = prev.product.includes(productId)
+      const updatedProducts = isSelected
+        ? prev.product.filter((id) => id !== productId)
+        : [...prev.product, productId]
+      return { ...prev, product: updatedProducts }
+    })
+  }
+
+  const fetchAvailableProducts = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3010/api/products/by-restaurant/${restaurantId}`)
+      setAvailableProducts(res.data)
+    } catch (err) {
+      console.error('Erreur lors du chargement des produits :', err)
+    }
+  }
+
+  const handleUpdate = async () => {
+    try {
+      await axios.put(`http://localhost:3020/api/menus/${id}`, {
+        ...editedData,
+        restaurantId
+      })
+      setShowModal(false)
+      onUpdate()
+    } catch (err) {
+      console.error('Erreur lors de la mise à jour du menu :', err)
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3020/api/menus/${id}`)
+      setShowModal(false)
+      onUpdate()
+    } catch (err) {
+      console.error('Erreur lors de la suppression du menu :', err)
+    }
+  }
 
   return (
     <>
@@ -19,21 +87,36 @@ export default function MenuCardRestaurateur({ name, price, image }) {
       </div>
 
       {showModal && (
-        <div className="menu-card__modal">
-          <div className="menu-card__modal-content">
+        <div className="menu-card__modal" onClick={handleClose}>
+          <div className="menu-card__modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Modifier le menu</h3>
-            <img src={image} alt="aperçu" className="menu-card__modal-image" />
-            <label>Prix</label>
-            <input type="text" defaultValue={price} />
-            <label>Description</label>
-            <input type="text" />
+            <img src={editedData.image} alt="aperçu" className="menu-card__modal-image" />
             <label>Nom</label>
-            <input type="text" defaultValue={name} />
-            <label>Photo</label>
-            <input type="file" />
+            <input type="text" name="name" value={editedData.name} onChange={handleChange} />
+            <label>Description</label>
+            <input type="text" name="description" value={editedData.description} onChange={handleChange} />
+            <label>Prix</label>
+            <input type="number" name="price" value={editedData.price} onChange={handleChange} />
+            <label>Image</label>
+            <input type="text" name="image" value={editedData.image} onChange={handleChange} />
+
+            <p>Produits du menu :</p>
+            <div className="product-list">
+              {availableProducts.map((prod) => (
+                <label key={prod._id} className="product-checkbox styled-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={editedData.product.includes(prod._id)}
+                    onChange={() => handleProductToggle(prod._id)}
+                  />
+                  <span>{prod.name} – {prod.price}€</span>
+                </label>
+              ))}
+            </div>
+
             <div className="menu-card__modal-actions">
-              <button className="delete">Supprimer</button>
-              <button className="validate" onClick={handleClose}>Valider</button>
+              <button className="delete" onClick={handleDelete}>Supprimer</button>
+              <button className="validate" onClick={handleUpdate}>Valider</button>
             </div>
           </div>
         </div>
