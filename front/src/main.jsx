@@ -1,3 +1,11 @@
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import './main.sass'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import Connection from './pages/Connection'
+import Restaurant from './pages/Restaurant'
+import Menu from './pages/Menu'
 import Checkout from './pages/Checkout'
 import Account from './pages/Account'
 import { CartProvider } from './context/CartContext'
@@ -30,7 +38,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/help" element={<HelpPage />} />
           <Route path="/legal-notice" element={<LegalNotice />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/cookies" element={<Cookies />} />            
+          <Route path="/cookies" element={<Cookies />} />        
         </Routes>
       </Layout>
     </CartProvider>
