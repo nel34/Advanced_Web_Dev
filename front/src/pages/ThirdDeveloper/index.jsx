@@ -7,9 +7,8 @@ export default function ThirdDeveloper() {
   const [loadingKey, setLoadingKey] = useState(false)
   const [components, setComponents] = useState([])
   const [loadingComponents, setLoadingComponents] = useState(false)
-  //const token = localStorage.getItem('accessToken')
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImRldmVsb3BlciIsImlhdCI6MTc0Mzg2Mjg0OCwiZXhwIjoxNzQzODYzNzQ4fQ.ohopm28hhUA8ZX8TZ418O8hblVfQT9MSmaN8Cn_VD0E";
-
+  const token = localStorage.getItem('accessToken')
+  
   const fetchApiKey = async () => {
     setLoadingKey(true)
     try {
@@ -29,7 +28,7 @@ export default function ThirdDeveloper() {
     try {
       const res = await axios.put('http://localhost:8080/api/auth/developer/regenerate', null, {
         headers: { Authorization: `Bearer ${token}` }
-      })-
+      })
       setApiKey(res.data.apiKey)
     } catch (err) {
       console.error('Erreur régénération :', err)
@@ -37,41 +36,11 @@ export default function ThirdDeveloper() {
       setLoadingKey(false)
     }
   }
+  
 
-  const fetchComponents = async () => {
-    setLoadingComponents(true)
-    try {
-      const res = await axios.get('http://localhost:8080/', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      setComponents(res.data)
-    } catch (err) {
-      console.error('Erreur récupération composants :', err)
-    } finally {
-      setLoadingComponents(false)
-    }
-  }
-
-  const downloadComponent = async (id) => {
-    try {
-      const res = await axios.get(`http://localhost:8080/`, {
-        responseType: 'blob',
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      const url = window.URL.createObjectURL(new Blob([res.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `${id}.zip`)
-      document.body.appendChild(link)
-      link.click()
-    } catch (err) {
-      console.error('Erreur téléchargement :', err)
-    }
-  }
 
   useEffect(() => {
     fetchApiKey()
-    fetchComponents()
   }, [])
 
   return (

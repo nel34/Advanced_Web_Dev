@@ -123,7 +123,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: gateway
+    container_name: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
@@ -146,14 +146,6 @@ services:
     networks:
       - cesieats-network
     depends_on:
-      - mongo-db
-      - mysql-db
-      - authentication
-      - menus
-      - products
-      - orders
-      - deliveries
-      - restaurants
       - nginx
 
   portainer:
