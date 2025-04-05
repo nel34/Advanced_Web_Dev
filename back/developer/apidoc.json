@@ -1,0 +1,13 @@
+{
+  "name": "Developer Microservice - CESI Eats",
+  "version": "0.0.0",
+  "description": "API pour consulter et télécharger des composants React",
+  "title": "Developer Service Documentation",
+  "url": "/api/developer",
+  "sampleUrl": "http://localhost:8080/api/developer",
+  "order": ["GetComponents", "DownloadComponent"],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

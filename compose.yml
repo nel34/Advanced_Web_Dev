@@ -120,6 +120,16 @@ services:
       - ./back/restaurants/.env
     depends_on:
       - mongo-db
+      
+  developer:
+    build: ./back/developer
+    container_name: developer
+    ports:
+      - "3060:3060"
+    networks:
+      - cesieats-network
+    volumes:
+      - ./front/src/components:/app/components
 
   nginx:
     image: nginx:latest
@@ -158,7 +168,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     networks:
-      - cesieats-network
+      - cesieats-network    
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -181,7 +191,7 @@ services:
     ports:
       - "9090:9090"
     networks:
-      - cesieats-network
+      - cesieats-network 
 
   grafana:
     image: grafana/grafana:latest
@@ -223,7 +233,7 @@ services:
     networks:
       - cesieats-network
     ports:
-      - "9200:9200"
+      - "9200:9200" 
     restart: always
 
   graylog:

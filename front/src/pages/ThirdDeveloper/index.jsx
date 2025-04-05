@@ -7,13 +7,18 @@ export default function ThirdDeveloper() {
   const [loadingKey, setLoadingKey] = useState(false)
   const [components, setComponents] = useState([])
   const [loadingComponents, setLoadingComponents] = useState(false)
-  const token = localStorage.getItem('accessToken')
-  
+  // const token = localStorage.getItem('accessToken')
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRldmVsb3BlciIsImlhdCI6MTc0Mzg5MzMxNCwiZXhwIjoxNzQzODk0MjE0fQ.j4vjHqScGHczGpPpzoa0U60Nw3eqhxpvpTe4Rwnn9Ew";
+
   const fetchApiKey = async () => {
     setLoadingKey(true)
     try {
       const res = await axios.get('http://localhost:8080/api/auth/developer/key', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: false 
       })
       setApiKey(res.data.apiKey)
     } catch (err) {
@@ -21,7 +26,7 @@ export default function ThirdDeveloper() {
     } finally {
       setLoadingKey(false)
     }
-  }
+  }  
 
   const regenerateApiKey = async () => {
     setLoadingKey(true)
@@ -36,12 +41,44 @@ export default function ThirdDeveloper() {
       setLoadingKey(false)
     }
   }
+
+  const fetchComponents = async () => {
+    setLoadingComponents(true);
+    try {
+      const res = await axios.get('http://localhost:8080/api/developer/components', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setComponents(res.data);
+    } catch (err) {
+      console.error('Erreur récupération composants :', err);
+    } finally {
+      setLoadingComponents(false);
+    }
+  };
   
-
-
+  const downloadComponent = async (name) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/developer/components/${name}/download`, {
+        responseType: 'blob', // Important pour récupérer un fichier
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${name}.zip`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error('Erreur téléchargement composant :', err);
+    }
+  };
+  
   useEffect(() => {
-    fetchApiKey()
-  }, [])
+    fetchApiKey();
+    fetchComponents();
+  }, []);  
 
   return (
     <div className="third-developer">
@@ -64,8 +101,8 @@ export default function ThirdDeveloper() {
                 <h3>{comp.name}</h3>
                 <p>{comp.description}</p>
                 <small>Version : {comp.version}</small>
-                <button onClick={() => downloadComponent(comp.id)}>Télécharger</button>
-              </div>
+                <button onClick={() => downloadComponent(comp.name)}>Télécharger</button>
+                </div>
             ))}
           </div>
         )}
