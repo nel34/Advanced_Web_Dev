@@ -6,6 +6,10 @@ import Home from './pages/Home'
 import Connection from './pages/Connection'
 import Restaurant from './pages/Restaurant'
 import Menu from './pages/Menu'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import Cookies from './components/Cookies'
+import LegalNotice from './components/LegalNotice'
+import HelpPage from './components/Help'
 
 createRoot(document.getElementById('root')).render(
   <Router>
@@ -19,6 +23,10 @@ createRoot(document.getElementById('root')).render(
         <Route path="/payment" />
         <Route path="/account" />
         <Route path="/account/orders" />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/legal-notice" element={<LegalNotice />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/cookies" element={<Cookies />} />
       </Routes>
     </Layout>
   </Router>,
