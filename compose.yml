@@ -121,23 +121,6 @@ services:
     depends_on:
       - mongo-db
 
-  front:
-    build: ./front
-    container_name: front
-    ports:
-      - "80:80"
-    networks:
-      - cesieats-network
-    depends_on:
-      - mongo-db
-      - authentication
-      - menus
-      - products
-      - orders
-      - deliveries
-      - restaurants
-      - nginx
-
   nginx:
     image: nginx:latest
     container_name: gateway
@@ -154,6 +137,24 @@ services:
       - orders
       - deliveries
       - restaurants
+
+  front:
+    build: ./front
+    container_name: front
+    ports:
+      - "80:80"
+    networks:
+      - cesieats-network
+    depends_on:
+      - mongo-db
+      - mysql-db
+      - authentication
+      - menus
+      - products
+      - orders
+      - deliveries
+      - restaurants
+      - nginx
 
   portainer:
     image: portainer/portainer-ce

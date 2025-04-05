@@ -23,10 +23,22 @@ exports.getRestaurantById = async (req, res) => {
 
 exports.createRestaurant = async (req, res) => {
   try {
-    const newRestaurant = await Restaurants(req.body).save()
-    res.status(201).json(newRestaurant)
+    // Vérifier si un restaurant existe déjà avec le même nom et la même adresse
+    const existingRestaurant = await Restaurants.findOne({
+      name: req.body.name,
+      address: req.body.address
+    });
+
+    // Si un restaurant existe déjà, renvoyer une erreur
+    if (existingRestaurant) {
+      return res.status(400).json({ message: 'Un restaurant avec ce nom et cette adresse existe déjà.' });
+    }
+
+    // Si non, créer le nouveau restaurant
+    const newRestaurant = await Restaurants(req.body).save();
+    res.status(201).json(newRestaurant);
   } catch (err) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: err.message });
   }
 }
 
