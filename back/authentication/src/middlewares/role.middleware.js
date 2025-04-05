@@ -18,3 +18,9 @@ exports.isRestaurateur = (req, res, next) => {
   }
   return res.status(403).json({ error: 'Accès réservé aux restaurateurs' })
 }
+exports.isDeveloper = (req, res, next) => {
+  if (req.user && req.user.role === 'developer') {
+    return next()
+  }
+  return res.status(403).json({ error: 'Accès réservé aux developpeurs' })
+}

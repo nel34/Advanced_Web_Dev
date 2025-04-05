@@ -30,6 +30,10 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  apiKey: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
 })
 
 module.exports = User
