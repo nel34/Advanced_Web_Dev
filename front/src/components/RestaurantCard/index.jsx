@@ -8,7 +8,6 @@ export default function RestaurantCard({ data }) {
         <img src={data.image} alt={data.name} className="restaurant-card__image" />
         <div className="restaurant-card__content">
           <h3>{data.name}</h3>
-          <p>{data.rating || 4.5}</p>
         </div>
       </div>
     </Link>

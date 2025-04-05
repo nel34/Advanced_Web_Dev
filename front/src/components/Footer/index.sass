@@ -22,3 +22,32 @@
 
         &__logo
             height: 30px
+
+@media (max-width: 768px)
+    .footer
+        width: 100vw
+        margin-left: 0
+        padding: 30px 50px 20px 50px
+
+        &__content
+            width: 100%
+            flex-direction: column
+            align-items: center
+            gap: 30px
+
+            &__links
+                flex-direction: column
+                gap: 20px
+
+@media (min-width: 1200px)
+    .footer
+        padding: 60px 200px 35px 200px
+
+        &__content
+            gap: 180px
+
+        &__links
+            gap: 120px
+
+        &__logo
+            height: 40px
