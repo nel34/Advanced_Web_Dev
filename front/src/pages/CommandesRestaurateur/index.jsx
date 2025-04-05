@@ -1,38 +1,38 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import SidebarRestaurateur from "../../components/SidebarRestaurateur";
-import CommandeCard from "../../components/CommandeCard";
-import "./index.sass";
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import SidebarRestaurateur from '../../components/SidebarRestaurateur'
+import CommandeCard from '../../components/CommandeCard'
+import './index.sass'
 
 export default function CommandesRestaurateur() {
-  const [deliveries, setDeliveries] = useState([]);
+  const [deliveries, setDeliveries] = useState([])
 
-  const RESTAURANT_ID = "670000000000000000000001"; // ID restaurateur en dur
+  const RESTAURANT_ID = '670000000000000000000001' // ID restaurateur en dur
 
   const fetchDeliveries = async () => {
     try {
-      const res = await axios.get("http://localhost:3040/api/deliveries");
+      const res = await axios.get('http://localhost:3040/api/deliveries')
       const filtered = res.data.filter(
         (delivery) =>
           delivery.restaurant_id === RESTAURANT_ID &&
-          delivery.status !== "refused" &&
-          delivery.status !== "finished"
-      );
-      setDeliveries(filtered);
+          delivery.status !== 'refused' &&
+          delivery.status !== 'finished'
+      )
+      setDeliveries(filtered)
     } catch (err) {
-      console.error("Erreur lors du chargement des livraisons :", err);
+      console.error('Erreur lors du chargement des livraisons :', err)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchDeliveries(); // initial load
+    fetchDeliveries() // initial load
 
     const intervalId = setInterval(() => {
-      fetchDeliveries(); // refresh every 5 sec
-    }, 5000);
+      fetchDeliveries() // refresh every 5 sec
+    }, 5000)
 
-    return () => clearInterval(intervalId); // cleanup on unmount
-  }, []);
+    return () => clearInterval(intervalId) // cleanup on unmount
+  }, [])
 
   return (
     <div className="accueil-restaurateur">
@@ -50,11 +50,11 @@ export default function CommandesRestaurateur() {
                 />
               ))
             ) : (
-              <p style={{ fontStyle: "italic" }}>Aucune commande en cours.</p>
+              <p style={{ fontStyle: 'italic' }}>Aucune commande en cours.</p>
             )}
           </div>
         </main>
       </div>
     </div>
-  );
+  )
 }

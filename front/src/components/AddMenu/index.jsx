@@ -101,7 +101,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
       setFormData(prev => ({ ...prev, product: [] }))
       fetchProducts()
     } catch (err) {
-      console.error("Erreur lors de la suppression des produits :", err)
+      console.error('Erreur lors de la suppression des produits :', err)
     }
   }
 

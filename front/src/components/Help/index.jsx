@@ -1,5 +1,5 @@
-import React from 'react';
-import './index.sass'; // Correction de l'import
+import React from 'react'
+import './index.sass' // Correction de l'import
 
 const HelpPage = () => {
   return (
@@ -102,7 +102,7 @@ const HelpPage = () => {
         <p>Nous sommes là pour vous aider !</p>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default HelpPage;
+export default HelpPage

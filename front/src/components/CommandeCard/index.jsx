@@ -15,20 +15,20 @@ export default function CommandeCard({ delivery, onUpdate }) {
 
   const handleReject = async () => {
     try {
-      if (delivery.status === "completed") {
+      if (delivery.status === 'completed') {
         await axios.put(`http://localhost:3040/api/deliveries/${delivery._id}`, {
-          status: "finished"
-        });
+          status: 'finished'
+        })
       } else {
         await axios.put(`http://localhost:3040/api/deliveries/${delivery._id}`, {
-          status: "refused"
-        });
+          status: 'refused'
+        })
       }
-      onUpdate();
+      onUpdate()
     } catch (err) {
-      console.error("Erreur lors de la mise à jour de la commande :", err);
+      console.error('Erreur lors de la mise à jour de la commande :', err)
     }
-  };
+  }
 
   const formattedDate = new Date(delivery.createdAt).toLocaleString('fr-FR', {
     dateStyle: 'short',
