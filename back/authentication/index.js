@@ -4,13 +4,16 @@ const dotenv = require('dotenv')
 const path = require('path')
 const { sequelize } = require('./src/config/db')
 const authRoutes = require('./src/routes/auth.routes')
-
 dotenv.config()
 
 const app = express()
-
-app.use(cors())
-
+app.use(cors(
+  {
+    origin: 'http://localhost',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }
+))
 const port = process.env.PORT || 4000
 
 // Middlewares
@@ -36,6 +39,7 @@ async function initDatabase() {
   while (attempts < maxRetries) {
     try {
       await sequelize.authenticate()
+      await sequelize.sync({ alter: true })
       console.log('Connexion à MySQL réussie')
 
       console.log('Tables synchronisées')

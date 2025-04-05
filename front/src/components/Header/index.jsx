@@ -20,7 +20,7 @@ export default function Header() {
       </Link>
       <div className='header__content'>
         <SearchBar placeholder='Rechercher un restaurant' />
-        <Link to='/connection'>
+        <Link to='/login'>
           <img src={profile} alt='profile' className='header__icon' />
         </Link>
         <img src={cart} alt='cart' className='header__icon' onClick={toggleCart} />
