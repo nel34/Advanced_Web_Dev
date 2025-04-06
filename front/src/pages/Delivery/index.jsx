@@ -48,7 +48,7 @@ const Delivery = () => {
     try {
       const res = await axios.get('http://localhost:3030/api/orders')
       console.log('Commandes reçues :', res.data)
-      setAvailableOrders(res.data) // pas de filtre car pas de champ "status"
+      setAvailableOrders(res.data) // si tu veux filtrer, ajoute .filter()
     } catch (err) {
       console.error('Erreur lors du chargement des commandes disponibles :', err)
     }
@@ -59,11 +59,13 @@ const Delivery = () => {
       <Header />
 
       <main className="delivery-container">
+        {/* Commandes en cours */}
         <section className="current-orders">
           <h2>Commandes en cours :</h2>
           <OrderCard order={currentOrder} onDetails={toggleDetails} />
         </section>
 
+        {/* Commandes disponibles */}
         <section className="available-orders">
           <h2>Commandes disponibles</h2>
           <div className="orders-grid">
@@ -72,6 +74,7 @@ const Delivery = () => {
                 <p><strong>Commande ID :</strong> {order.order_id}</p>
                 <p><strong>User ID :</strong> {order.user_id}</p>
                 <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
+                <p><strong>Status :</strong> {order.status}</p>
                 <p><strong>Articles :</strong> {order.items.length} produit(s)</p>
                 <div className="order__actions">
                   <button>Accepter</button>
@@ -83,6 +86,7 @@ const Delivery = () => {
           </div>
         </section>
 
+        {/* Popups */}
         {showDetails && (
           <OrderDetailsPopup order={selectedOrder} onClose={toggleDetails} />
         )}
