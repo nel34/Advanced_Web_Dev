@@ -41,8 +41,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/help" element={<HelpPage />} />
           <Route path="/legal-notice" element={<LegalNotice />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/cookies" element={<Cookies />} />    
-          <Route path="/developer" element={<ThirdDeveloper />} />    
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/developer" element={<ThirdDeveloper />} />
         </Routes>
       </Layout>
     </CartProvider>

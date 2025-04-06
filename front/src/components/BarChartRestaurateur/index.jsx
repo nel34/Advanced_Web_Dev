@@ -5,14 +5,14 @@ import axios from 'axios'
 
 export default function BarChartRestaurateur() {
   const [data, setData] = useState([])
-  const RESTAURANT_ID = "670000000000000000000001"
+  const RESTAURANT_ID = '670000000000000000000001'
 
   const fetchData = async () => {
     try {
       const res = await axios.get(`http://localhost:3040/api/deliveries/sales-per-week/${RESTAURANT_ID}`)
       setData(res.data)
     } catch (err) {
-      console.error("Erreur lors du chargement des ventes hebdo :", err)
+      console.error('Erreur lors du chargement des ventes hebdo :', err)
     }
   }
 
