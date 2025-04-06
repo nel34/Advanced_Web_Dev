@@ -20,6 +20,7 @@ import LegalNotice from './pages/LegalNotice'
 import HelpPage from './pages/Help'
 import ThirdDeveloper from './pages/ThirdDeveloper'
 import Delivery from './pages/Delivery'
+import TechnicalDashboard from './pages/TechnicalDashboard'
 
 createRoot(document.getElementById('root')).render(
   <Router>
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/developer" element={<ThirdDeveloper />} />
+          <Route path="/technical" element={<TechnicalDashboard />} />    
         </Routes>
       </Layout>
     </CartProvider>

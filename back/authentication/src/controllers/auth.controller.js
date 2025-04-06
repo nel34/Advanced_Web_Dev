@@ -6,7 +6,7 @@ dotenv.config()
 
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer']
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer','technician']
 
   if (!rolesAutorises.includes(role)) {
     return res.status(400).json({ error: 'Rôle invalide' })
@@ -193,7 +193,7 @@ exports.validateApiKey = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'apiKey'] // filtre les champs sensibles
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'apiKey']
     })
 
     res.status(200).json(users)
