@@ -3,11 +3,6 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './index.sass';
 
-// Import des images
-import BurgerKingLogo from '../../assets/images/burgerking-logo.png';
-import KfcLogo from '../../assets/images/kfc_logo.png';
-import McDonaldsLogo from '../../assets/images/mcdonalds-logo.png';
-
 const Delivery = () => {
     const [showHistory, setShowHistory] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
@@ -84,11 +79,6 @@ const Delivery = () => {
                     <div className="orders-grid">
                         {/* Burger King */}
                         <div className="order-item">
-                            <img 
-                                src={BurgerKingLogo}
-                                alt="Burger King" 
-                                className="order-image" 
-                            />
                             <div className="order-details">
                                 <p><strong>ID :</strong> 71013</p>
                                 <p><strong>Restaurant :</strong> Burger King</p>
@@ -121,11 +111,6 @@ const Delivery = () => {
 
                         {/* KFC */}
                         <div className="order-item">
-                            <img 
-                                src={KfcLogo}
-                                alt="KFC" 
-                                className="order-image" 
-                            />
                             <div className="order-details">
                                 <p><strong>ID :</strong> 3356</p>
                                 <p><strong>Restaurant :</strong> KFC</p>
@@ -157,11 +142,6 @@ const Delivery = () => {
 
                         {/* McDonald's */}
                         <div className="order-item">
-                            <img 
-                                src={McDonaldsLogo}
-                                alt="McDonald's" 
-                                className="order-image" 
-                            />
                             <div className="order-details">
                                 <p><strong>ID :</strong> 4892</p>
                                 <p><strong>Restaurant :</strong> McDonald's</p>
