@@ -24,3 +24,10 @@ exports.isDeveloper = (req, res, next) => {
   }
   return res.status(403).json({ error: 'Accès réservé aux developpeurs' })
 }
+
+exports.isTechnician = (req, res, next) => {
+  if (req.user && req.user.role === 'technician') {
+    return next()
+  }
+  return res.status(403).json({ error: 'Accès réservé aux techniciens' })
+}

@@ -131,6 +131,16 @@ services:
     volumes:
       - ./front/src/components:/app/components
 
+  technical:
+    build: ./back/technical
+    container_name: technical
+    ports:
+      - "3070:3070"
+    networks:
+      - cesieats-network
+    volumes:
+      - ./front/src/components:/app/components      
+
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -148,6 +158,7 @@ services:
       - deliveries
       - restaurants
       - developer
+      - technical
 
   front:
     build: ./front

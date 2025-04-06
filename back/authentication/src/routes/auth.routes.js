@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
-const { isClient, isLivreur, isRestaurateur, isDeveloper } = require('../middlewares/role.middleware')
+const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = require('../middlewares/role.middleware')
 
 /**
  * @api {post} /register Créer un utilisateur
@@ -12,7 +12,7 @@ const { isClient, isLivreur, isRestaurateur, isDeveloper } = require('../middlew
  * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} email Adresse e-mail
  * @apiBody {String} password Mot de passe
- * @apiBody {String="client","livreur","restaurateur","developer"} role Rôle de l'utilisateur
+ * @apiBody {String="client","livreur","restaurateur","developer","technician"} role Rôle de l'utilisateur
  *
  * @apiSuccess {String} message Message de confirmation
  * @apiSuccess {Object} user Données de l'utilisateur créé
@@ -100,7 +100,7 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
 })
 
 /**
- * @api {get} /developer Accès Developpeurs
+ * @api {get} /developer Accès developpeurs
  * @apiName DeveloperAccess
  * @apiGroup Roles
  *
@@ -111,6 +111,20 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
 // Route accessible uniquement au developpeurs
 router.get('/developer', authenticateToken, isDeveloper, (req, res) => {
   res.json({ message: 'Bienvenue Developpeur !' })
+})
+
+/**
+ * @api {get} /technician Accès techniciens
+ * @apiName TechnicianAccess
+ * @apiGroup Roles
+ *
+ * @apiHeader {String} Authorization Bearer token d'accès
+ *
+ * @apiSuccess {String} message Message de bienvenue technicien
+ */
+// Route accessible uniquement au Techniciens
+router.get('/technician', authenticateToken, isTechnician, (req, res) => {
+  res.json({ message: 'Bienvenue technicien !' })
 })
 
 /**
