@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import OrderCard from '../../components/Delivery/OrderCard'
 import OrderDetailsPopup from '../../components/Delivery/OrderDetailsPopup'
 import OrderHistoryPopup from '../../components/Delivery/OrderHistoryPopup'
 import OrderHistorySection from '../../components/Delivery/OrderHistorySection'
-import AvailableOrderItem from '../../components/Delivery/AvailableOrderItem'
 
 import './index.sass'
 
@@ -13,6 +14,7 @@ const Delivery = () => {
   const [showHistory, setShowHistory] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const [availableOrders, setAvailableOrders] = useState([])
 
   const toggleHistory = () => setShowHistory(!showHistory)
   const toggleDetails = (order = null) => {
@@ -38,20 +40,19 @@ const Delivery = () => {
     ]
   }
 
-  const availableOrders = [
-    {
-      id: 201,
-      restaurant: 'Pizza World',
-      client: 'David',
-      address: '33 rue Napoli',
-      total: '20€',
-      deliveryCode: 'NAP01',
-      items: [
-        { name: 'Pizza Margherita', quantity: 1, price: '12€' },
-        { name: 'Coca', quantity: 2, price: '8€' }
-      ]
+  useEffect(() => {
+    fetchAvailableOrders()
+  }, [])
+
+  const fetchAvailableOrders = async () => {
+    try {
+      const res = await axios.get('http://localhost:3030/api/orders')
+      console.log('Commandes reçues :', res.data)
+      setAvailableOrders(res.data) // pas de filtre car pas de champ "status"
+    } catch (err) {
+      console.error('Erreur lors du chargement des commandes disponibles :', err)
     }
-  ]
+  }
 
   return (
     <div className="delivery-page">
@@ -66,8 +67,18 @@ const Delivery = () => {
         <section className="available-orders">
           <h2>Commandes disponibles</h2>
           <div className="orders-grid">
-            {availableOrders.map((order, i) => (
-              <AvailableOrderItem key={i} order={order} onDetails={toggleDetails} />
+            {availableOrders.map(order => (
+              <div key={order._id} className="order">
+                <p><strong>Commande ID :</strong> {order.order_id}</p>
+                <p><strong>User ID :</strong> {order.user_id}</p>
+                <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
+                <p><strong>Articles :</strong> {order.items.length} produit(s)</p>
+                <div className="order__actions">
+                  <button>Accepter</button>
+                  <button>Refuser</button>
+                  <button onClick={() => toggleDetails(order)}>Voir les détails</button>
+                </div>
+              </div>
             ))}
           </div>
         </section>
