@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ComponentListSection from '../../components/ComponentListSection'
 import AddComponentCard from '../../components/AddComponentCard'
-import NotificationPopup from '../../components/NotificationPopup'
 import TechnicalNotification from '../../components/TechnicalNotification'
+import SupervisionSection from '../../components/SupervisionSection'
 import './index.sass'
 
 export default function TechnicalPage() {
@@ -70,7 +70,10 @@ export default function TechnicalPage() {
 
   return (
     <div className="technical-page">
-      <h1 className="dashboard-title">Dashboard Technicien</h1>
+      <h1 className="dashboard-title" onClick={() => window.location.href = 'http://localhost/technical'}>
+        Dashboard Technicien
+      </h1>
+
       {notification && (
         <TechnicalNotification
           type={notification.type}
@@ -78,14 +81,22 @@ export default function TechnicalPage() {
           onClose={() => setNotification(null)}
         />
       )}  
-  
-      <AddComponentCard
-      newComponentName={newComponentName}
-      setNewComponentName={setNewComponentName}
-      files={files}
-      setFiles={setFiles}
-      handleAdd={handleAdd}
-      />
+
+      <div className="top-section">
+        <div className="card-wrapper">
+          <SupervisionSection />
+        </div>
+
+        <div className="card-wrapper">
+          <AddComponentCard
+            newComponentName={newComponentName}
+            setNewComponentName={setNewComponentName}
+            files={files}
+            setFiles={setFiles}
+            handleAdd={handleAdd}
+          />
+        </div>
+      </div>
 
       <ComponentListSection
         show={showComponents}
