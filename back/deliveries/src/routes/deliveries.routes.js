@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getAllDeliveries, getDeliveryById, createDelivery, updateDelivery, deleteDelivery, getStatsForRestaurant } = require('../controllers/deliveries.controller')
+const { getAllDeliveries, getDeliveryById, createDelivery, updateDelivery, deleteDelivery, getStatsForRestaurant, getWeeklySalesForRestaurant } = require('../controllers/deliveries.controller')
 
 /**
  * @api {get} / Get all deliveries
@@ -28,6 +28,15 @@ router.get('/:id', getDeliveryById)
  * @apiSuccess {Object} stats Statistiques globales.
  */
 router.get('/stats/:restaurantId', getStatsForRestaurant)
+
+/**
+ * @api {get} /sales-per-week/:restaurantId Obtenir les ventes par semaine pour un restaurateur
+ * @apiName GetWeeklySalesForRestaurant
+ * @apiGroup Deliveries
+ * @apiParam {String} restaurantId ID du restaurateur.
+ * @apiSuccess {Object[]} sales Tableau des ventes par semaine.
+ */
+router.get('/sales-per-week/:restaurantId', getWeeklySalesForRestaurant)
 
 /**
  * @api {post} / Create a new delivery
