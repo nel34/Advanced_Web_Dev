@@ -46,19 +46,6 @@ const Delivery = () => {
             <Header />
             
             <main className="delivery-container">
-                <div className="status-bar">
-                    <div className="status">
-                        <span>Statut :</span>
-                        <select>
-                            <option>Disponible</option>
-                            <option>Occupé</option>
-                        </select>
-                    </div>
-                    <div className="earnings">
-                        Gains du jour : <span>38 €</span>
-                    </div>
-                </div>
-
                 <section className="current-orders">
                     <h2>Commandes en cours :</h2>
                     <div className="order-card">
