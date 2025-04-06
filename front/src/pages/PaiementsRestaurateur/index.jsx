@@ -61,7 +61,7 @@ export default function PaiementsRestaurateur() {
       <div className="accueil-restaurateur__body">
         <SidebarRestaurateur />
         <main className="accueil-restaurateur__content">
-          <h2>Paiements Restaurateur</h2>
+          <h2>Vos paiements :</h2>
           <div className="paiement-list">
             {deliveries.length > 0 ? (
               deliveries.map((delivery) => (
