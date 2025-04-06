@@ -1,4 +1,4 @@
-// index.js
+const cors = require('cors')
 const express = require('express')
 const dotenv = require('dotenv')
 const path = require('path')
@@ -8,6 +8,9 @@ const authRoutes = require('./src/routes/auth.routes')
 dotenv.config()
 
 const app = express()
+
+app.use(cors())
+
 const port = process.env.PORT || 4000
 
 // Middlewares
@@ -34,7 +37,6 @@ async function initDatabase() {
     try {
       await sequelize.authenticate()
       console.log('Connexion à MySQL réussie')
-
       await sequelize.sync({ alter: true })
       console.log('Tables synchronisées')
       break

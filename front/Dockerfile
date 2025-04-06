@@ -1,15 +1,19 @@
-FROM node:latest
+# Utilise une image Node stable basée sur Debian (pas Alpine)
+FROM node:20-slim
 
 WORKDIR /app
 
-# Installer les dépendances
+# Copie des fichiers package
 COPY package*.json ./
+
+# Installe les dépendances
 RUN npm install
 
-# Copier le reste du code
+# Copie le reste du code source
 COPY . .
 
+# Expose le port (le même que dans vite.config.js ou 80 par défaut)
 EXPOSE 80
 
-# Lancer le serveur front
+# Démarre Vite en mode dev
 CMD ["npm", "run", "dev"]
