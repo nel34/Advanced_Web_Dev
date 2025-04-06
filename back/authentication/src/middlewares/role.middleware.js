@@ -1,4 +1,5 @@
 exports.isClient = (req, res, next) => {
+  console.log('User role:', req.user)
   if (req.user && req.user.role === 'client') {
     return next()
   }

@@ -19,6 +19,7 @@ import Cookies from './pages/Cookies'
 import LegalNotice from './pages/LegalNotice'
 import HelpPage from './pages/Help'
 import ThirdDeveloper from './pages/ThirdDeveloper'
+import ProtectedRoute from './components/ProtectedRoute'
 
 createRoot(document.getElementById('root')).render(
   <Router>
@@ -32,7 +33,6 @@ createRoot(document.getElementById('root')).render(
             <Route path="/restaurant/:idRestaurant" element={<Restaurant />} />
             <Route path="/restaurant/:idRestaurant/:idMenu" element={<Menu />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/account" element={<Account />} />
             <Route path="/account/orders" />
             <Route path="/restaurateur" element={<AccueilRestaurateur />} />
             <Route path="/restaurateur/paiements" element={<PaiementsRestaurateur />} />
@@ -42,6 +42,10 @@ createRoot(document.getElementById('root')).render(
             <Route path="/legal-notice" element={<LegalNotice />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/cookies" element={<Cookies />} />
+
+            <Route element={<ProtectedRoute role="client" />}>
+              <Route path="/account" element={<Account />} />
+            </Route>
           </Routes>
         </Layout>
       </CartProvider>
