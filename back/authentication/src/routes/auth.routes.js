@@ -139,6 +139,22 @@ router.get('/authenticate', authenticate)
  */
 router.get('/developer/key', authenticateToken, isDeveloper, getApiKey)
 
+/**
+ * @api {post} /developer/validatekey Valider une clé API développeur
+ * @apiName ValidateApiKey
+ * @apiGroup DeveloperAccess
+ *
+ * @apiDescription Cette route permet de vérifier si une clé API fournie est valide et appartient à un utilisateur développeur.
+ *
+ * @apiBody {String} apiKey La clé API à valider.
+ *
+ * @apiSuccess {Boolean} valid Indique si la clé est valide (`true`) ou non (`false`).
+ *
+ * @apiError 400 Clé API manquante.
+ * @apiError 403 Clé API invalide ou non autorisée.
+ * @apiError 500 Erreur interne du serveur.
+ *     }
+ */
 router.post('/developer/validatekey', validateApiKey)
 
 /**
