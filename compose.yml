@@ -147,6 +147,7 @@ services:
       - orders
       - deliveries
       - restaurants
+      - developer
 
   front:
     build: ./front

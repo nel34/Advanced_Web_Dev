@@ -28,7 +28,7 @@ router.get('/:id', getProductById)
  * @apiSuccess {Object[]} products Liste des produits du restaurant spécifié.
  * @apiError 404 Aucun produit trouvé pour ce restaurant.
  */
-router.get('/by-restaurant/:idrestaurant', getProductsByRestaurant);
+router.get('/by-restaurant/:idrestaurant', getProductsByRestaurant)
 
 /**
  * @api {post} / Créer un produit

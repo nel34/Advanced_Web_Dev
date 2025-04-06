@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
 const { isClient, isLivreur, isRestaurateur, isDeveloper } = require('../middlewares/role.middleware')
 
@@ -138,6 +138,8 @@ router.get('/authenticate', authenticate)
  * @apiError 401 Token manquant ou invalide
  */
 router.get('/developer/key', authenticateToken, isDeveloper, getApiKey)
+
+router.post('/developer/validatekey', validateApiKey)
 
 /**
  * @api {put} /developer/regenerate Régénérer une nouvelle clé API
