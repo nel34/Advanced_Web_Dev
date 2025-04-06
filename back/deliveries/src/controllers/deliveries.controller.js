@@ -54,7 +54,6 @@ exports.deleteDelivery = async (req, res) => {
   }
 }
 
-
 // Obtenir les statistiques pour un restaurateur
 exports.getStatsForRestaurant = async (req, res) => {
   try {
@@ -100,64 +99,62 @@ exports.getStatsForRestaurant = async (req, res) => {
   }
 }
 
-
 // Obtenir les ventes par semaine pour un restaurant
 exports.getWeeklySalesForRestaurant = async (req, res) => {
   try {
-    const { restaurantId } = req.params;
+    const { restaurantId } = req.params
 
     const deliveries = await Deliveries.find({
       restaurant_id: restaurantId,
       status: { $in: ['completed', 'finished'] }
-    });
+    })
 
     // Format court pour l'affichage du label
     const formatWeekLabel = (monday) => {
-      const sunday = new Date(monday);
-      sunday.setDate(sunday.getDate() + 6);
+      const sunday = new Date(monday)
+      sunday.setDate(sunday.getDate() + 6)
 
-      const dayOptions = { day: '2-digit' };
-      const monthOptions = { month: 'short' };
+      const dayOptions = { day: '2-digit' }
+      const monthOptions = { month: 'short' }
 
-      const mondayDay = monday.toLocaleDateString('fr-FR', dayOptions);
-      const sundayDay = sunday.toLocaleDateString('fr-FR', dayOptions);
-      const month = sunday.toLocaleDateString('fr-FR', monthOptions);
+      const mondayDay = monday.toLocaleDateString('fr-FR', dayOptions)
+      const sundayDay = sunday.toLocaleDateString('fr-FR', dayOptions)
+      const month = sunday.toLocaleDateString('fr-FR', monthOptions)
 
-      return `${mondayDay}/${sundayDay} ${month}`;
-    };
+      return `${mondayDay}/${sundayDay} ${month}`
+    }
 
-    const weeks = [];
+    const weeks = []
 
     deliveries.forEach((d) => {
-      const date = new Date(d.createdAt);
-      const day = date.getDay() === 0 ? 6 : date.getDay() - 1;
-      const monday = new Date(date);
-      monday.setDate(date.getDate() - day);
-      monday.setHours(0, 0, 0, 0);
+      const date = new Date(d.createdAt)
+      const day = date.getDay() === 0 ? 6 : date.getDay() - 1
+      const monday = new Date(date)
+      monday.setDate(date.getDate() - day)
+      monday.setHours(0, 0, 0, 0)
 
-      const key = monday.toISOString();
-      let existingWeek = weeks.find(w => w.key === key);
+      const key = monday.toISOString()
+      let existingWeek = weeks.find(w => w.key === key)
 
       if (!existingWeek) {
         existingWeek = {
           key,
           date: formatWeekLabel(monday),
           ventes: 0
-        };
-        weeks.push(existingWeek);
+        }
+        weeks.push(existingWeek)
       }
 
-      existingWeek.ventes += d.menu_price || 0;
-    });
+      existingWeek.ventes += d.menu_price || 0
+    })
 
     // Trier les semaines par date
-    weeks.sort((a, b) => new Date(a.key) - new Date(b.key));
+    weeks.sort((a, b) => new Date(a.key) - new Date(b.key))
 
     // Réponse finale
-    res.json(weeks.map(({ date, ventes }) => ({ date, ventes })));
+    res.json(weeks.map(({ date, ventes }) => ({ date, ventes })))
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
-
+}
 
