@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, authenticate } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
-const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.middleware')
+const { isClient, isLivreur, isRestaurateur, isDeveloper } = require('../middlewares/role.middleware')
 
 /**
  * @api {post} /register Créer un utilisateur
@@ -12,7 +12,7 @@ const { isClient, isLivreur, isRestaurateur } = require('../middlewares/role.mid
  * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} email Adresse e-mail
  * @apiBody {String} password Mot de passe
- * @apiBody {String="client","livreur","restaurateur"} role Rôle de l'utilisateur
+ * @apiBody {String="client","livreur","restaurateur","developer"} role Rôle de l'utilisateur
  *
  * @apiSuccess {String} message Message de confirmation
  * @apiSuccess {Object} user Données de l'utilisateur créé
@@ -66,7 +66,7 @@ router.post('/logout', logout)
  *
  * @apiSuccess {String} message Message de bienvenue client
  */
-// Route accessible uniquement au restaurateurs
+// Route accessible uniquement au Clients
 router.get('/client', authenticateToken, isClient, (req, res) => {
   res.json({ message: 'Bienvenue client !' })
 })
@@ -100,6 +100,20 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
 })
 
 /**
+ * @api {get} /developer Accès Developpeurs
+ * @apiName DeveloperAccess
+ * @apiGroup Roles
+ *
+ * @apiHeader {String} Authorization Bearer token d'accès
+ *
+ * @apiSuccess {String} message Message de bienvenue developpeur
+ */
+// Route accessible uniquement au developpeurs
+router.get('/developer', authenticateToken, isDeveloper, (req, res) => {
+  res.json({ message: 'Bienvenue Developpeur !' })
+})
+
+/**
  * @api {get} /authenticate Vérifie la validité d'un token
  * @apiName Authenticate
  * @apiGroup Auth
@@ -110,5 +124,52 @@ router.get('/restaurateur', authenticateToken, isRestaurateur, (req, res) => {
  * @apiSuccess {Object} user Données utilisateur décodées du token
  */
 router.get('/authenticate', authenticate)
+
+/**
+ * @api {get} /developer/key Récupérer la clé API du développeur
+ * @apiName GetDeveloperApiKey
+ * @apiGroup DeveloperAccess
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer token)
+ *
+ * @apiSuccess {String} apiKey Clé API de l'utilisateur développeur
+ *
+ * @apiError 403 Accès refusé
+ * @apiError 401 Token manquant ou invalide
+ */
+router.get('/developer/key', authenticateToken, isDeveloper, getApiKey)
+
+router.post('/developer/validatekey', validateApiKey)
+
+/**
+ * @api {put} /developer/regenerate Régénérer une nouvelle clé API
+ * @apiName RegenerateDeveloperApiKey
+ * @apiGroup DeveloperAccess
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer token)
+ *
+ * @apiSuccess {String} apiKey Nouvelle clé API générée
+ *
+ * @apiError 403 Accès refusé
+ * @apiError 401 Token manquant ou invalide
+ */
+router.put('/developer/regenerate', authenticateToken, isDeveloper, regenerateApiKey)
+
+/**
+ * @api {get} /users Récupérer tous les utilisateurs
+ * @apiName GetAllUsers
+ * @apiGroup Auth
+ *
+ * @apiSuccess {Object[]} users Liste de tous les utilisateurs
+ * @apiSuccess {Number} users.id ID
+ * @apiSuccess {String} users.username Nom d'utilisateur
+ * @apiSuccess {String} users.email Email
+ * @apiSuccess {String} users.role Rôle (client, livreur, etc.)
+ * @apiSuccess {String} users.referralCode Code de parrainage
+ * @apiSuccess {String} [users.apiKey] Clé API (si développeur)
+ *
+ * @apiError 500 Erreur interne
+ */
+router.get('/users', getAllUsers)
 
 module.exports = router
