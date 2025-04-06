@@ -63,13 +63,13 @@ exports.getStatsForRestaurant = async (req, res) => {
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    const deliveries = await Deliveries.find({
+    const allDeliveries = await Deliveries.find({
       restaurant_id: restaurantId,
       status: { $in: ['completed', 'finished'] }
     })
 
-    const dailyDeliveries = deliveries.filter(d => new Date(d.createdAt) >= startOfDay)
-    const monthlyDeliveries = deliveries.filter(d => new Date(d.createdAt) >= startOfMonth)
+    const dailyDeliveries = allDeliveries.filter(d => new Date(d.createdAt) >= startOfDay)
+    const monthlyDeliveries = allDeliveries.filter(d => new Date(d.createdAt) >= startOfMonth)
 
     const getTotalSales = arr => arr.reduce((sum, d) => sum + (d.menu_price || 0), 0)
 
@@ -83,10 +83,14 @@ exports.getStatsForRestaurant = async (req, res) => {
     const bestMenu = Object.keys(bestMenuMap).reduce((a, b) =>
       bestMenuMap[a] > bestMenuMap[b] ? a : b, 'N/A')
 
+    const globalSales = getTotalSales(allDeliveries)
+    const globalOrders = allDeliveries.length
+    const avgOrderValueGlobal = globalOrders > 0 ? (globalSales / globalOrders) : 0
+
     res.json({
       totalSalesToday: getTotalSales(dailyDeliveries),
       totalOrdersToday: dailyDeliveries.length,
-      avgOrderValueToday: dailyDeliveries.length > 0 ? (getTotalSales(dailyDeliveries) / dailyDeliveries.length) : 0,
+      avgOrderValueGlobal,
       totalSalesMonth: getTotalSales(monthlyDeliveries),
       totalOrdersMonth: monthlyDeliveries.length,
       bestMenu
@@ -95,3 +99,65 @@ exports.getStatsForRestaurant = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+
+// Obtenir les ventes par semaine pour un restaurant
+exports.getWeeklySalesForRestaurant = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const deliveries = await Deliveries.find({
+      restaurant_id: restaurantId,
+      status: { $in: ['completed', 'finished'] }
+    });
+
+    // Format court pour l'affichage du label
+    const formatWeekLabel = (monday) => {
+      const sunday = new Date(monday);
+      sunday.setDate(sunday.getDate() + 6);
+
+      const dayOptions = { day: '2-digit' };
+      const monthOptions = { month: 'short' };
+
+      const mondayDay = monday.toLocaleDateString('fr-FR', dayOptions);
+      const sundayDay = sunday.toLocaleDateString('fr-FR', dayOptions);
+      const month = sunday.toLocaleDateString('fr-FR', monthOptions);
+
+      return `${mondayDay}/${sundayDay} ${month}`;
+    };
+
+    const weeks = [];
+
+    deliveries.forEach((d) => {
+      const date = new Date(d.createdAt);
+      const day = date.getDay() === 0 ? 6 : date.getDay() - 1;
+      const monday = new Date(date);
+      monday.setDate(date.getDate() - day);
+      monday.setHours(0, 0, 0, 0);
+
+      const key = monday.toISOString();
+      let existingWeek = weeks.find(w => w.key === key);
+
+      if (!existingWeek) {
+        existingWeek = {
+          key,
+          date: formatWeekLabel(monday),
+          ventes: 0
+        };
+        weeks.push(existingWeek);
+      }
+
+      existingWeek.ventes += d.menu_price || 0;
+    });
+
+    // Trier les semaines par date
+    weeks.sort((a, b) => new Date(a.key) - new Date(b.key));
+
+    // Réponse finale
+    res.json(weeks.map(({ date, ventes }) => ({ date, ventes })));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
