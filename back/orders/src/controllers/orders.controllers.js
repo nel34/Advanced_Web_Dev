@@ -2,7 +2,7 @@ const Order = require('../models/orders.models')
 
 exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate('menu')
+    const orders = await Order.find()
     res.status(200).json(orders)
   } catch (err) {
     res.status(400).json({ message: err.message })
@@ -11,16 +11,13 @@ exports.getAllOrders = async (req, res) => {
 
 exports.getOrderById = async (req, res) => {
   try {
-    const order = await Order.findOne({ order_id: req.params.id }).populate('menu')
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' })
-    }
+    const order = await Order.findOne({ order_id: req.params.id })
+    if (!order) {return res.status(404).json({ message: 'Order not found' })}
     res.status(200).json(order)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
 }
-
 
 exports.createOrder = async (req, res) => {
   try {
@@ -57,22 +54,19 @@ exports.deleteOrder = async (req, res) => {
 
 exports.getOrdersByUserId = async (req, res) => {
   try {
-    const orders = await Order.find({ user_id: req.params.idUser }).populate('menu')
-    if (!orders.length) {
-      return res.status(404).json({ message: 'No orders found' })
-    }
+    const orders = await Order.find({ user_id: req.params.idUser })
+    if (!orders.length) {return res.status(404).json({ message: 'No orders found' })}
     res.status(200).json(orders)
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
 }
 
-
 // Récupérer les commandes par nom du livreur
 exports.getOrdersByDeliveryPersonId = async (req, res) => {
   try {
     const { id } = req.params
-    const orders = await Order.find({ delivery_person_id: id }).populate('menu')
+    const orders = await Order.find({ delivery_person_id: id })
 
     if (!orders.length) {
       return res.status(404).json({ message: 'Aucune commande trouvée pour ce livreur' })
@@ -84,7 +78,6 @@ exports.getOrdersByDeliveryPersonId = async (req, res) => {
   }
 }
 
-
 // Obtenir les statistiques pour un restaurateur
 exports.getStatsForRestaurant = async (req, res) => {
   try {
@@ -95,30 +88,23 @@ exports.getStatsForRestaurant = async (req, res) => {
 
     const allOrders = await Order.find({
       restaurant_id: restaurantId,
-      status: 'Delivered'
-    }).populate('menu') // 👈 On récupère les noms des menus
+      status: 'Delivered' 
+    })
 
     const dailyOrders = allOrders.filter(o => new Date(o.createdAt) >= startOfDay)
     const monthlyOrders = allOrders.filter(o => new Date(o.createdAt) >= startOfMonth)
 
-    const getTotalSales = arr => arr.reduce((sum, o) => sum + (o.total || 0), 0)
+    const getTotalSales = arr => arr.reduce((sum, o) => sum + (o.menu_price || 0), 0)
 
-    // 🥇 Compter les menus pour trouver le plus commandé
     const bestMenuMap = {}
-    for (const order of monthlyOrders) {
-      if (order.menu && Array.isArray(order.menu)) {
-        for (const menu of order.menu) {
-          const menuName = menu.name
-          if (menuName) {
-            bestMenuMap[menuName] = (bestMenuMap[menuName] || 0) + 1
-          }
-        }
+    for (const o of monthlyOrders) {
+      if (o.menu_name) {
+        bestMenuMap[o.menu_name] = (bestMenuMap[o.menu_name] || 0) + 1
       }
     }
 
-    const bestMenu = Object.keys(bestMenuMap).length
-      ? Object.keys(bestMenuMap).reduce((a, b) => bestMenuMap[a] > bestMenuMap[b] ? a : b)
-      : 'N/A'
+    const bestMenu = Object.keys(bestMenuMap).reduce((a, b) =>
+      bestMenuMap[a] > bestMenuMap[b] ? a : b, 'N/A')
 
     const globalSales = getTotalSales(allOrders)
     const globalOrders = allOrders.length
@@ -136,7 +122,6 @@ exports.getStatsForRestaurant = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
-
 
 // Obtenir les ventes par semaine pour un restaurant
 exports.getWeeklySalesForRestaurant = async (req, res) => {

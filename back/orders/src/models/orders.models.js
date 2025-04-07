@@ -20,7 +20,7 @@ const OrderSchema = new mongoose.Schema({
   },
   estimated_time: { type: Date },
   delivery_person_name: { type: String, required: false, default: null },
-  menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Menus', required: true }],
+  menu: [{ type: String, required: true }],
   total: { type: Number, required: true },
   location: { type: String, required: true }
 }, {
