@@ -20,6 +20,7 @@ import LegalNotice from './pages/LegalNotice'
 import HelpPage from './pages/Help'
 import ThirdDeveloper from './pages/ThirdDeveloper'
 import ProtectedRoute from './components/ProtectedRoute'
+import Delivery from './pages/Delivery'
 
 const getSubdomain = () => {
   const host = window.location.hostname
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')).render(
             ) : (
               <>
                 <Route path="/" element={<Home />} />
+                <Route path="/delivery" element={<Delivery />} />
                 <Route path="/login" element={<AuthForm mode='login' />} />
                 <Route path="/signup" element={<AuthForm mode='signup' />} />
                 <Route path="/restaurant/:idRestaurant" element={<Restaurant />} />
