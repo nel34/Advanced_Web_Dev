@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import SidebarRestaurateur from '../../components/SidebarRestaurateur'
 import CardPaiement from '../../components/CardPaiement'
-import NotificationPopup from '../../components/NotificationPopup'
+import GlobalPopup from '../../components/GlobalPopup'
 import './index.sass'
 
 export default function PaiementsRestaurateur() {
@@ -72,7 +72,7 @@ export default function PaiementsRestaurateur() {
         </main>
       </div>
 
-      <NotificationPopup
+      <GlobalPopup
         visible={showPopup}
         message="Vous avez un nouveau paiement"
         onClose={() => setShowPopup(false)}
