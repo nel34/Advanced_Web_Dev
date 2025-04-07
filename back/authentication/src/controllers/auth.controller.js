@@ -202,7 +202,7 @@ exports.validateApiKey = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy', 'isSuspended'],
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy', 'isSuspended', 'createdAt', 'updatedAt'],
     })
 
     res.status(200).json(users)
@@ -227,7 +227,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { username, email, role, apiKey, password } = req.body
+  const { username, email, role, password } = req.body
 
   try {
     const user = await User.findByPk(id)
