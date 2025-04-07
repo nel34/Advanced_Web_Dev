@@ -1,4 +1,5 @@
 import React from 'react'
+import './index.sass'
 
 const OrderDetailsPopup = ({ order, onClose }) => {
   if (!order) return null
