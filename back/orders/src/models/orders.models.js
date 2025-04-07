@@ -21,7 +21,8 @@ const OrderSchema = new mongoose.Schema({
   estimated_time: { type: Date },
   delivery_person_name: { type: String, required: false, default: null },
   menu_name: { type: String, required: true },
-  menu_price: { type: Number, required: true }
+  menu_price: { type: Number, required: true },
+  location: { type: String, required: true }
 }, {
   timestamps: true
 })
