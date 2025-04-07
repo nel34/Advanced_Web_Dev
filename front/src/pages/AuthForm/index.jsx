@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext'
 export default function AuthForm({ mode = 'login' }) {
   const isLogin = mode === 'login'
   const { login, register } = useAuth()
+  const subdomain = window.location.hostname.split('.')[0]
 
   return (
     <div className="home home--center">
@@ -58,15 +59,28 @@ export default function AuthForm({ mode = 'login' }) {
         </div>
 
         {!isLogin && (
-          <div className='form__input'>
-            <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
-            <TextInput
-              type="password"
-              id="confirmPassword"
-              required={true}
-              placeholder="Confirmer votre mot de passe"
-            />
-          </div>
+          <>
+            <div className='form__input'>
+              <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
+              <TextInput
+                type="password"
+                id="confirmPassword"
+                required={true}
+                placeholder="Confirmer votre mot de passe"
+              />
+            </div>
+            {subdomain !== 'dev' && subdomain !== 'admin' && (
+              <div className='form__input'>
+                <label htmlFor="referralCode">Code parrainage (optionnel)</label>
+                <TextInput
+                  type="text"
+                  id="referralCode"
+                  required={true}
+                  placeholder="Entrez le code de parrainage"
+                />
+              </div>
+            )}
+          </>
         )}
 
         <Button

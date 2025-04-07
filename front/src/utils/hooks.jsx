@@ -43,29 +43,30 @@ export function useFetchWithAuth(method, url) {
         let accessToken = userData['accessToken']
 
         let response = await fetch(url, {
+          method: method,
+          credentials: 'include',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        console.log('response', response)
-
-        if (response.status === 401) {
+        if (response.status === 403) {
           const refreshToken = userData['refreshToken']
-
           const refreshResponse = await fetch('http://localhost:8080/api/auth/refresh-token', {
-            method: method,
+            method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({ refreshToken }),
           })
-
           if (refreshResponse.ok) {
-            const tokens = await refreshResponse.json()
+            const tokens = await refreshResponse.response.json()
             userData.accessToken = tokens.accessToken
             localStorage.setItem('user', JSON.stringify(userData))
 
             response = await fetch(url, {
+              method: method,
+              credentials: 'include',
               headers: {
                 Authorization: `Bearer ${tokens.accessToken}`
               }
@@ -75,8 +76,6 @@ export function useFetchWithAuth(method, url) {
             throw new Error('Token refresh failed')
           }
         }
-
-        console.log('response after refresh', response)
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)

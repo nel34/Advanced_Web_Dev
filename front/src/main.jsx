@@ -62,6 +62,7 @@ createRoot(document.getElementById('root')).render(
               <>
                 <Route element={<ProtectedRoute role='technician' />}>
                   <Route path='/' element={<TechnicalDashboard />} />
+                  <Route path='/account' element={<Account />} />
                 </Route>
                 <Route path='/login' element={<AuthForm mode='login' />} />
                 <Route path='/signup' element={<AuthForm mode='signup' />} />
