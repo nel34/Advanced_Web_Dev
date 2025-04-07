@@ -1,12 +1,5 @@
 const mongoose = require('mongoose')
 
-const itemSchema = new mongoose.Schema({
-  product_id: { type: String, required: true },
-  quantity: { type: Number, required: true }
-})
-
-const mongoose = require('mongoose')
-
 const OrderSchema = new mongoose.Schema({
   order_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },

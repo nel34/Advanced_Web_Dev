@@ -1,4 +1,5 @@
 import React from 'react'
+import './index.sass'
 
 const OrderHistorySection = ({ history, onOpen }) => {
   return (

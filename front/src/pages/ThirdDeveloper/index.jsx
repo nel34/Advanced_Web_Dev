@@ -11,9 +11,9 @@ export default function ThirdDeveloper() {
   const [loadingComponents, setLoadingComponents] = useState(false)
   const [showComponents, setShowComponents] = useState(false)
   const [apiKeyError, setApiKeyError] = useState(null)
-  // const token = localStorage.getItem('accessToken')
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRldmVsb3BlciIsImlhdCI6MTc0Mzk3MzYyNiwiZXhwIjoxNzQzOTc0NTI2fQ.vB5EK5-DHkT0lgxYYDxWQzIGqw3fodfQH5nnyN32BR8'
-
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
+  const token = userData.accessToken;
+  
   const fetchApiKey = async () => {
     setLoadingKey(true)
     try {

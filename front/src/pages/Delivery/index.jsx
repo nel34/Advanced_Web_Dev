@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
-import OrderCard from '../../components/Delivery/OrderCard'
-import OrderDetailsPopup from '../../components/Delivery/OrderDetailsPopup'
-import OrderHistoryPopup from '../../components/Delivery/OrderHistoryPopup'
-import OrderHistorySection from '../../components/Delivery/OrderHistorySection'
-
 import './index.sass'
+import OrderCard from '../../components/DeliveryOrderCard'
+import OrderDetailsPopup from '../../components/DeliveryOrderDetailsPopup'
+import OrderHistoryPopup from '../../components/DeliveryOrderHistoryPopup'
+import OrderHistorySection from '../../components/DeliveryOrderHistorySection'
+
 
 const Delivery = () => {
   const [showHistory, setShowHistory] = useState(false)
@@ -46,9 +43,9 @@ const Delivery = () => {
 
   const fetchAvailableOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:3030/api/orders')
+      const res = await axios.get('http://localhost:8080/api/orders')
       console.log('Commandes reçues :', res.data)
-      setAvailableOrders(res.data) // si tu veux filtrer, ajoute .filter()
+      setAvailableOrders(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des commandes disponibles :', err)
     }
@@ -56,8 +53,6 @@ const Delivery = () => {
 
   return (
     <div className="delivery-page">
-      <Header />
-
       <main className="delivery-container">
         {/* Commandes en cours */}
         <section className="current-orders">
@@ -97,8 +92,6 @@ const Delivery = () => {
 
         <OrderHistorySection history={historyData} onOpen={toggleHistory} />
       </main>
-
-      <Footer />
     </div>
   )
 }
