@@ -152,18 +152,6 @@ exports.logout = async (req, res) => {
   }
 }
 
-exports.authenticate = (req, res) => {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-
-  if (!token) {return res.status(401).json({ message: 'Token manquant' })}
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {return res.status(401).json({ message: 'Token invalide ou expiré' })}
-    return res.status(200).json({ message: 'Token valide', user: decoded })
-  })
-}
-
 exports.getApiKey = async (req, res) => {
   const user = await User.findByPk(req.user.id)
   if (!user || user.role !== 'developer') {
