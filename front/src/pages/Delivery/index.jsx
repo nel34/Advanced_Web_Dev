@@ -69,9 +69,8 @@ const Delivery = () => {
                 .map(order => (
             <div key={order._id} className="order">
               <p><strong>Commande ID :</strong> {order.order_id}</p>
-              <p><strong>User ID :</strong> {order.user_id}</p>
-              <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
-              <p><strong>Status :</strong> {order.status}</p>
+              <p><strong>Prix :</strong> {order.menu_price}</p>
+              <p><strong>Adresse :</strong> {order.location}</p>
               <div className="order__actions">
                 <button>Accepter</button>
                 <button>Refuser</button>
