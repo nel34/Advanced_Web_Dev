@@ -20,7 +20,7 @@ export default function AuthForm({ mode = 'login' }) {
               type="text"
               id="identifier"
               required={true}
-              placeholder="Entrer votre email ou nom d'utilisateur"
+              placeholder="Entrez votre email ou nom d'utilisateur"
             />
           </div>
         ) : (
@@ -31,7 +31,7 @@ export default function AuthForm({ mode = 'login' }) {
                 type="text"
                 id="username"
                 required={true}
-                placeholder="Entrer votre nom d'utilisateur"
+                placeholder="Entrez votre nom d'utilisateur"
               />
             </div>
 
@@ -41,7 +41,7 @@ export default function AuthForm({ mode = 'login' }) {
                 type="email"
                 id="email"
                 required={true}
-                placeholder="Entrer votre email"
+                placeholder="Entrez votre email"
               />
             </div>
           </>
@@ -53,7 +53,7 @@ export default function AuthForm({ mode = 'login' }) {
             type="password"
             id="password"
             required={true}
-            placeholder="Entrer votre mot de passe"
+            placeholder="Entrez votre mot de passe"
           />
         </div>
 
