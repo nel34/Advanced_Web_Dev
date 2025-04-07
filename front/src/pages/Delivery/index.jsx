@@ -70,7 +70,6 @@ const Delivery = () => {
                 <p><strong>User ID :</strong> {order.user_id}</p>
                 <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
                 <p><strong>Status :</strong> {order.status}</p>
-                <p><strong>Articles :</strong> {order.items.length} produit(s)</p>
                 <div className="order__actions">
                   <button>Accepter</button>
                   <button>Refuser</button>
