@@ -13,7 +13,7 @@ const {
 } = require('../controllers/orders.controllers')
 
 /**
- * @api {get} /orders/users/:idUser Récupérer les commandes d'un utilisateur
+ * @api {get} /users/:idUser Récupérer les commandes d'un utilisateur
  * @apiName GetUserOrders
  * @apiGroup Orders
  * @apiParam {String} idUser ID de l'utilisateur
@@ -22,7 +22,7 @@ const {
 router.get('/users/:idUser', getOrdersByUserId)
 
 /**
- * @api {get} /orders Récupérer toutes les commandes
+ * @api {get} / Récupérer toutes les commandes
  * @apiName GetAllOrders
  * @apiGroup Orders
  * @apiSuccess {Object[]} orders Liste de toutes les commandes
@@ -30,7 +30,7 @@ router.get('/users/:idUser', getOrdersByUserId)
 router.get('/', getAllOrders)
 
 /**
- * @api {get} /orders/:id Récupérer une commande par ID
+ * @api {get} /:id Récupérer une commande par ID
  * @apiName GetOrderById
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande
@@ -39,7 +39,7 @@ router.get('/', getAllOrders)
 router.get('/:id', getOrderById)
 
 /**
- * @api {post} /orders Créer une nouvelle commande
+ * @api {post} / Créer une nouvelle commande
  * @apiName CreateOrder
  * @apiGroup Orders
  *
@@ -57,7 +57,7 @@ router.get('/:id', getOrderById)
 router.post('/', createOrder)
 
 /**
- * @api {put} /orders/:id Modifier une commande
+ * @api {put} /:id Modifier une commande
  * @apiName UpdateOrder
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande à modifier
@@ -76,7 +76,7 @@ router.post('/', createOrder)
 router.put('/:id', updateOrder)
 
 /**
- * @api {delete} /orders/:id Supprimer une commande
+ * @api {delete} /:id Supprimer une commande
  * @apiName DeleteOrder
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande à supprimer
@@ -85,7 +85,7 @@ router.put('/:id', updateOrder)
 router.delete('/:id', deleteOrder)
 
 /**
- * @api {get} /orders/stats/:restaurantId Obtenir les statistiques d'un restaurateur
+ * @api {get} /stats/:restaurantId Obtenir les statistiques d'un restaurateur
  * @apiName GetStatsForRestaurant
  * @apiGroup Orders
  * @apiParam {String} restaurantId ID du restaurant
@@ -99,7 +99,7 @@ router.delete('/:id', deleteOrder)
 router.get('/stats/:restaurantId', getStatsForRestaurant)
 
 /**
- * @api {get} /orders/sales-per-week/:restaurantId Obtenir les ventes par semaine
+ * @api {get} /sales-per-week/:restaurantId Obtenir les ventes par semaine
  * @apiName GetWeeklySalesForRestaurant
  * @apiGroup Orders
  * @apiParam {String} restaurantId ID du restaurant
@@ -110,7 +110,7 @@ router.get('/stats/:restaurantId', getStatsForRestaurant)
 router.get('/sales-per-week/:restaurantId', getWeeklySalesForRestaurant)
 
 /**
- * @api {get} /orders/delivery-person-id/:id Récupérer les commandes par ID du livreur
+ * @api {get} /delivery-person-id/:id Récupérer les commandes par ID du livreur
  * @apiName GetOrdersByDeliveryPersonId
  * @apiGroup Orders
  * @apiParam {String} id ID du livreur (delivery_person_id)
