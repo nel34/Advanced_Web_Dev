@@ -52,6 +52,7 @@ router.get('/:id', getOrderById)
  * @apiBody {String} [delivery_person_name] Nom du livreur
  * @apiBody {String} menu_name Nom du menu commandé
  * @apiBody {Number} menu_price Prix du menu
+ * @apiBody {String} location Adresse de livraison (ex: "81 rue de la Montre")
  * @apiSuccess {Object} order Commande créée
  */
 router.post('/', createOrder)
@@ -71,6 +72,7 @@ router.post('/', createOrder)
  * @apiBody {String} [delivery_person_name] Nom du livreur
  * @apiBody {String} menu_name Nom du menu commandé
  * @apiBody {Number} menu_price Prix du menu
+ * @apiBody {String} location Adresse de livraison (ex: "81 rue de la Montre")
  * @apiSuccess {Object} order Commande mise à jour
  */
 router.put('/:id', updateOrder)
