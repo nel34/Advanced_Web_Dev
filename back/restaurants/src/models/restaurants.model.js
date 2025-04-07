@@ -6,7 +6,8 @@ const Restaurants = new mongoose.Schema({
   address: { type: String, required: true },
   category: { type: String, required: true },
   image: { type: String, required: true },
-  opening_hours: { type: Object, required: true }
+  opening_hours: { type: Object, required: true },
+  idOwner: { type: String, required: true }
 })
 
 module.exports = mongoose.model('Restaurants', Restaurants)

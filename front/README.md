@@ -6,7 +6,7 @@ Ce projet est le client web de **CESI Eats**, une application de commande de rep
 
 ## Fonctionnalités principales
 
-- **Composants réutilisables** : Header, Footer, Layout, Button, SearchBar, TextInput, CategorySelector, RestaurantCard, MenuCard.
+- **Composants réutilisables** : Header, Footer, Layout, Button, SearchBar, CategorySelector, RestaurantCard, MenuCard.
 - **Pages dynamiques** : Navigation entre les pages comme Home, avec des appels aux microservices backend.
 - **Intégration backend** : Communication avec des endpoints situés sur `localhost:8080` ou d'autres ports selon les services.
 
@@ -28,9 +28,6 @@ Bouton réutilisable avec des styles personnalisables.
 
 ### SearchBar
 Barre de recherche pour filtrer les restaurants ou les menus.
-
-### TextInput
-Champ de saisie générique utilisé dans les formulaires.
 
 ### CategorySelector
 Permet de sélectionner une catégorie de restaurants ou de plats.

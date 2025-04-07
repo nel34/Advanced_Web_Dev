@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import TextInput from '../../components/TextInput'
 import Button from '../../components/Button'
 import './index.sass'
 import { useAuth } from '../../context/AuthContext'
@@ -55,7 +54,7 @@ export default function Account() {
             <form className='form' onSubmit={handleProfileUpdate}>
               <div className='form__input'>
                 <label htmlFor='username'>Nom d'utilisateur</label>
-                <TextInput
+                <input
                   type='text'
                   id='username'
                   required
@@ -65,7 +64,7 @@ export default function Account() {
               </div>
               <div className='form__input'>
                 <label htmlFor='email'>Email</label>
-                <TextInput
+                <input
                   type='email'
                   id='email'
                   required
@@ -87,7 +86,7 @@ export default function Account() {
               <form className='form' onSubmit={handlePasswordUpdate}>
                 <div className='form__input'>
                   <label htmlFor='password'>Nouveau mot de passe</label>
-                  <TextInput
+                  <input
                     type='password'
                     id='password'
                     required
@@ -98,7 +97,7 @@ export default function Account() {
                 </div>
                 <div className='form__input'>
                   <label htmlFor='confirm_password'>Confirmer le nouveau mot de passe</label>
-                  <TextInput
+                  <input
                     type='password'
                     id='confirm_password'
                     required
@@ -123,7 +122,7 @@ export default function Account() {
                 <h2>Parrainer un ami</h2>
                 <div className='form__input'>
                   <label htmlFor='code'>Code parainnage</label>
-                  <TextInput
+                  <input
                     type='text'
                     id='code'
                     value={data.referralCode || ''}

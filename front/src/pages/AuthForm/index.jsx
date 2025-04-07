@@ -1,7 +1,6 @@
 import './index.sass'
 import { Link } from 'react-router-dom'
 import Button from '../../components/Button'
-import TextInput from '../../components/TextInput'
 import { useAuth } from '../../context/AuthContext'
 
 export default function AuthForm({ mode = 'login' }) {
@@ -17,7 +16,7 @@ export default function AuthForm({ mode = 'login' }) {
         {isLogin ? (
           <div className='form__input'>
             <label htmlFor="identifier">Email ou nom d'utilisateur</label>
-            <TextInput
+            <input
               type="text"
               id="identifier"
               required={true}
@@ -28,7 +27,7 @@ export default function AuthForm({ mode = 'login' }) {
           <>
             <div className='form__input'>
               <label htmlFor="username">Nom d'utilisateur</label>
-              <TextInput
+              <input
                 type="text"
                 id="username"
                 required={true}
@@ -38,7 +37,7 @@ export default function AuthForm({ mode = 'login' }) {
 
             <div className='form__input'>
               <label htmlFor="email">Email</label>
-              <TextInput
+              <input
                 type="email"
                 id="email"
                 required={true}
@@ -50,7 +49,7 @@ export default function AuthForm({ mode = 'login' }) {
 
         <div className='form__input'>
           <label htmlFor="password">Mot de passe</label>
-          <TextInput
+          <input
             type="password"
             id="password"
             required={true}
@@ -62,7 +61,7 @@ export default function AuthForm({ mode = 'login' }) {
           <>
             <div className='form__input'>
               <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
-              <TextInput
+              <input
                 type="password"
                 id="confirmPassword"
                 required={true}
@@ -72,7 +71,7 @@ export default function AuthForm({ mode = 'login' }) {
             {subdomain !== 'dev' && subdomain !== 'admin' && (
               <div className='form__input'>
                 <label htmlFor="referralCode">Code parrainage (optionnel)</label>
-                <TextInput
+                <input
                   type="text"
                   id="referralCode"
                   required={true}
