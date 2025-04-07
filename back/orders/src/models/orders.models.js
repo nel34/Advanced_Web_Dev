@@ -4,6 +4,7 @@ const OrderSchema = new mongoose.Schema({
   order_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },
   user_id: { type: String, required: true },
+  username: { type: String, required: true },
   delivery_person_id: { type: String, required: false, default: null },
   status: {
     type: String,
