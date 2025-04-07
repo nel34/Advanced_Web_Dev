@@ -18,8 +18,28 @@
       height: 40px
       border-radius: 50%
 
+    div
+      display: flex
+      flex-direction: column
+      gap: 3px
+
     p
       margin: 0
+
+    p:first-child
+      font-weight: 700
+      font-size: 20px
+      color: #000
+
+    p:nth-child(2) // Menu
+      font-weight: 500
+      font-size: 15px
+      color: #333
+
+    p:nth-child(3) // Total
+      font-weight: 500
+      font-size: 15px
+      color: #222
 
   &__order
     font-size: 14px
@@ -59,4 +79,12 @@
 
     .accepted-text
       font-weight: bold
-      color: #28a745 // vert success
+      color: #28a745
+
+    .waiting-text
+      font-weight: bold
+      color: #f0ad4e
+
+    .delivery-text
+      font-weight: bold
+      color: #007bff

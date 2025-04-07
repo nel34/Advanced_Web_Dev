@@ -6,51 +6,49 @@ import NotificationPopup from '../../components/NotificationPopup'
 import './index.sass'
 
 export default function PaiementsRestaurateur() {
-  const [deliveries, setDeliveries] = useState([])
+  const [orders, setOrders] = useState([])
   const [showPopup, setShowPopup] = useState(false)
 
-  const RESTAURANT_ID = '670000000000000000000001'
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
-  // 🔄 Charger les IDs déjà connus depuis le localStorage
   const getKnownIds = () => {
     const data = localStorage.getItem('knownPaymentIds')
     return data ? new Set(JSON.parse(data)) : new Set()
   }
 
-  // ✅ Sauvegarder les nouveaux IDs dans le localStorage
   const saveKnownIds = (set) => {
     localStorage.setItem('knownPaymentIds', JSON.stringify([...set]))
   }
 
-  const fetchDeliveries = async () => {
+  const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/deliveries')
+      const res = await axios.get('http://localhost:8080/api/orders')
       const filtered = res.data.filter(
-        (delivery) =>
-          delivery.restaurant_id === RESTAURANT_ID &&
-          delivery.status === 'finished'
+        (order) =>
+          order.restaurant_id === RESTAURANT_ID &&
+          order.status === 'Delivered'
       )
 
       const knownIds = getKnownIds()
-      const newPayments = filtered.filter((d) => !knownIds.has(d._id))
+      const newPayments = filtered.filter((o) => !knownIds.has(o._id))
 
       if (newPayments.length > 0) {
         setShowPopup(true)
 
-        newPayments.forEach((d) => knownIds.add(d._id))
+        newPayments.forEach((o) => knownIds.add(o._id))
         saveKnownIds(knownIds)
       }
 
-      setDeliveries(filtered)
+      setOrders(filtered)
     } catch (err) {
       console.error('Erreur lors du chargement des paiements :', err)
     }
   }
 
   useEffect(() => {
-    fetchDeliveries()
+    fetchOrders()
     const intervalId = setInterval(() => {
-      fetchDeliveries()
+      fetchOrders()
     }, 5000)
 
     return () => clearInterval(intervalId)
@@ -63,9 +61,9 @@ export default function PaiementsRestaurateur() {
         <main className="accueil-restaurateur__content">
           <h2>Vos paiements :</h2>
           <div className="paiement-list">
-            {deliveries.length > 0 ? (
-              deliveries.map((delivery) => (
-                <CardPaiement key={delivery._id} delivery={delivery} />
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <CardPaiement key={order._id} delivery={order} />
               ))
             ) : (
               <p style={{ fontStyle: 'italic' }}>Aucun paiement terminé.</p>
