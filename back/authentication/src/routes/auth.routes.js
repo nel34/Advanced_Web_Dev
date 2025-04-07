@@ -13,11 +13,15 @@ const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = requi
  * @apiBody {String} email Adresse e-mail
  * @apiBody {String} password Mot de passe
  * @apiBody {String="client","livreur","restaurateur","developer","technician"} role Rôle de l'utilisateur
+ * @apiBody {String} [referralCodeInput] Code de parrainage (facultatif)
  *
  * @apiSuccess {String} message Message de confirmation
- * @apiSuccess {Object} user Données de l'utilisateur créé
+ *
+ * @apiError 400 Adresse email ou nom d'utilisateur déjà utilisé
+ * @apiError 400 Code de parrainage invalide
+ * @apiError 500 Erreur serveur
  */
-router.post('/register', register)
+router.post('/register', register);
 
 /**
  * @api {post} /login Connexion d'un utilisateur
@@ -196,15 +200,20 @@ router.put('/developer/regenerate', authenticateToken, isDeveloper, regenerateAp
  * @apiName GetAllUsers
  * @apiGroup Auth
  *
- * @apiHeader {String} Authorization Token JWT (Bearer)
- * @apiSampleRequest off
+ * @apiHeader {String} Authorization Token JWT au format `Bearer <token>`
  *
- * @apiSuccess {Object[]} users Liste de tous les utilisateurs
- * @apiSuccess {Number} users.id ID
+ * @apiDescription Cette route permet de récupérer la liste de tous les utilisateurs enregistrés. Elle est protégée par un token JWT. Assurez-vous de fournir un en-tête `Authorization` avec un token valide.
+ *
+ * @apiSuccess {Object[]} users Liste des utilisateurs
+ * @apiSuccess {Number} users.id ID de l'utilisateur
  * @apiSuccess {String} users.username Nom d'utilisateur
- * @apiSuccess {String} users.email Email
- * @apiSuccess {String} users.role Rôle (client, livreur, etc.)
- * @apiError 500 Erreur interne
+ * @apiSuccess {String} users.email Adresse email
+ * @apiSuccess {String} users.role Rôle de l'utilisateur (client, livreur, restaurateur, etc.)
+ * @apiSuccess {String} users.referralCode Code de parrainage
+ * @apiSuccess {String} [users.apiKey] Clé API (si développeur)
+ *
+ * @apiError 401 Token manquant ou invalide
+ * @apiError 500 Erreur serveur
  */
 router.get('/users', authenticateToken, getAllUsers)
 

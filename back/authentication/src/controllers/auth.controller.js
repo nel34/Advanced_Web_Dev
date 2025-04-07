@@ -5,40 +5,53 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 exports.register = async (req, res) => {
-  const { username, email, password, role } = req.body
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer','technician']
+  const { username, email, password, role, referralCodeInput } = req.body;
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician'];
 
   if (!rolesAutorises.includes(role)) {
-    return res.status(400).json({ error: 'Rôle invalide' })
+    return res.status(400).json({ error: 'Rôle invalide' });
   }
 
   try {
-    const existingUser = await User.findOne({ where: { email } })
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' })
+      return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' });
     }
 
-    const existingUsername = await User.findOne({ where: { username } })
+    const existingUsername = await User.findOne({ where: { username } });
     if (existingUsername) {
-      return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' })
+      return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase()
-    const apiKey = require('crypto').randomBytes(32).toString('hex')
+    // Vérification du code de parrainage s'il est fourni
+    let referredBy = null;
+    if (referralCodeInput) {
+      const parrain = await User.findOne({ where: { referralCode: referralCodeInput } });
+      if (!parrain) {
+        return res.status(400).json({ error: 'Code de parrainage invalide' });
+      }
+      referredBy = referralCodeInput;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const apiKey = require('crypto').randomBytes(32).toString('hex');
+
     const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
       role,
       referralCode,
-      apiKey: role === 'developer' ? apiKey : null    })
+      apiKey: role === 'developer' ? apiKey : null,
+      referredBy
+    });
 
-    res.status(201).json({ message: 'Utilisateur enregistré' })
+    res.status(201).json({ message: 'Utilisateur enregistré' });
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message })
+    res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message });
   }
-}
+};
 
 exports.login = async (req, res) => {
   const { email, username, password } = req.body
@@ -197,7 +210,7 @@ exports.validateApiKey = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy']
     })
 
     res.status(200).json(users)
@@ -210,7 +223,7 @@ exports.getUserById = async (req, res) => {
   const { id } = req.params
   try {
     const user = await User.findByPk(id, {
-      attributes: ['id', 'username', 'email', 'role', 'referralCode']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy']
     })
 
     if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
@@ -222,7 +235,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { username, email, password } = req.body
+  const { username, email, role, apiKey, password } = req.body
 
   try {
     const user = await User.findByPk(id)
@@ -230,6 +243,7 @@ exports.updateUser = async (req, res) => {
 
     if (username) {user.username = username}
     if (email) {user.email = email}
+    if (role) {user.role = role}
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10)
       user.password = hashedPassword
