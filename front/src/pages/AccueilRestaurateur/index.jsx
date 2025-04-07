@@ -7,12 +7,12 @@ import axios from 'axios'
 
 export default function AccueilRestaurateur() {
   const [stats, setStats] = useState(null)
-  const [restaurantName, setRestaurantName] = useState('') // Nouveau
-  const RESTAURANT_ID = '670000000000000000000001'
+  const [restaurantName, setRestaurantName] = useState('')
+  const RESTAURANT_ID = '000001'
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/deliveries/stats/${RESTAURANT_ID}`)
+      const res = await axios.get(`http://localhost:8080/api/orders/stats/${RESTAURANT_ID}`)
       setStats(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des statistiques :', err)
