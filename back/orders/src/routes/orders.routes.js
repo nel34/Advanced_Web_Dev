@@ -1,6 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const {getAllOrders, getOrderById, createOrder, updateOrder, deleteOrder, getOrdersByUserId} = require('../controllers/orders.controllers')
+const {
+  getAllOrders,
+  getOrderById,
+  createOrder,
+  updateOrder,
+  deleteOrder,
+  getOrdersByUserId,
+  getStatsForRestaurant,
+  getWeeklySalesForRestaurant,
+  getOrdersByDeliveryPersonId
+} = require('../controllers/orders.controllers')
 
 /**
  * @api {get} /users/:idUser Récupérer les commandes d'un utilisateur
@@ -64,5 +74,32 @@ router.put('/:id', updateOrder)
  * @apiParam {String} id ID de la commande à supprimer
  */
 router.delete('/:id', deleteOrder)
+
+/**
+ * @api {get} /stats/:restaurantId Obtenir les statistiques d'un restaurateur
+ * @apiName GetStatsForRestaurant
+ * @apiGroup Orders
+ * @apiParam {String} restaurantId ID du restaurant
+ * @apiSuccess {Object} stats Statistiques globales
+ */
+router.get('/stats/:restaurantId', getStatsForRestaurant)
+
+/**
+ * @api {get} /sales-per-week/:restaurantId Obtenir les ventes par semaine
+ * @apiName GetWeeklySalesForRestaurant
+ * @apiGroup Orders
+ * @apiParam {String} restaurantId ID du restaurant
+ * @apiSuccess {Object[]} sales Tableau des ventes hebdomadaires
+ */
+router.get('/sales-per-week/:restaurantId', getWeeklySalesForRestaurant)
+
+/**
+ * @api {get} /delivery-person-id/:id Récupérer les commandes par ID du livreur
+ * @apiName GetOrdersByDeliveryPersonId
+ * @apiGroup Orders
+ * @apiParam {String} id ID du livreur
+ */
+router.get('/delivery-person-id/:id', getOrdersByDeliveryPersonId)
+
 
 module.exports = router

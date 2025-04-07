@@ -5,17 +5,32 @@ const itemSchema = new mongoose.Schema({
   quantity: { type: Number, required: true }
 })
 
+const mongoose = require('mongoose')
+
 const OrderSchema = new mongoose.Schema({
-  user_id: { type: String, required: true },
+  order_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },
-  items: [itemSchema],
+  user_id: { type: String, required: true },
+  delivery_person_id: { type: String, required: true },
   status: {
     type: String,
-    enum: ['pending', 'delivered', 'cancelled'],
-    default: 'pending'
+    enum: [
+      'Pending_Restaurateur',
+      'In_Progress',
+      'Pending_Delivery',
+      'In_Delivery',
+      'Delivered',
+      'Cancelled'
+    ],
+    default: 'Pending_Restaurateur',
+    required: true
   },
-  total_price: { type: Number, required: true },
-  created_at: { type: Date, default: Date.now }
+  estimated_time: { type: Date },
+  delivery_person_name: { type: String },
+  menu_name: { type: String, required: true },
+  menu_price: { type: Number, required: true }
+}, {
+  timestamps: true
 })
 
-module.exports = mongoose.model('Order', OrderSchema)
+module.exports = mongoose.model('Orders', OrderSchema)
