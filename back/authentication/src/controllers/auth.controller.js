@@ -71,11 +71,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       accessToken,
       refreshToken,
-      id: user.id,
-      username: user.username,
-      referralCode: user.referralCode,
-      role: user.role,
-      apiKey: user.apiKey})
+      id: user.id})
   } catch (error) {
     res.status(500).json({
       error: 'Erreur lors de la connexion',
