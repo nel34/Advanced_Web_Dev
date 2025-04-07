@@ -1,4 +1,3 @@
-import SearchBar from '../SearchBar'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.svg'
@@ -19,7 +18,6 @@ export default function Header() {
         <img src={logo} alt='logo' className='header__logo' />
       </Link>
       <div className='header__content'>
-        <SearchBar placeholder='Rechercher un restaurant' />
         <Link to='/login'>
           <img src={profile} alt='profile' className='header__icon' />
         </Link>

@@ -29,11 +29,12 @@ exports.register = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
+      password: hashedPassword,
       role,
       referralCode,
       apiKey: role === 'developer' ? apiKey : null    })
 
-    res.status(201).json({ message: 'Utilisateur enregistré', user: newUser })
+    res.status(201).json({ message: 'Utilisateur enregistré' })
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message })
   }

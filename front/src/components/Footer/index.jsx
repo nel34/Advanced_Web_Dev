@@ -13,8 +13,8 @@ export default function Footer() {
           <div>
             <ul>
               <li><Link to='/help'>Obtenir de l'aide</Link></li>
-              <li><a href='/'>Ajouter votre restaurant</a></li>
-              <li><a href='/'>Se connecter pour livrer</a></li>
+              <li><Link to='http://restaurant.localhost'>Ajouter votre restaurant</Link></li>
+              <li><Link to='http://delivery.localhost'>Se connecter pour livrer</Link></li>
             </ul>
           </div>
           <div>
