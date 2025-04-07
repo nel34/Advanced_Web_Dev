@@ -69,6 +69,10 @@ exports.login = async (req, res) => {
       return res.status(404).json({ error: 'Utilisateur introuvable' })
     }
 
+    if (user.isSuspended) {
+      return res.status(403).json({ error: 'Compte suspendu. Veuillez contacter le support.' })
+    }
+
     const isValid = await bcrypt.compare(password, user.password)
     if (!isValid) {
       return res.status(401).json({ error: 'Mot de passe incorrect' })
@@ -254,6 +258,25 @@ exports.deleteUser = async (req, res) => {
 
     await user.destroy()
     res.status(200).json({ message: 'Utilisateur supprimé avec succès' })
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur serveur', details: err.message })
+  }
+}
+
+exports.toggleSuspension = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findByPk(id)
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+
+    user.isSuspended = !user.isSuspended
+    await user.save()
+
+    res.status(200).json({
+      message: `Utilisateur ${user.isSuspended ? 'suspendu' : 'réactivé'} avec succès`,
+      isSuspended: user.isSuspended
+    })
   } catch (err) {
     res.status(500).json({ error: 'Erreur serveur', details: err.message })
   }
