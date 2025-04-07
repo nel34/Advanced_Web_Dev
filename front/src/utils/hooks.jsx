@@ -25,7 +25,7 @@ export function useFetch(url) {
   return { isLoading, data, error }
 }
 
-export function useFetchWithAuth(url) {
+export function useFetchWithAuth(method, url) {
   const [data, setData] = useState(null)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -53,7 +53,7 @@ export function useFetchWithAuth(url) {
           const refreshToken = userData['refreshToken']
 
           const refreshResponse = await fetch('http://localhost:8080/api/auth/refresh-token', {
-            method: 'POST',
+            method: method,
             headers: {
               'Content-Type': 'application/json',
             },
@@ -98,7 +98,7 @@ export function useFetchWithAuth(url) {
     }
 
     fetchData()
-  }, [url])
+  }, [method, url])
 
   return { isLoading, data, error }
 }

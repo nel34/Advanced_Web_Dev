@@ -2,7 +2,7 @@ import TextInputTechnical from '../TextInputTechnical'
 import ButtonTechnical from '../ButtonTechnical'
 import './index.sass'
 
-export default function AddComponentCard({ newComponentName, setNewComponentName, files, setFiles, handleAdd }) {
+export default function AddComponentCard({ newComponentName, setNewComponentName, setFiles, handleAdd }) {
   return (
     <div className="add-component-card">
       <h2 className="title-centered">Ajouter un composant</h2>

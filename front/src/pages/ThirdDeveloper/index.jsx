@@ -12,7 +12,7 @@ export default function ThirdDeveloper() {
   const [showComponents, setShowComponents] = useState(false)
   const [apiKeyError, setApiKeyError] = useState(null)
   // const token = localStorage.getItem('accessToken')
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRldmVsb3BlciIsImlhdCI6MTc0Mzk3MzYyNiwiZXhwIjoxNzQzOTc0NTI2fQ.vB5EK5-DHkT0lgxYYDxWQzIGqw3fodfQH5nnyN32BR8";
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImRldmVsb3BlciIsImlhdCI6MTc0Mzk3MzYyNiwiZXhwIjoxNzQzOTc0NTI2fQ.vB5EK5-DHkT0lgxYYDxWQzIGqw3fodfQH5nnyN32BR8'
 
   const fetchApiKey = async () => {
     setLoadingKey(true)
@@ -113,16 +113,16 @@ export default function ThirdDeveloper() {
 
   return (
     <div className="third-developer">
-      <h1 className="page-title" onClick={() => window.location.href = "/developer"}>
+      <h1 className="page-title" onClick={() => window.location.href = '/developer'}>
         Dashboard Développeur
       </h1>
-  
+
       <DeveloperApiKeyCard
         apiKey={apiKey}
         loadingKey={loadingKey}
         onRegenerate={regenerateApiKey}
       />
-  
+
       <DeveloperComponentsList
         show={showComponents}
         toggle={toggleComponentList}
@@ -130,8 +130,8 @@ export default function ThirdDeveloper() {
         loading={loadingComponents}
         error={apiKeyError}
         onDownload={downloadComponent}
-        fetchComponents={fetchComponents} 
+        fetchComponents={fetchComponents}
       />
     </div>
-  )  
+  )
 }

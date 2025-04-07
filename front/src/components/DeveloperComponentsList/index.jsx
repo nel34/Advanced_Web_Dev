@@ -12,9 +12,9 @@ export default function DeveloperComponentsList({
 }) {
   const handleToggle = () => {
     if (!show) {
-      fetchComponents(); // 🔁 recharge les composants en direct quand on clique
+      fetchComponents() // 🔁 recharge les composants en direct quand on clique
     }
-    toggle(); // affiche ou masque la liste
+    toggle() // affiche ou masque la liste
   }
 
   return (

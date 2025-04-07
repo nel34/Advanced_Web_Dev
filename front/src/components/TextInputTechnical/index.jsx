@@ -13,5 +13,5 @@ export default function TextInputTechnical({ id, placeholder, value, onChange })
         className="text-input"
       />
     </div>
-  );
+  )
 }

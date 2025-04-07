@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import './main.sass'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -94,6 +94,7 @@ createRoot(document.getElementById('root')).render(
                 </Route>
               </>
             )}
+            <Route path='*' element={<Navigate to='/' replace />} />
           </Routes>
         </Layout>
       </CartProvider>

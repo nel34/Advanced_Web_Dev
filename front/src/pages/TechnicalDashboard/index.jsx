@@ -34,39 +34,39 @@ export default function TechnicalPage() {
 
   const handleAdd = async () => {
     if (!newComponentName || !files.indexJsx || !files.indexSass) {
-      return setNotification({ type: 'error', message: 'Nom ou fichiers manquants.' });
+      return setNotification({ type: 'error', message: 'Nom ou fichiers manquants.' })
     }
-  
-    const formData = new FormData();
-    formData.append('componentName', newComponentName); 
-    formData.append('file1', files.indexJsx);          
-    formData.append('file2', files.indexSass);          
-  
+
+    const formData = new FormData()
+    formData.append('componentName', newComponentName)
+    formData.append('file1', files.indexJsx)
+    formData.append('file2', files.indexSass)
+
     try {
       await axios.post('http://localhost:8080/api/technical/components', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data' 
+          'Content-Type': 'multipart/form-data'
         }
-      });
-      setNotification({ type: 'success', message: `${newComponentName} ajouté.` });
-      setNewComponentName('');
-      setFiles({ indexJsx: null, indexSass: null });
-      fetchComponents(); 
+      })
+      setNotification({ type: 'success', message: `${newComponentName} ajouté.` })
+      setNewComponentName('')
+      setFiles({ indexJsx: null, indexSass: null })
+      fetchComponents()
     } catch (err) {
-      console.error('Erreur ajout composant :', err);
-      setNotification({ type: 'error', message: `Erreur ajout ${newComponentName}.` });
+      console.error('Erreur ajout composant :', err)
+      setNotification({ type: 'error', message: `Erreur ajout ${newComponentName}.` })
     }
-  };  
-  
+  }
+
   const toggleComponentList = () => {
-    const nextState = !showComponents;
-    setShowComponents(nextState);
-  
+    const nextState = !showComponents
+    setShowComponents(nextState)
+
     // Si on ouvre la liste → on recharge les composants
     if (nextState) {
-      fetchComponents();
+      fetchComponents()
     }
-  };
+  }
 
   return (
     <div className="technical-page">
@@ -80,7 +80,7 @@ export default function TechnicalPage() {
           message={notification.message}
           onClose={() => setNotification(null)}
         />
-      )}  
+      )}
 
       <div className="top-section">
         <div className="card-wrapper">
@@ -106,5 +106,5 @@ export default function TechnicalPage() {
       />
 
     </div>
-  )    
+  )
 }

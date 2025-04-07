@@ -4,7 +4,7 @@ import { useFetchWithAuth } from '../../utils/hooks'
 
 export default function ProtectedRoute({ role }) {
   const { user } = useAuth()
-  const { isLoading, error } = useFetchWithAuth(`http://localhost:8080/api/auth/${role}`)
+  const { isLoading, error } = useFetchWithAuth('POST', `http://localhost:8080/api/auth/${role}`)
 
   if (!user) {
     return <Navigate to="/login" replace />
