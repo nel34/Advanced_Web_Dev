@@ -31,10 +31,10 @@ export default function SidebarRestaurateur() {
         <span className="sidebar__name">{restaurantName || '...'}</span>
       </div>
       <nav className="sidebar__nav">
-        <Link to="/restaurateur" className="sidebar__link"><FaHome /> Accueil</Link>
-        <Link to="/restaurateur/menu" className="sidebar__link"><FaUtensils /> Menu</Link>
-        <Link to="/restaurateur/commandes" className="sidebar__link"><FaShoppingCart /> Commandes</Link>
-        <Link to="/restaurateur/paiements" className="sidebar__link"><FaCreditCard /> Paiements</Link>
+        <Link to="/" className="sidebar__link"><FaHome /> Accueil</Link>
+        <Link to="/menu" className="sidebar__link"><FaUtensils /> Menu</Link>
+        <Link to="/commandes" className="sidebar__link"><FaShoppingCart /> Commandes</Link>
+        <Link to="/paiements" className="sidebar__link"><FaCreditCard /> Paiements</Link>
       </nav>
     </div>
   )

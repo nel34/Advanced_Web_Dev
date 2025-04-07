@@ -1,6 +1,5 @@
 import { useFetch } from '../../utils/hooks'
 import RestaurantCard from '../../components/RestaurantCard'
-import CategorySelector from '../../components/CategorySelector'
 import './index.sass'
 
 export default function Home() {
@@ -8,8 +7,6 @@ export default function Home() {
 
   return (
     <div className='home'>
-      {data.length > 0 && <CategorySelector categories={data.map(item => item.category)} />}
-      <div className='line'></div>
       <div className='home__restaurants'>
         {isLoading ? <p>Chargement...</p>
           : error ? <p>Erreur lors du chargement</p>

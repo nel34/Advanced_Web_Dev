@@ -6,12 +6,19 @@ import { useAuth } from '../../context/AuthContext'
 
 export default function AuthForm({ mode = 'login' }) {
   const isLogin = mode === 'login'
-  const { login } = useAuth()
+  const { login, register } = useAuth()
 
   return (
     <div className="home home--center">
       <h1>{isLogin ? 'Se connecter' : 'S\'inscrire'}</h1>
       <form className='form'>
+        {!isLogin && (
+          <div className='form__input'>
+            <label htmlFor="username">Nom d'utilisateur</label>
+            <TextInput type="text" id="username" required={true} placeholder="Entrer votre nom d'utilisateur" />
+          </div>
+        )}
+
         <div className='form__input'>
           <label htmlFor="email">Email</label>
           <TextInput type="email" id="email" required={true} placeholder="Entrer votre email" />
@@ -31,6 +38,7 @@ export default function AuthForm({ mode = 'login' }) {
 
         <Button type='submit' content={isLogin ? 'Se connecter' : 'S\'inscrire'} onClick={async (e) => {
           e.preventDefault()
+          const username = isLogin ? null : document.getElementById('username').value
           const email = document.getElementById('email').value
           const password = document.getElementById('password').value
           const confirmPassword = isLogin ? null : document.getElementById('confirmPassword').value
@@ -39,8 +47,7 @@ export default function AuthForm({ mode = 'login' }) {
             await login({ email, password })
           }
           else {
-            // Call signup function here
-            console.log('Signup:', { email, password, confirmPassword })
+            await register({ username, email, password, confirmPassword })
           }
         }
         } />

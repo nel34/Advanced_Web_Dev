@@ -1,8 +1,11 @@
 import TextInput from '../../components/TextInput'
 import Button from '../../components/Button'
 import './index.sass'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Account() {
+  const { user, logout } = useAuth()
+
   return (
     <div className='home home--secondary'>
       <div className='info-section-layout--3'>
@@ -10,20 +13,17 @@ export default function Account() {
           <h2>Informations du compte</h2>
           <form className='form'>
             <div className='form__input'>
-              <label htmlFor='first_name'>Prénom</label>
-              <TextInput type='text' id='first_name' required={true} placeholder='John' />
-            </div>
-            <div className='form__input'>
-              <label htmlFor='last_name'>Nom</label>
-              <TextInput type='text' id='last_name' required={true} placeholder='Doe' />
+              <label htmlFor='username'>Nom d'utilisateur</label>
+              <TextInput type='text' id='username' required={true} placeholder='John' defaultValue={user.username} />
             </div>
             <div className='form__input'>
               <label htmlFor='email'>Email</label>
-              <TextInput type='email' id='email' required={true} placeholder='john.doe@example.com' />
+              <TextInput type='email' id='email' required={true} placeholder='john.doe@example.com' defaultValue={user.email}/>
             </div>
             <Button type='submit' content='Modifier le profil' />
           </form>
           <div className='line'></div>
+          <a href='#' onClick={(e) => { e.preventDefault(); logout() }}>Se déconnecter</a>
           <a href='#'>Supprimer le compte</a>
         </div>
         <div>
@@ -38,7 +38,7 @@ export default function Account() {
                 <label htmlFor='confirm_password'>Confirmer le nouveau mot de passe</label>
                 <TextInput type='password' id='confirm_password' required={true} placeholder='*****' />
               </div>
-              <Button type='submit' content='Modifier le profil' />
+              <Button type='submit' content='Modifier le mot de passe' />
             </form>
           </div>
           <div className='info-section'>
