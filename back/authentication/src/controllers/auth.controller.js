@@ -29,7 +29,6 @@ exports.register = async (req, res) => {
     const newUser = await User.create({
       username,
       email,
-      password: hashedPassword,
       role,
       referralCode,
       apiKey: role === 'developer' ? apiKey : null    })
