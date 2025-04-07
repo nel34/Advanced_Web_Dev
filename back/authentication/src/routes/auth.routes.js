@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
 const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = require('../middlewares/role.middleware')
 
@@ -142,12 +142,19 @@ router.get('/technician', authenticateToken, isTechnician, (req, res) => {
  * @apiName Authenticate
  * @apiGroup Auth
  *
- * @apiHeader {String} Authorization Bearer token
+ * @apiHeader {String} Authorization Token d'accès (avec ou sans "Bearer ")
  *
  * @apiSuccess {String} message Token valide
- * @apiSuccess {Object} user Données utilisateur décodées du token
+ * @apiSuccess {Object} user Données utilisateur décodées
+ * @apiError 401 Token manquant
+ * @apiError 403 Token invalide ou expiré
  */
-router.get('/authenticate', authenticate)
+router.get('/authenticate', authenticateToken, (req, res) => {
+  return res.status(200).json({
+    message: 'Token valide',
+    user: req.user
+  });
+});
 
 /**
  * @api {get} /developer/key Récupérer la clé API du développeur
