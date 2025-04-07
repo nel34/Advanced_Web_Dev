@@ -37,7 +37,8 @@ export default function AuthForm({ mode = 'login' }) {
 
           if (isLogin) {
             await login({ email, password })
-          } else {
+          }
+          else {
             // Call signup function here
             console.log('Signup:', { email, password, confirmPassword })
           }

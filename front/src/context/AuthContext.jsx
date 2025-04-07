@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json()
       setUser(data)
       localStorage.setItem('user', JSON.stringify(data))
+      window.location.href = '/account'
     }
     fetchLogin()
   }
