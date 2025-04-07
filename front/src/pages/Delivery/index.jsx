@@ -6,12 +6,14 @@ import OrderDetailsPopup from '../../components/DeliveryOrderDetailsPopup'
 import OrderHistoryPopup from '../../components/DeliveryOrderHistoryPopup'
 import OrderHistorySection from '../../components/DeliveryOrderHistorySection'
 
-
 const Delivery = () => {
   const [showHistory, setShowHistory] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [availableOrders, setAvailableOrders] = useState([])
+
+  // ID fictif du livreur connecté
+  const deliveryPersonId = 'LIVREUR123'
 
   const toggleHistory = () => setShowHistory(!showHistory)
   const toggleDetails = (order = null) => {
@@ -51,37 +53,58 @@ const Delivery = () => {
     }
   }
 
+  const acceptOrder = async (order) => {
+    try {
+      const updatedOrder = {
+        ...order,
+        status: 'In_Delivery',
+        delivery_person_id: deliveryPersonId
+      }
+
+      await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
+
+      // Optionnel : rafraîchir les commandes disponibles
+      setAvailableOrders(prev =>
+        prev.filter(o => o.order_id !== order.order_id)
+      )
+
+      console.log(`Commande ${order.order_id} acceptée.`)
+    } catch (err) {
+      console.error("Erreur lors de l'acceptation de la commande :", err)
+    }
+  }
+
   return (
     <div className="delivery-page">
       <main className="delivery-container">
         {/* Commandes en cours */}
-          <section className="current-orders">
-            <h2>Commandes en cours :</h2>
-            <OrderCard order={currentOrder} onDetails={toggleDetails} />
-          </section>
+        <section className="current-orders">
+          <h2>Commandes en cours :</h2>
+          <OrderCard order={currentOrder} onDetails={toggleDetails} />
+        </section>
 
-          {/* Commandes disponibles */}
-          <section className="available-orders">
-            <h2>Commandes disponibles</h2>
-            <div className="orders-grid">
-              {availableOrders
-                .filter(order => order.status === "Pending_Delivery")
-                .map(order => (
-            <div key={order._id} className="order">
-              <p><strong>Commande ID :</strong> {order.order_id}</p>
-              <p><strong>Prix :</strong> {order.menu_price}</p>
-              <p><strong>Adresse :</strong> {order.location}</p>
-              <div className="order__actions">
-                <button>Accepter</button>
-                <button>Refuser</button>
-                <button onClick={() => toggleDetails(order)}>Voir les détails</button>
-              </div>
-            </div>
-                ))}
-            </div>
-          </section>
+        {/* Commandes disponibles */}
+        <section className="available-orders">
+          <h2>Commandes disponibles</h2>
+          <div className="orders-grid">
+            {availableOrders
+              .filter(order => order.status === 'Pending_Delivery')
+              .map(order => (
+                <div key={order._id} className="order">
+                  <p><strong>Commande ID :</strong> {order.order_id}</p>
+                  <p><strong>Prix :</strong> {order.menu_price}</p>
+                  <p><strong>Adresse :</strong> {order.location}</p>
+                  <div className="order__actions">
+                    <button onClick={() => acceptOrder(order)}>Accepter</button>
+                    <button>Refuser</button>
+                    <button onClick={() => toggleDetails(order)}>Voir les détails</button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </section>
 
-          {/* Popups */}
+        {/* Popups */}
         {showDetails && (
           <OrderDetailsPopup order={selectedOrder} onClose={toggleDetails} />
         )}
