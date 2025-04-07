@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
 const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = require('../middlewares/role.middleware')
 
@@ -190,16 +190,74 @@ router.put('/developer/regenerate', authenticateToken, isDeveloper, regenerateAp
  * @apiName GetAllUsers
  * @apiGroup Auth
  *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ * @apiSampleRequest off 
+ *
  * @apiSuccess {Object[]} users Liste de tous les utilisateurs
  * @apiSuccess {Number} users.id ID
  * @apiSuccess {String} users.username Nom d'utilisateur
  * @apiSuccess {String} users.email Email
  * @apiSuccess {String} users.role Rôle (client, livreur, etc.)
- * @apiSuccess {String} users.referralCode Code de parrainage
- * @apiSuccess {String} [users.apiKey] Clé API (si développeur)
- *
+ * @apiSuccess {String} users.referralCode Code de parrainage *
  * @apiError 500 Erreur interne
  */
-router.get('/users', getAllUsers)
+router.get('/users', authenticateToken, getAllUsers)
+
+/**
+ * @api {get} /users/:id Récupérer un utilisateur par ID
+ * @apiName GetUserById
+ * @apiGroup Auth
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ *
+ *
+ * @apiParam {Number} id ID de l'utilisateur
+ *
+ * @apiSuccess {Number} id ID
+ * @apiSuccess {String} username Nom d'utilisateur
+ * @apiSuccess {String} email Email
+ * @apiSuccess {String} role Rôle
+ * @apiSuccess {String} referralCode Code de parrainage *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 500 Erreur serveur
+ */
+router.get('/users/:id', authenticateToken, getUserById)
+
+/**
+ * @api {put} /users/:id Mettre à jour un utilisateur
+ * @apiName UpdateUser
+ * @apiGroup Auth
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ *
+ * @apiParam {Number} id ID de l'utilisateur
+ *
+ * @apiBody {String} [username] Nouveau nom d'utilisateur
+ * @apiBody {String} [email] Nouveau mail
+ * @apiBody {String} [password] Nouveau password
+ * @apiBody {String} [role] Rôle à attribuer
+ *
+ * @apiSuccess {String} message Confirmation de mise à jour
+ *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 500 Erreur serveur
+ */
+router.put('/users/:id', authenticateToken, updateUser)
+
+/**
+ * @api {delete} /users/:id Supprimer un utilisateur
+ * @apiName DeleteUser
+ * @apiGroup Auth
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ *
+ * @apiParam {Number} id ID de l'utilisateur
+ *
+ * @apiSuccess {String} message Confirmation de suppression
+ *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 500 Erreur serveur
+ */
+router.delete('/users/:id', authenticateToken, deleteUser)
 
 module.exports = router
