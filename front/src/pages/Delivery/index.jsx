@@ -55,32 +55,34 @@ const Delivery = () => {
     <div className="delivery-page">
       <main className="delivery-container">
         {/* Commandes en cours */}
-        <section className="current-orders">
-          <h2>Commandes en cours :</h2>
-          <OrderCard order={currentOrder} onDetails={toggleDetails} />
-        </section>
+          <section className="current-orders">
+            <h2>Commandes en cours :</h2>
+            <OrderCard order={currentOrder} onDetails={toggleDetails} />
+          </section>
 
-        {/* Commandes disponibles */}
-        <section className="available-orders">
-          <h2>Commandes disponibles</h2>
-          <div className="orders-grid">
-            {availableOrders.map(order => (
-              <div key={order._id} className="order">
-                <p><strong>Commande ID :</strong> {order.order_id}</p>
-                <p><strong>User ID :</strong> {order.user_id}</p>
-                <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
-                <p><strong>Status :</strong> {order.status}</p>
-                <div className="order__actions">
-                  <button>Accepter</button>
-                  <button>Refuser</button>
-                  <button onClick={() => toggleDetails(order)}>Voir les détails</button>
-                </div>
+          {/* Commandes disponibles */}
+          <section className="available-orders">
+            <h2>Commandes disponibles</h2>
+            <div className="orders-grid">
+              {availableOrders
+                .filter(order => order.status === "Pending_Delivery")
+                .map(order => (
+            <div key={order._id} className="order">
+              <p><strong>Commande ID :</strong> {order.order_id}</p>
+              <p><strong>User ID :</strong> {order.user_id}</p>
+              <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
+              <p><strong>Status :</strong> {order.status}</p>
+              <div className="order__actions">
+                <button>Accepter</button>
+                <button>Refuser</button>
+                <button onClick={() => toggleDetails(order)}>Voir les détails</button>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+                ))}
+            </div>
+          </section>
 
-        {/* Popups */}
+          {/* Popups */}
         {showDetails && (
           <OrderDetailsPopup order={selectedOrder} onClose={toggleDetails} />
         )}
