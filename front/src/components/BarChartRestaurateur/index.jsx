@@ -9,7 +9,7 @@ export default function BarChartRestaurateur() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`http://localhost:3040/api/deliveries/sales-per-week/${RESTAURANT_ID}`)
+      const res = await axios.get(`http://localhost:8080/api/deliveries/sales-per-week/${RESTAURANT_ID}`)
       setData(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des ventes hebdo :', err)

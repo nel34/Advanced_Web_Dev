@@ -45,7 +45,7 @@ export default function MenuCardRestaurateur({
 
   const fetchAvailableProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost:3010/api/products/by-restaurant/${restaurantId}`)
+      const res = await axios.get(`http://localhost:8080/api/products/by-restaurant/${restaurantId}`)
       setAvailableProducts(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des produits :', err)
@@ -54,7 +54,7 @@ export default function MenuCardRestaurateur({
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`http://localhost:3020/api/menus/${id}`, {
+      await axios.put(`http://localhost:8080/api/menus/${id}`, {
         ...editedData,
         restaurantId
       })
@@ -67,7 +67,7 @@ export default function MenuCardRestaurateur({
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:3020/api/menus/${id}`)
+      await axios.delete(`http://localhost:8080/api/menus/${id}`)
       setShowModal(false)
       onUpdate()
     } catch (err) {

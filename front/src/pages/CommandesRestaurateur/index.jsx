@@ -11,7 +11,7 @@ export default function CommandesRestaurateur() {
 
   const fetchDeliveries = async () => {
     try {
-      const res = await axios.get('http://localhost:3040/api/deliveries')
+      const res = await axios.get('http://localhost:8080/api/deliveries')
       const filtered = res.data.filter(
         (delivery) =>
           delivery.restaurant_id === RESTAURANT_ID &&

@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function CommandeCard({ delivery, onUpdate }) {
   const handleAccept = async () => {
     try {
-      await axios.put(`http://localhost:3040/api/deliveries/${delivery._id}`, {
+      await axios.put(`http://localhost:8080/api/deliveries/${delivery._id}`, {
         status: 'completed'
       })
       onUpdate()
@@ -16,11 +16,11 @@ export default function CommandeCard({ delivery, onUpdate }) {
   const handleReject = async () => {
     try {
       if (delivery.status === 'completed') {
-        await axios.put(`http://localhost:3040/api/deliveries/${delivery._id}`, {
+        await axios.put(`http://localhost:8080/api/deliveries/${delivery._id}`, {
           status: 'finished'
         })
       } else {
-        await axios.put(`http://localhost:3040/api/deliveries/${delivery._id}`, {
+        await axios.put(`http://localhost:8080/api/deliveries/${delivery._id}`, {
           status: 'refused'
         })
       }

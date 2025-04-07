@@ -19,7 +19,7 @@ export default function MenuRestaurateur() {
 
   const fetchMenus = async () => {
     try {
-      const res = await axios.get(`http://localhost:3020/api/menus/restaurants/${restaurantId}`)
+      const res = await axios.get(`http://localhost:8080/api/menus/restaurants/${restaurantId}`)
       setMenus(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des menus :', err)
@@ -28,7 +28,7 @@ export default function MenuRestaurateur() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost:3010/api/products/by-restaurant/${restaurantId}`)
+      const res = await axios.get(`http://localhost:8080/api/products/by-restaurant/${restaurantId}`)
       setAvailableProducts(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des produits :', err)

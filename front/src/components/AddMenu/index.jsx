@@ -42,7 +42,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost:3010/api/products/by-restaurant/${restaurantId}`)
+      const res = await axios.get(`http://localhost:8080/api/products/by-restaurant/${restaurantId}`)
       setAvailableProducts(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des produits :', err)
@@ -67,7 +67,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
   const handleCreateMenu = async () => {
     try {
       const newMenu = { ...formData, restaurantId }
-      const res = await axios.post('http://localhost:3020/api/menus', newMenu)
+      const res = await axios.post('http://localhost:8080/api/menus', newMenu)
       onMenuCreated(res.data)
       onClose()
     } catch (err) {
@@ -82,7 +82,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
         restaurantId,
         categories: productFormData.categories.split(',').map(cat => cat.trim())
       }
-      const res = await axios.post('http://localhost:3010/api/products', productToSend)
+      const res = await axios.post('http://localhost:8080/api/products', productToSend)
       setAvailableProducts(prev => [...prev, res.data])
       setShowProductModal(false)
       setProductFormData({ name: '', description: '', price: '', image: '', categories: '' })
@@ -95,7 +95,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
     try {
       await Promise.all(
         formData.product.map(productId =>
-          axios.delete(`http://localhost:3010/api/products/${productId}`)
+          axios.delete(`http://localhost:8080/api/products/${productId}`)
         )
       )
       setFormData(prev => ({ ...prev, product: [] }))
