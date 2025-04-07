@@ -78,7 +78,6 @@ exports.getOrdersByDeliveryPersonId = async (req, res) => {
   }
 }
 
-
 // Obtenir les statistiques pour un restaurateur
 exports.getStatsForRestaurant = async (req, res) => {
   try {

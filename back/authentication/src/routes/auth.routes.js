@@ -24,14 +24,20 @@ router.post('/register', register)
  * @apiName Login
  * @apiGroup Auth
  *
- * @apiBody {String} email Email de l'utilisateur
+ * @apiBody {String} [email] Email de l'utilisateur
+ * @apiBody {String} [username] Nom d'utilisateur
  * @apiBody {String} password Mot de passe
+ *
+ * @apiDescription Permet de se connecter avec soit l'email, soit le nom d'utilisateur.
+ * L'un des deux (`email` ou `username`) est requis.
  *
  * @apiSuccess {String} accessToken Token JWT d'accès
  * @apiSuccess {String} refreshToken Token de rafraîchissement
  * @apiSuccess {Number} id ID de l'utilisateur
- * @apiSuccess {String} username Nom d'utilisateur
- * @apiSuccess {String} referralCode Code de parrainage de l'utilisateur
+ *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 401 Mot de passe incorrect
+ * @apiError 500 Erreur serveur
  */
 router.post('/login', login)
 
@@ -191,14 +197,13 @@ router.put('/developer/regenerate', authenticateToken, isDeveloper, regenerateAp
  * @apiGroup Auth
  *
  * @apiHeader {String} Authorization Token JWT (Bearer)
- * @apiSampleRequest off 
+ * @apiSampleRequest off
  *
  * @apiSuccess {Object[]} users Liste de tous les utilisateurs
  * @apiSuccess {Number} users.id ID
  * @apiSuccess {String} users.username Nom d'utilisateur
  * @apiSuccess {String} users.email Email
  * @apiSuccess {String} users.role Rôle (client, livreur, etc.)
- * @apiSuccess {String} users.referralCode Code de parrainage *
  * @apiError 500 Erreur interne
  */
 router.get('/users', authenticateToken, getAllUsers)
@@ -208,8 +213,7 @@ router.get('/users', authenticateToken, getAllUsers)
  * @apiName GetUserById
  * @apiGroup Auth
  *
- * @apiHeader {String} Authorization Token JWT (Bearer)
- *
+ * @apiHeader {String} Authorization Token JWT (Bearer) *
  *
  * @apiParam {Number} id ID de l'utilisateur
  *
@@ -235,7 +239,6 @@ router.get('/users/:id', authenticateToken, getUserById)
  * @apiBody {String} [username] Nouveau nom d'utilisateur
  * @apiBody {String} [email] Nouveau mail
  * @apiBody {String} [password] Nouveau password
- * @apiBody {String} [role] Rôle à attribuer
  *
  * @apiSuccess {String} message Confirmation de mise à jour
  *

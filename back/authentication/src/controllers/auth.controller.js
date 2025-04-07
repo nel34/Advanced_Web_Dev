@@ -41,10 +41,17 @@ exports.register = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body
+  const { email, username, password } = req.body
 
   try {
-    const user = await User.findOne({ where: { email } })
+    let user = null
+
+    if (email) {
+      user = await User.findOne({ where: { email } })
+    } else if (username) {
+      user = await User.findOne({ where: { username } })
+    }
+
     if (!user) {
       return res.status(404).json({ error: 'Utilisateur introuvable' })
     }
@@ -71,8 +78,8 @@ exports.login = async (req, res) => {
     res.status(200).json({
       accessToken,
       refreshToken,
-      id: user.id,
-      referralCode: user.referralCode})
+      id: user.id
+    })
   } catch (error) {
     res.status(500).json({
       error: 'Erreur lors de la connexion',
@@ -206,7 +213,7 @@ exports.getUserById = async (req, res) => {
       attributes: ['id', 'username', 'email', 'role', 'referralCode']
     })
 
-    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+    if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
     res.status(200).json(user)
   } catch (err) {
     res.status(500).json({ error: 'Erreur interne', details: err.message })
@@ -215,15 +222,14 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { username, email, role, apiKey, password } = req.body
+  const { username, email, password } = req.body
 
   try {
     const user = await User.findByPk(id)
-    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+    if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
 
-    if (username) user.username = username
-    if (email) user.email = email
-    if (role) user.role = role
+    if (username) {user.username = username}
+    if (email) {user.email = email}
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10)
       user.password = hashedPassword
@@ -242,7 +248,7 @@ exports.deleteUser = async (req, res) => {
 
   try {
     const user = await User.findByPk(id)
-    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+    if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
 
     await user.destroy()
     res.status(200).json({ message: 'Utilisateur supprimé avec succès' })

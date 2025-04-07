@@ -42,7 +42,7 @@ router.get('/:id', getOrderById)
  * @api {post} /orders Créer une nouvelle commande
  * @apiName CreateOrder
  * @apiGroup Orders
- * 
+ *
  * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant
@@ -61,7 +61,7 @@ router.post('/', createOrder)
  * @apiName UpdateOrder
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande à modifier
- * 
+ *
  * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant

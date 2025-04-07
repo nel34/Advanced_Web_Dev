@@ -3,13 +3,15 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization']
-
-  // Format attendu : "Bearer token"
-  const token = authHeader && authHeader.split(' ')[1]
+  let token = req.headers['authorization']
 
   if (!token) {
     return res.status(401).json({ error: 'Token d\'accès manquant' })
+  }
+
+  // Si le token ne commence pas par "Bearer ", on le traite comme un token brut
+  if (token.startsWith('Bearer ')) {
+    token = token.split(' ')[1]
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
@@ -21,4 +23,5 @@ const authenticateToken = (req, res, next) => {
     next()
   })
 }
+
 module.exports = authenticateToken
