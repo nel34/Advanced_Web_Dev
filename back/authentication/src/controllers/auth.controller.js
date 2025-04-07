@@ -6,7 +6,7 @@ dotenv.config()
 
 exports.register = async (req, res) => {
   const { username, email, password, role, referralCodeInput } = req.body;
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician'];
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician', 'commercial'];
 
   if (!rolesAutorises.includes(role)) {
     return res.status(400).json({ error: 'Rôle invalide' });

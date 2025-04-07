@@ -22,6 +22,7 @@ import ThirdDeveloper from './pages/ThirdDeveloper'
 import ProtectedRoute from './components/ProtectedRoute'
 import TechnicalDashboard from './pages/TechnicalDashboard'
 import Delivery from './pages/Delivery'
+import CommercialDashboard from './pages/CommercialDashboard'
 
 const getSubdomain = () => {
   const host = window.location.hostname
@@ -86,6 +87,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path='/legal-notice' element={<LegalNotice />} />
                 <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                 <Route path='/cookies' element={<Cookies />} />
+                <Route path='/commercial' element={<CommercialDashboard />} />
 
                 <Route element={<ProtectedRoute role='client' />}>
                   <Route path='/account' element={<Account />} />
