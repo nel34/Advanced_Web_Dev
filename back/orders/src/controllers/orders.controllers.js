@@ -168,7 +168,7 @@ exports.getWeeklySalesForRestaurant = async (req, res) => {
         weeks.push(existingWeek)
       }
 
-      existingWeek.ventes += o.menu_price || 0
+      existingWeek.ventes += o.total || 0
     })
 
     weeks.sort((a, b) => new Date(a.key) - new Date(b.key))
@@ -178,4 +178,5 @@ exports.getWeeklySalesForRestaurant = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
 
