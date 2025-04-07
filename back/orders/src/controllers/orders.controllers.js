@@ -88,7 +88,7 @@ exports.getStatsForRestaurant = async (req, res) => {
 
     const allOrders = await Order.find({
       restaurant_id: restaurantId,
-      status: { $in: ['completed', 'finished'] }
+      status: 'Delivered' 
     })
 
     const dailyOrders = allOrders.filter(o => new Date(o.createdAt) >= startOfDay)
@@ -130,7 +130,7 @@ exports.getWeeklySalesForRestaurant = async (req, res) => {
 
     const orders = await Order.find({
       restaurant_id: restaurantId,
-      status: { $in: ['completed', 'finished'] }
+      status: 'Delivered' 
     })
 
     const formatWeekLabel = (monday) => {
@@ -178,3 +178,4 @@ exports.getWeeklySalesForRestaurant = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
