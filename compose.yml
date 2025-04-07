@@ -155,10 +155,7 @@ services:
       - menus
       - products
       - orders
-      - deliveries
       - restaurants
-      - developer
-      - technical
 
   front:
     build: ./front
