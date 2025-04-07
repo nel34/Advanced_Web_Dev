@@ -7,7 +7,7 @@ import axios from 'axios'
 
 export default function SidebarRestaurateur() {
   const [restaurantName, setRestaurantName] = useState('')
-  const RESTAURANT_ID = '670000000000000000000001'
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   useEffect(() => {
     const fetchRestaurantName = async () => {

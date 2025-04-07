@@ -8,7 +8,7 @@ import axios from 'axios'
 export default function AccueilRestaurateur() {
   const [stats, setStats] = useState(null)
   const [restaurantName, setRestaurantName] = useState('')
-  const RESTAURANT_ID = '000001'
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   const fetchStats = async () => {
     try {

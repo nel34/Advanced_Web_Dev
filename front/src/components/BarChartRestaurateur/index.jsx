@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export default function BarChartRestaurateur() {
   const [data, setData] = useState([])
-  const RESTAURANT_ID = '000001'
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   const fetchData = async () => {
     try {
