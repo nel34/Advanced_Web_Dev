@@ -1,20 +1,31 @@
+import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import './index.sass'
-
-const data = [
-  { date: 'Aout 15', ventes: 2300 },
-  { date: 'Aout 24', ventes: 1500 },
-  { date: 'Aout 31', ventes: 1900 },
-  { date: 'Sept 7', ventes: 600 },
-  { date: 'Sept 14', ventes: 950 },
-  { date: 'Sept 21', ventes: 300 },
-  { date: 'Sept 28', ventes: 800 },
-  { date: 'Oct 5', ventes: 3200 },
-  { date: 'Oct 12', ventes: 2400 },
-  { date: 'Oct 19', ventes: 1200 },
-]
+import axios from 'axios'
 
 export default function BarChartRestaurateur() {
+  const [data, setData] = useState([])
+  const RESTAURANT_ID = '670000000000000000000001'
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3040/api/deliveries/sales-per-week/${RESTAURANT_ID}`)
+      setData(res.data)
+    } catch (err) {
+      console.error('Erreur lors du chargement des ventes hebdo :', err)
+    }
+  }
+
+  useEffect(() => {
+    fetchData() // initial load
+
+    const intervalId = setInterval(() => {
+      fetchData()
+    }, 5000)
+
+    return () => clearInterval(intervalId) // cleanup on unmount
+  }, [])
+
   return (
     <div className="bar-chart-container">
       <ResponsiveContainer width="100%" height="100%">
@@ -22,7 +33,7 @@ export default function BarChartRestaurateur() {
           <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis tickFormatter={(value) => `${value}€`} />
-          <Tooltip />
+          <Tooltip formatter={(val) => [`${val.toFixed(2)}€`, 'Ventes']} />
           <Bar dataKey="ventes" fill="black" barSize={20} />
         </BarChart>
       </ResponsiveContainer>

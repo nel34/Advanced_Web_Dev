@@ -59,6 +59,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/legal-notice" element={<LegalNotice />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<Cookies />} />
+                <Route path="/technical" element={<TechnicalDashboard />} />
 
                 <Route element={<ProtectedRoute role="client" />}>
                   <Route path="/account" element={<Account />} />

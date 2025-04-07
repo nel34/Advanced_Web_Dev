@@ -77,6 +77,7 @@
     - `PUT /restaurants/:id` – Mettre à jour un restaurant
     - `DELETE /restaurants/:id` – Supprimer un restaurant
 
+
 ## Lancement via Docker Compose
 Tous les services peuvent être lancés ensemble via Docker Compose. Un fichier `docker-compose.yml` est présent à la racine du projet pour orchestrer les conteneurs. Chaque service est configuré pour se connecter à la base de données appropriée (MongoDB ou MySQL).
 

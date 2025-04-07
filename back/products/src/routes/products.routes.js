@@ -1,6 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const { getAllProducts, getProductById, getProductsByRestaurant, createProduct, updateProduct, deleteProduct } = require('../controllers/products.controller')
+const { getAllProducts,
+  getProductById,
+  getProductsByRestaurant,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} = require('../controllers/products.controller')
 
 /**
  * @api {get} / Obtenir tous les produits
@@ -9,6 +15,16 @@ const { getAllProducts, getProductById, getProductsByRestaurant, createProduct, 
  * @apiSuccess {Object[]} products Liste des produits.
  */
 router.get('/', getAllProducts)
+
+/**
+ * @api {get} /by-restaurant/:idrestaurant Obtenir tous les produits d'un restaurant
+ * @apiName GetProductsByRestaurant
+ * @apiGroup Products
+ * @apiParam {String} idrestaurant ID du restaurant dont on souhaite récupérer tous les produits.
+ * @apiSuccess {Object[]} products Liste des produits du restaurant spécifié.
+ * @apiError 404 Aucun produit trouvé pour ce restaurant.
+ */
+router.get('/by-restaurant/:idrestaurant', getProductsByRestaurant)
 
 /**
  * @api {get} /:id Obtenir un produit par ID
@@ -28,7 +44,7 @@ router.get('/:id', getProductById)
  * @apiSuccess {Object[]} products Liste des produits du restaurant spécifié.
  * @apiError 404 Aucun produit trouvé pour ce restaurant.
  */
-router.get('/by-restaurant/:idrestaurant', getProductsByRestaurant);
+router.get('/by-restaurant/:idrestaurant', getProductsByRestaurant)
 
 /**
  * @api {post} / Créer un produit

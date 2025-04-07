@@ -6,7 +6,7 @@ dotenv.config()
 
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer']
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer','technician']
 
   if (!rolesAutorises.includes(role)) {
     return res.status(400).json({ error: 'Rôle invalide' })
@@ -25,11 +25,10 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
     const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase()
-    const apiKey = require('crypto').randomBytes(32).toString('hex') 
+    const apiKey = require('crypto').randomBytes(32).toString('hex')
     const newUser = await User.create({
       username,
       email,
-      password: hashedPassword,
       role,
       referralCode,
       apiKey: role === 'developer' ? apiKey : null    })
@@ -73,7 +72,7 @@ exports.login = async (req, res) => {
       refreshToken,
       id: user.id,
       username: user.username,
-      referralCode: user.referralCode, 
+      referralCode: user.referralCode,
       role: user.role,
       apiKey: user.apiKey})
   } catch (error) {
@@ -83,7 +82,6 @@ exports.login = async (req, res) => {
     })
   }
 }
-
 
 exports.refreshToken = async (req, res) => {
   const { refreshToken } = req.body
@@ -170,10 +168,31 @@ exports.regenerateApiKey = async (req, res) => {
   res.json({ apiKey: newKey })
 }
 
+exports.validateApiKey = async (req, res) => {
+  const { apiKey } = req.body
+
+  if (!apiKey) {
+    return res.status(400).json({ valid: false, error: 'Clé API manquante' })
+  }
+
+  try {
+    const user = await User.findOne({ where: { apiKey } })
+
+    if (!user || user.role !== 'developer') {
+      return res.status(403).json({ valid: false, error: 'Clé API invalide ou non autorisée' })
+    }
+
+    res.status(200).json({ valid: true })
+  } catch (err) {
+    console.error('Erreur lors de la validation de la clé API :', err)
+    res.status(500).json({ valid: false, error: 'Erreur serveur' })
+  }
+}
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'apiKey'] // filtre les champs sensibles
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'apiKey']
     })
 
     res.status(200).json(users)
