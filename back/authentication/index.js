@@ -8,9 +8,13 @@ const authRoutes = require('./src/routes/auth.routes')
 dotenv.config()
 
 const app = express()
-
-app.use(cors())
-
+app.use(cors(
+  {
+    origin: ['http://localhost', 'http://dev.localhost'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }
+))
 const port = process.env.PORT || 4000
 
 // Middlewares

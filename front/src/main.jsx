@@ -19,34 +19,56 @@ import Cookies from './pages/Cookies'
 import LegalNotice from './pages/LegalNotice'
 import HelpPage from './pages/Help'
 import ThirdDeveloper from './pages/ThirdDeveloper'
-import Delivery from './pages/Delivery'
-import TechnicalDashboard from './pages/TechnicalDashboard'
+import ProtectedRoute from './components/ProtectedRoute'
+
+const getSubdomain = () => {
+  const host = window.location.hostname
+  const parts = host.split('.')
+  return parts[0]
+}
+
+const subdomain = getSubdomain()
 
 createRoot(document.getElementById('root')).render(
   <Router>
-    <CartProvider>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" />
-          <Route path="/delivery" element={<Delivery />} />
-          <Route path="/restaurant/:idRestaurant" element={<Restaurant />} />
-          <Route path="/restaurant/:idRestaurant/:idMenu" element={<Menu />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/account/orders" />
-          <Route path="/restaurateur" element={<AccueilRestaurateur />} />
-          <Route path="/restaurateur/paiements" element={<PaiementsRestaurateur />} />
-          <Route path="/restaurateur/commandes" element={<CommandesRestaurateur />} />
-          <Route path="/restaurateur/menu" element={<MenuRestaurateur />} />
-          <Route path="/help" element={<HelpPage />} />
-          <Route path="/legal-notice" element={<LegalNotice />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/developer" element={<ThirdDeveloper />} />
-          <Route path="/technical" element={<TechnicalDashboard />} />    
-        </Routes>
-      </Layout>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Layout>
+          <Routes>
+            {subdomain === 'dev' ? (
+              <>
+                <Route element={<ProtectedRoute role="developer" />}>
+                  <Route path="/" element={<ThirdDeveloper />} />
+                </Route>
+                <Route path="/login" element={<AuthForm mode='login' />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<AuthForm mode='login' />} />
+                <Route path="/signup" element={<AuthForm mode='signup' />} />
+                <Route path="/restaurant/:idRestaurant" element={<Restaurant />} />
+                <Route path="/restaurant/:idRestaurant/:idMenu" element={<Menu />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/account/orders" />
+                <Route path="/restaurateur" element={<AccueilRestaurateur />} />
+                <Route path="/restaurateur/paiements" element={<PaiementsRestaurateur />} />
+                <Route path="/restaurateur/commandes" element={<CommandesRestaurateur />} />
+                <Route path="/restaurateur/menu" element={<MenuRestaurateur />} />
+                <Route path="/help" element={<HelpPage />} />
+                <Route path="/legal-notice" element={<LegalNotice />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/cookies" element={<Cookies />} />
+                <Route path="/technical" element={<TechnicalDashboard />} />
+
+                <Route element={<ProtectedRoute role="client" />}>
+                  <Route path="/account" element={<Account />} />
+                </Route>
+              </>
+            )}
+          </Routes>
+        </Layout>
+      </CartProvider>
+    </AuthProvider>
   </Router>,
 )
