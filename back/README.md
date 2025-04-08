@@ -17,19 +17,7 @@
     - `POST /login` – Se connecter
     - `POST /refreshToken` – Rafraîchir le token
 
-### 2. deliveries
-- 📌 Rôle : Gérer les livraisons
-- ⚙️ Techno : Node.js, Express, Mongoose, MongoDB
-- 📁 Fichiers clés : `routes/delivery.routes.js`, `models/delivery.model.js`
-- 🔌 Variables `.env` : 
-    - `MONGO_URI`
-- 📄 Routes :
-    - `GET /deliveries` – Liste des livraisons
-    - `POST /deliveries` – Créer une livraison
-    - `PUT /deliveries/:id` – Mettre à jour une livraison
-    - `DELETE /deliveries/:id` – Supprimer une livraison
-
-### 3. menus
+### 2. menus
 - 📌 Rôle : Gérer les menus des restaurants
 - ⚙️ Techno : Node.js, Express, Mongoose, MongoDB
 - 📁 Fichiers clés : `routes/menu.routes.js`, `models/menu.model.js`
@@ -41,7 +29,7 @@
     - `PUT /menus/:id` – Mettre à jour un menu
     - `DELETE /menus/:id` – Supprimer un menu
 
-### 4. orders
+### 3. orders
 - 📌 Rôle : Gérer les commandes passées
 - ⚙️ Techno : Node.js, Express, Mongoose, MongoDB
 - 📁 Fichiers clés : `routes/order.routes.js`, `models/order.model.js`
@@ -53,7 +41,7 @@
     - `PUT /orders/:id` – Mettre à jour une commande
     - `DELETE /orders/:id` – Supprimer une commande
 
-### 5. products
+### 4. products
 - 📌 Rôle : Gérer les produits associés aux menus
 - ⚙️ Techno : Node.js, Express, Mongoose, MongoDB
 - 📁 Fichiers clés : `routes/product.routes.js`, `models/product.model.js`
@@ -65,7 +53,7 @@
     - `PUT /products/:id` – Mettre à jour un produit
     - `DELETE /products/:id` – Supprimer un produit
 
-### 6. restaurants
+### 5. restaurants
 - 📌 Rôle : Gérer les restaurants et restaurateurs
 - ⚙️ Techno : Node.js, Express, Mongoose, MongoDB
 - 📁 Fichiers clés : `routes/restaurant.routes.js`, `models/restaurant.model.js`
@@ -76,7 +64,6 @@
     - `POST /restaurants` – Créer un restaurant
     - `PUT /restaurants/:id` – Mettre à jour un restaurant
     - `DELETE /restaurants/:id` – Supprimer un restaurant
-
 
 ## Lancement via Docker Compose
 Tous les services peuvent être lancés ensemble via Docker Compose. Un fichier `docker-compose.yml` est présent à la racine du projet pour orchestrer les conteneurs. Chaque service est configuré pour se connecter à la base de données appropriée (MongoDB ou MySQL).

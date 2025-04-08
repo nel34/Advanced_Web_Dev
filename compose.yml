@@ -97,18 +97,6 @@ services:
     depends_on:
       - mongo-db
 
-  deliveries:
-    build: ./back/deliveries
-    container_name: deliveries
-    ports:
-      - "3040:3040"
-    networks:
-      - cesieats-network
-    env_file:
-      - ./back/deliveries/.env
-    depends_on:
-      - mongo-db
-
   restaurants:
     build: ./back/restaurants
     container_name: restaurants
@@ -155,7 +143,6 @@ services:
       - menus
       - products
       - orders
-      - deliveries
       - restaurants
       - developer
       - technical

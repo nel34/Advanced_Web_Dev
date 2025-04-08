@@ -7,7 +7,6 @@ export default function DeveloperDocsCard() {
     { name: 'Produits', url: 'http://localhost:8080/api/products/docs/' },
     { name: 'Menus', url: 'http://localhost:8080/api/menus/docs/' },
     { name: 'Commandes', url: 'http://localhost:8080/api/orders/docs' },
-    { name: 'Livraisons', url: 'http://localhost:8080/api/deliveries/docs/' },
     { name: 'Développement', url: 'http://localhost:8080/api/developer/docs/' },
     { name: 'Technique', url: 'http://localhost:8080/api/technical/docs/' },
   ]

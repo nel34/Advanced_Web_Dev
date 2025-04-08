@@ -6,7 +6,6 @@ export default defineConfig([
   {
     files: [
       'authentication/**/*.js',
-      'deliveries/**/*.js',
       'menus/**/*.js',
       'products/**/*.js'
     ],
