@@ -108,26 +108,16 @@ services:
       - ./back/restaurants/.env
     depends_on:
       - mongo-db
-      
-  developer:
-    build: ./back/developer
-    container_name: developer
+
+  components:
+    build: ./back/components
+    container_name: components
     ports:
-      - "3060:3060"
+      - "3080:3080"
     networks:
       - cesieats-network
     volumes:
       - ./front/src/components:/app/components
-
-  technical:
-    build: ./back/technical
-    container_name: technical
-    ports:
-      - "3070:3070"
-    networks:
-      - cesieats-network
-    volumes:
-      - ./front/src/components:/app/components      
 
   nginx:
     image: nginx:latest
@@ -144,8 +134,7 @@ services:
       - products
       - orders
       - restaurants
-      - developer
-      - technical
+      - components
 
   front:
     build: ./front
