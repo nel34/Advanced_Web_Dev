@@ -8,12 +8,54 @@ import axios from 'axios'
 export default function AccueilRestaurateur() {
   const [stats, setStats] = useState(null)
   const [restaurantName, setRestaurantName] = useState('')
-  const RESTAURANT_ID = '000001'
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/orders/stats/${RESTAURANT_ID}`)
-      setStats(res.data)
+      const resOrders = await axios.get(`http://localhost:8080/api/orders`)
+      const filteredOrders = resOrders.data.filter(
+        (order) =>
+          order.restaurant_id === RESTAURANT_ID &&
+          order.status === 'Delivered'
+      )
+
+      const now = new Date()
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
+      const dailyOrders = filteredOrders.filter(o => new Date(o.createdAt) >= startOfDay)
+      const monthlyOrders = filteredOrders.filter(o => new Date(o.createdAt) >= startOfMonth)
+
+      const getTotalSales = arr => arr.reduce((sum, o) => sum + (o.total || 0), 0)
+
+      const globalSales = getTotalSales(filteredOrders)
+      const globalOrders = filteredOrders.length
+      const avgOrderValueGlobal = globalOrders > 0 ? (globalSales / globalOrders) : 0
+
+      // ➕ Calcul du plat du mois
+      const allMenuIds = monthlyOrders.flatMap(order => order.menu)
+      const menuNameCounts = {}
+
+      await Promise.all(allMenuIds.map(async (id) => {
+        try {
+          const res = await axios.get(`http://localhost:8080/api/menus/${id}`)
+          const name = res.data.name
+          menuNameCounts[name] = (menuNameCounts[name] || 0) + 1
+        } catch (err) {
+          console.error('Erreur récupération menu:', err)
+        }
+      }))
+
+      const bestMenu = Object.entries(menuNameCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A'
+
+      setStats({
+        totalSalesToday: getTotalSales(dailyOrders),
+        totalOrdersToday: dailyOrders.length,
+        avgOrderValueGlobal,
+        totalSalesMonth: getTotalSales(monthlyOrders),
+        totalOrdersMonth: monthlyOrders.length,
+        bestMenu
+      })
     } catch (err) {
       console.error('Erreur lors du chargement des statistiques :', err)
     }

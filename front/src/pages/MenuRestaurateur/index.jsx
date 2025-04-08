@@ -10,7 +10,7 @@ export default function MenuRestaurateur() {
   const [availableProducts, setAvailableProducts] = useState([])
   const [showModal, setShowModal] = useState(false)
 
-  const restaurantId = '670000000000000000000001' // ← ID du restaurateur codé en dur
+  const restaurantId = '67f3d283bdc278e3e020baef' 
 
   useEffect(() => {
     fetchMenus()

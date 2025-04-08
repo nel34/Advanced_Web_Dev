@@ -9,7 +9,13 @@ require('./src/config/db')
 const ordersRoutes = require('./src/routes/orders.routes')
 
 const app = express()
-app.use(cors())
+app.use(cors(
+  {
+    origin: ['http://localhost', 'http://dev.localhost', 'http://restaurant.localhost', 'http://admin.localhost', 'http://delivery.localhost'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }
+))
 app.use(express.json())
 
 app.use('/api/orders/docs', express.static(path.join(__dirname, 'docs')))
