@@ -59,7 +59,7 @@ export default function MenuRestaurateur() {
       <div className="accueil-restaurateur__content">
         <h2>Vos menus :</h2>
         <div className="menu-header">
-          <button className="add-menu-btn" onClick={() => setShowModal(true)}>➕ Ajouter un menu</button>
+          <button onClick={() => setShowModal(true)}>➕ Ajouter un menu</button>
         </div>
 
         <div className="menu-cards">

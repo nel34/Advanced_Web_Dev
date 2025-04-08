@@ -120,7 +120,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
         <input name="price" type="number" placeholder="Prix" value={formData.price} onChange={handleChange} />
         <input name="image" placeholder="URL de l'image" value={formData.image} onChange={handleChange} />
 
-        <button className="add-product-btn" onClick={() => setShowProductModal(true)}>
+        <button onClick={() => setShowProductModal(true)}>
           ➕ Ajouter un produit
         </button>
 
