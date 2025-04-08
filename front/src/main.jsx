@@ -22,7 +22,7 @@ import ThirdDeveloper from './pages/ThirdDeveloper'
 import ProtectedRoute from './components/ProtectedRoute'
 import TechnicalDashboard from './pages/TechnicalDashboard'
 import Delivery from './pages/Delivery'
-import RestaurantCreation from './pages/RestaurantCreation'
+import RestaurantInfo from './pages/RestaurantInfo'
 
 const getSubdomain = () => {
   const host = window.location.hostname
@@ -55,7 +55,8 @@ createRoot(document.getElementById('root')).render(
                   <Route path='/paiements' element={<PaiementsRestaurateur />} />
                   <Route path='/commandes' element={<CommandesRestaurateur />} />
                   <Route path='/menu' element={<MenuRestaurateur />} />
-                  <Route path='/restaurant-creation' element={<RestaurantCreation />} />
+                  <Route path='/edit' element={<RestaurantInfo mode='edit' />} />
+                  <Route path='/create' element={<RestaurantInfo mode='create' />} />
                 </Route>
                 <Route path='/login' element={<AuthForm mode='login' />} />
                 <Route path='/signup' element={<AuthForm mode='signup' />} />

@@ -5,7 +5,8 @@ const {
   getRestaurantById,
   createRestaurant,
   updateRestaurant,
-  deleteRestaurant
+  deleteRestaurant,
+  getRestaurantByUserId
 } = require('../controllers/restaurants.controller')
 
 /**
@@ -64,5 +65,15 @@ router.put('/:id', updateRestaurant)
  * @apiError 404 Restaurant non trouvé
  */
 router.delete('/:id', deleteRestaurant)
+
+/**
+ * @api {get} /user/:id Récupérer un restaurant par ID utilisateur
+ * @apiName GetRestaurantByUserId
+ * @apiGroup Restaurants
+ * @apiParam {String} id ID de l'utilisateur
+ * @apiSuccess {Object} restaurant Détails du restaurant
+ * @apiError 404 Restaurant ou utilisateur non trouvé
+ */
+router.get('/user/:id', getRestaurantByUserId)
 
 module.exports = router

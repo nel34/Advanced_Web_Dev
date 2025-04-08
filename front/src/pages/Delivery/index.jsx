@@ -6,7 +6,6 @@ import OrderDetailsPopup from '../../components/DeliveryOrderDetailsPopup'
 import OrderHistoryPopup from '../../components/DeliveryOrderHistoryPopup'
 import OrderHistorySection from '../../components/DeliveryOrderHistorySection'
 
-
 const Delivery = () => {
   const [showHistory, setShowHistory] = useState(false)
   const [showDetails, setShowDetails] = useState(false)

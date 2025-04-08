@@ -45,9 +45,27 @@ exports.register = async (req, res) => {
       referralCode,
       apiKey: role === 'developer' ? apiKey : null,
       referredBy
-    });
+    })
 
-    res.status(201).json({ message: 'Utilisateur enregistré' });
+    const accessToken = jwt.sign(
+      { id: newUser.id, role: role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
+    )
+
+    const refreshToken = jwt.sign(
+      { id: newUser.id, role: role },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || '7d' }
+    )
+
+    await newUser.update({ refreshToken })
+
+    res.status(201).json({
+      accessToken,
+      refreshToken,
+      id: newUser.id
+    })
   } catch (error) {
     res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message });
   }
@@ -119,7 +137,11 @@ exports.refreshToken = async (req, res) => {
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, async (err, decoded) => {
       if (err) {return res.status(403).json({ error: 'Token invalide ou expiré' })}
 
-      const newAccessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, { expiresIn: '15m' })
+      const newAccessToken = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
+      )
 
       res.json({ accessToken: newAccessToken })
     })

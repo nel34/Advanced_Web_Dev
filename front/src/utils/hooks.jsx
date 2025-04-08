@@ -60,7 +60,7 @@ export function useFetchWithAuth(method, url) {
             body: JSON.stringify({ refreshToken }),
           })
           if (refreshResponse.ok) {
-            const tokens = await refreshResponse.response.json()
+            const tokens = await refreshResponse.json()
             userData.accessToken = tokens.accessToken
             localStorage.setItem('user', JSON.stringify(userData))
 

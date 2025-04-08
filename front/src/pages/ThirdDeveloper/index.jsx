@@ -11,9 +11,9 @@ export default function ThirdDeveloper() {
   const [loadingComponents, setLoadingComponents] = useState(false)
   const [showComponents, setShowComponents] = useState(false)
   const [apiKeyError, setApiKeyError] = useState(null)
-  const userData = JSON.parse(localStorage.getItem('user') || '{}');
-  const token = userData.accessToken;
-  
+  const userData = JSON.parse(localStorage.getItem('user') || '{}')
+  const token = userData.accessToken
+
   const fetchApiKey = async () => {
     setLoadingKey(true)
     try {

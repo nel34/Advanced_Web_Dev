@@ -75,6 +75,10 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json()
       setUser(data)
       localStorage.setItem('user', JSON.stringify(data))
+      if (subdomain === 'restaurant') {
+        window.location.href = '/create'
+        return
+      }
       window.location.href = '/login'
     }
     fetchRegister()
@@ -109,7 +113,6 @@ export const AuthProvider = ({ children }) => {
       if (!response.ok) {
         throw new Error('Update failed')
       }
-
 
       window.location.href = '/account'
     }
