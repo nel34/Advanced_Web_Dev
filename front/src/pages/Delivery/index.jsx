@@ -8,7 +8,8 @@ const Delivery = () => {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [availableOrders, setAvailableOrders] = useState([])
 
-  const deliveryPersonId = 'LIVREUR123'
+  const userData = JSON.parse(localStorage.getItem('user') || '{}')
+  const deliveryPersonId = userData?.id || ''
 
   const toggleDetails = (order = null) => {
     setSelectedOrder(order)
@@ -16,8 +17,10 @@ const Delivery = () => {
   }
 
   useEffect(() => {
-    fetchAvailableOrders()
-  }, [])
+    if (deliveryPersonId) {
+      fetchAvailableOrders()
+    }
+  }, [deliveryPersonId])
 
   const fetchAvailableOrders = async () => {
     try {
@@ -37,7 +40,10 @@ const Delivery = () => {
       }
 
       await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
-      fetchAvailableOrders()
+
+      setTimeout(() => {
+        fetchAvailableOrders()
+      }, 300)
     } catch (err) {
       console.error("Erreur lors de l'acceptation de la commande :", err)
     }
@@ -51,7 +57,10 @@ const Delivery = () => {
       }
 
       await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
-      fetchAvailableOrders()
+
+      setTimeout(() => {
+        fetchAvailableOrders()
+      }, 300)
     } catch (err) {
       console.error("Erreur lors de la mise à jour de la commande :", err)
     }
@@ -60,13 +69,13 @@ const Delivery = () => {
   const myActiveOrders = availableOrders.filter(
     order =>
       order.status === 'In_Delivery' &&
-      order.delivery_person_id === deliveryPersonId
+      String(order.delivery_person_id) === String(deliveryPersonId)
   )
 
   const myDeliveredOrders = availableOrders.filter(
     order =>
       order.status === 'Delivered' &&
-      order.delivery_person_id === deliveryPersonId
+      String(order.delivery_person_id) === String(deliveryPersonId)
   )
 
   return (
