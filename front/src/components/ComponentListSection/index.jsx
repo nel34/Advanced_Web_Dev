@@ -4,6 +4,21 @@ import './index.sass'
 
 export default function ComponentListSection({ show, toggle, components, handleDelete }) {
   const [confirming, setConfirming] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const componentsPerPage = 9
+
+  const indexOfLast = currentPage * componentsPerPage
+  const indexOfFirst = indexOfLast - componentsPerPage
+  const currentComponents = components.slice(indexOfFirst, indexOfLast)
+  const totalPages = Math.ceil(components.length / componentsPerPage)
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(p => p + 1)
+  }
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(p => p - 1)
+  }
 
   if (!show) {
     return (
@@ -26,7 +41,7 @@ export default function ComponentListSection({ show, toggle, components, handleD
       <section className="components-list">
         <h2>Composants existants</h2>
         <div className="grid">
-          {components.map(comp => (
+          {currentComponents.map(comp => (
             <div key={comp.id} className="component-card">
               <h3>{comp.name}</h3>
               <small>v{comp.version}</small>
@@ -50,6 +65,12 @@ export default function ComponentListSection({ show, toggle, components, handleD
               )}
             </div>
           ))}
+        </div>
+
+        <div className="pagination">
+          <button onClick={handlePrev} disabled={currentPage === 1}>◀ Précédent</button>
+          <span>Page {currentPage} / {totalPages}</span>
+          <button onClick={handleNext} disabled={currentPage === totalPages}>Suivant ▶</button>
         </div>
       </section>
     </>

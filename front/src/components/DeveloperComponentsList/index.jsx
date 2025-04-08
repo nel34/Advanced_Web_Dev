@@ -1,5 +1,6 @@
 import DeveloperComponentCard from '../DeveloperComponentCard'
 import './index.sass'
+import { useState } from 'react'
 
 export default function DeveloperComponentsList({
   show,
@@ -16,6 +17,18 @@ export default function DeveloperComponentsList({
     }
     toggle() // affiche ou masque la liste
   }
+  const [currentPage, setCurrentPage] = useState(1)
+  const componentsPerPage = 6
+  const totalPages = Math.ceil(components.length / componentsPerPage)
+  const indexOfLast = currentPage * componentsPerPage
+  const indexOfFirst = indexOfLast - componentsPerPage
+  const currentComponents = components.slice(indexOfFirst, indexOfLast)
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(prev => prev + 1)
+  }
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(prev => prev - 1)
+  }
 
   return (
     <div className="developer-components-list">
@@ -31,13 +44,26 @@ export default function DeveloperComponentsList({
             <p className="error">{error}</p>
           ) : (
             <div className="list">
-              {components.map(comp => (
+              {currentComponents.map(comp => (
                 <DeveloperComponentCard
                   key={comp.id}
                   comp={comp}
                   onDownload={onDownload}
                 />
               ))}
+            </div>
+          )}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button onClick={handlePrev} disabled={currentPage === 1}>
+                ◀ Précédent
+              </button>
+
+              <span>Page {currentPage} / {totalPages}</span>
+
+              <button onClick={handleNext} disabled={currentPage === totalPages}>
+                Suivant ▶
+              </button>
             </div>
           )}
         </>
