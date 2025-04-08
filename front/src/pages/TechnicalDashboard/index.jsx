@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import ComponentListSection from '../../components/ComponentListSection'
 import AddComponentCard from '../../components/AddComponentCard'
