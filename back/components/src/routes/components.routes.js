@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const { getComponents, addComponent, deleteComponent, downloadComponent } = require('../controllers/technical.controller')
+const { getComponents, addComponent, deleteComponent, downloadComponent } = require('../controllers/components.controller')
 
 const multer = require('multer')
 const upload = multer({ storage: multer.memoryStorage() })
 
 /**
- * @api {get} /components Lister les composants
+ * @api {get} / Lister les composants
  * @apiName GetComponents
  * @apiGroup Components
  *
@@ -17,10 +17,10 @@ const upload = multer({ storage: multer.memoryStorage() })
  * @apiSuccess {String} components.name Nom du composant
  * @apiSuccess {String} components.version Version du composant
  */
-router.get('/components', getComponents)
+router.get('/', getComponents)
 
 /**
- * @api {post} /components Ajouter un composant
+ * @api {post} / Ajouter un composant
  * @apiName AddComponent
  * @apiGroup Components
  *
@@ -37,10 +37,10 @@ router.get('/components', getComponents)
  * @apiError 409 Un composant avec ce nom existe déjà
  * @apiError 500 Erreur lors de la création
  */
-router.post('/components', upload.any(), addComponent)
+router.post('/', upload.any(), addComponent)
 
 /**
- * @api {delete} /components/:name Supprimer un composant
+ * @api {delete} /:name Supprimer un composant
  * @apiName DeleteComponent
  * @apiGroup Components
  *
@@ -55,10 +55,10 @@ router.post('/components', upload.any(), addComponent)
  * @apiError 404 Le composant n'existe pas
  * @apiError 500 Erreur lors de la suppression
  */
-router.delete('/components/:name', deleteComponent)
+router.delete('/:name', deleteComponent)
 
 /**
- * @api {get} /components/:name/download Télécharger un composant
+ * @api {get} /:name/download Télécharger un composant
  * @apiName DownloadComponent
  * @apiGroup Components
  *
@@ -69,6 +69,6 @@ router.delete('/components/:name', deleteComponent)
  * @apiSuccess {File} zip Archive contenant les fichiers du composant
  * @apiError 404 Composant introuvable
  */
-router.get('/components/:name/download', downloadComponent)
+router.get('/:name/download', downloadComponent)
 
 module.exports = router

@@ -12,6 +12,6 @@ COPY . .
 # Générer la documentation
 RUN npm run doc
 
-EXPOSE 3040
+EXPOSE 3080
 
 CMD ["npm", "run", "dev"]

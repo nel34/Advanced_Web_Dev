@@ -71,7 +71,7 @@ export default function ThirdDeveloper() {
     }
 
     try {
-      const res = await axios.get('http://localhost:8080/api/developer/components', {
+      const res = await axios.get('http://localhost:8080/api/components', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setComponents(res.data)
@@ -84,7 +84,7 @@ export default function ThirdDeveloper() {
 
   const downloadComponent = async (name) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/developer/components/${name}/download`, {
+      const res = await axios.get(`http://localhost:8080/api/components/${name}/download`, {
         responseType: 'blob', // Important pour récupérer un fichier
         headers: { Authorization: `Bearer ${token}` }
       })

@@ -14,7 +14,7 @@ export default function TechnicalPage() {
   const [showComponents, setShowComponents] = useState(false)
   const fetchComponents = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/technical/components')
+      const res = await axios.get('http://localhost:8080/api/components')
       setComponents(res.data)
     } catch (err) {
       console.error('Erreur récupération composants :', err)
@@ -23,7 +23,7 @@ export default function TechnicalPage() {
 
   const handleDelete = async (name) => {
     try {
-      await axios.delete(`http://localhost:8080/api/technical/components/${name}`)
+      await axios.delete(`http://localhost:8080/api/components/${name}`)
       setNotification({ type: 'success', message: `${name} supprimé.` })
       fetchComponents()
     } catch (err) {
@@ -43,7 +43,7 @@ export default function TechnicalPage() {
     formData.append('file2', files.indexSass)
 
     try {
-      await axios.post('http://localhost:8080/api/technical/components', formData, {
+      await axios.post('http://localhost:8080/api/components', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
