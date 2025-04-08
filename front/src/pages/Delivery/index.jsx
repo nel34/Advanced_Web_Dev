@@ -110,7 +110,7 @@ const Delivery = () => {
               myActiveOrders.map(order => (
                 <div key={order.order_id} className="order">
                   <p><strong>Commande ID :</strong> {order.order_id}</p>
-                  <p><strong>Prix :</strong> {order.menu_price}</p>
+                  <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
@@ -131,7 +131,7 @@ const Delivery = () => {
               .map(order => (
                 <div key={order._id} className="order">
                   <p><strong>Commande ID :</strong> {order.order_id}</p>
-                  <p><strong>Prix :</strong> {order.menu_price}</p>
+                  <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-accept" onClick={() => acceptOrder(order)}>Accepter</button>
@@ -153,7 +153,7 @@ const Delivery = () => {
               myDeliveredOrders.map(order => (
                 <div key={order.order_id} className="order">
                   <p><strong>Commande ID :</strong> {order.order_id}</p>
-                  <p><strong>Prix :</strong> {order.menu_price}</p>
+                  <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>

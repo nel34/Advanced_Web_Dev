@@ -17,7 +17,7 @@ const OrderDetailsPopup = ({ order, onClose }) => {
           order.status === "Cancelled" ? "Annulée" :
           order.status === "In_Progress" ? "En cours" : "Inconnu"
         }</p>
-        <p><strong>Prix :</strong> {order.menu_price}</p>
+        <p><strong>Prix :</strong> {order.total} €</p>
         <p><strong>Adresse :</strong> {order.location}</p>
         <button className="btn" onClick={onClose}>Fermer</button>
       </div>
