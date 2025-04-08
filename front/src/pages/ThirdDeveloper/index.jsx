@@ -3,6 +3,7 @@ import axios from 'axios'
 import './index.sass'
 import DeveloperApiKeyCard from '../../components/DeveloperApiKeyCard'
 import DeveloperComponentsList from '../../components/DeveloperComponentsList'
+import DeveloperDocsCard from '../../components/DeveloperDocsCard'
 
 export default function ThirdDeveloper() {
   const [apiKey, setApiKey] = useState(null)
@@ -122,7 +123,7 @@ export default function ThirdDeveloper() {
         loadingKey={loadingKey}
         onRegenerate={regenerateApiKey}
       />
-
+      <DeveloperDocsCard />
       <DeveloperComponentsList
         show={showComponents}
         toggle={toggleComponentList}

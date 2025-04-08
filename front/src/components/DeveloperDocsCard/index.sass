@@ -1,0 +1,40 @@
+.developer-docs-card
+  background-color: #fff
+  border: 1px solid #ddd
+  border-radius: 12px
+  padding: 1rem
+  margin: 2rem 0
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05)
+  text-align: center
+
+  h2
+    font-size: 1.5rem
+    margin-bottom: 0.8rem
+    color: #333
+
+  p
+    margin-bottom: 1rem
+    color: #555
+
+  .docs-grid
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+    gap: 1rem
+
+  .doc-item
+    background-color: #f9f9f9
+    padding: 0.8rem
+    border-radius: 6px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05)
+    cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: background-color 0.2s ease
+
+    &:hover
+      background-color: #ececec
+
+    span
+      font-weight: 500
+      color: #333
