@@ -11,7 +11,7 @@ exports.getAllOrders = async (req, res) => {
 
 exports.getOrderById = async (req, res) => {
   try {
-    const order = await Order.findOne({ order_id: req.params.id })
+    const order = await Order.findOne({ _id: req.params.id })
     if (!order) {return res.status(404).json({ message: 'Order not found' })}
     res.status(200).json(order)
   } catch (err) {
@@ -31,7 +31,7 @@ exports.createOrder = async (req, res) => {
 exports.updateOrder = async (req, res) => {
   try {
     const updatedOrder = await Order.findOneAndUpdate(
-      { order_id: req.params.id },
+      { _id: req.params.id },
       req.body,
       { new: true }
     )
@@ -44,7 +44,7 @@ exports.updateOrder = async (req, res) => {
 
 exports.deleteOrder = async (req, res) => {
   try {
-    const order = await Order.findOneAndDelete({ order_id: req.params.id })
+    const order = await Order.findOneAndDelete({ _id: req.params.id })
     if (!order) {return res.status(404).json({ message: 'Order not found' })}
     res.status(200).json({ message: 'Order deleted' })
   } catch (err) {
@@ -88,7 +88,7 @@ exports.getStatsForRestaurant = async (req, res) => {
 
     const allOrders = await Order.find({
       restaurant_id: restaurantId,
-      status: 'Delivered' 
+      status: 'Delivered'
     })
 
     const dailyOrders = allOrders.filter(o => new Date(o.createdAt) >= startOfDay)
@@ -130,7 +130,7 @@ exports.getWeeklySalesForRestaurant = async (req, res) => {
 
     const orders = await Order.find({
       restaurant_id: restaurantId,
-      status: 'Delivered' 
+      status: 'Delivered'
     })
 
     const formatWeekLabel = (monday) => {

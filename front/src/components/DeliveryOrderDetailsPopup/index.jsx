@@ -8,7 +8,7 @@ const OrderDetailsPopup = ({ order, onClose }) => {
     <div className="popup-overlay">
       <div className="popup-content">
         <h2>Détails de la commande</h2>
-        <p><strong>Commande ID :</strong> {order.order_id}</p>
+        <p><strong>Commande ID :</strong> {order._id}</p>
         <p><strong>User ID :</strong> {order.user_id}</p>
         <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
         <p><strong>Status :</strong> {

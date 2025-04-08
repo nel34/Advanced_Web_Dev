@@ -39,7 +39,7 @@ const Delivery = () => {
         delivery_person_id: deliveryPersonId
       }
 
-      await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
+      await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
 
       setTimeout(() => {
         fetchAvailableOrders()
@@ -56,7 +56,7 @@ const Delivery = () => {
         status: 'Cancelled'
       }
 
-      await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
+      await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
 
       setTimeout(() => {
         fetchAvailableOrders()
@@ -73,7 +73,7 @@ const Delivery = () => {
         status: 'Delivered'
       }
 
-      await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
+      await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
 
       setTimeout(() => {
         fetchAvailableOrders()
@@ -96,19 +96,18 @@ const Delivery = () => {
   )
 
   return (
-    <div className="delivery-page">
+    <div className="home home--secondary">
       <main className="delivery-container">
 
-        {/* Commandes en cours */}
-        <section className="current-orders">
+        <section className="info-section">
           <h2>Mes livraisons en cours :</h2>
           <div className="orders-grid">
             {myActiveOrders.length === 0 ? (
               <p>Aucune commande en cours</p>
             ) : (
               myActiveOrders.map(order => (
-                <div key={order.order_id} className="order">
-                  <p><strong>Commande ID :</strong> {order.order_id}</p>
+                <div key={order._id} className="order">
+                  <p><strong>Commande ID :</strong> {order._id}</p>
                   <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
@@ -121,15 +120,14 @@ const Delivery = () => {
           </div>
         </section>
 
-        {/* Commandes disponibles */}
-        <section className="available-orders">
+        <section className="info-section">
           <h2>Commandes disponibles</h2>
           <div className="orders-grid">
             {availableOrders
               .filter(order => order.status === 'Pending_Delivery')
               .map(order => (
                 <div key={order._id} className="order">
-                  <p><strong>Commande ID :</strong> {order.order_id}</p>
+                  <p><strong>Commande ID :</strong> {order._id}</p>
                   <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
@@ -142,16 +140,15 @@ const Delivery = () => {
           </div>
         </section>
 
-        {/* Commandes livrées */}
-        <section className="history-orders">
+        <section className="info-section">
           <h2>Commandes livrées</h2>
           <div className="orders-grid">
             {myDeliveredOrders.length === 0 ? (
               <p>Aucune commande livrée</p>
             ) : (
               myDeliveredOrders.map(order => (
-                <div key={order.order_id} className="order">
-                  <p><strong>Commande ID :</strong> {order.order_id}</p>
+                <div key={order._id} className="order">
+                  <p><strong>Commande ID :</strong> {order._id}</p>
                   <p><strong>Prix :</strong> {order.total} €</p>
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">

@@ -22,6 +22,8 @@ export default function Checkout() {
       location: document.getElementById('address').value
     }
 
+    console.log(order)
+
     const response = await fetch('http://localhost:8080/api/orders', {
       method: 'POST',
       headers: {
