@@ -4,7 +4,7 @@ import { useFetchWithAuth } from '../../utils/hooks'
 
 export default function ProtectedRoute({ role }) {
   const { user } = useAuth()
-  const { isLoading, error } = useFetchWithAuth('POST', `http://localhost:8080/api/auth/${role}`)
+  const { isLoading, error } = useFetchWithAuth('GET', `http://localhost:8080/api/auth/${role}`)
 
   if (!user) {
     return <Navigate to="/login" replace />
@@ -18,6 +18,5 @@ export default function ProtectedRoute({ role }) {
     return <Navigate to="/login" replace />
   }
 
-  // Render the nested routes (using Outlet)
   return <Outlet />
 }

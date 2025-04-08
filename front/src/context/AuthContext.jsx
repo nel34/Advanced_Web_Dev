@@ -85,8 +85,62 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user')
   }
 
+  const updateUser = (userData, id, accessToken) => {
+    if (userData.password !== userData.confirmPassword) {
+      alert('Passwords do not match')
+      return
+    }
+    else {
+      delete userData.confirmPassword
+    }
+
+    async function fetchUpdateUser() {
+      const response = await fetch(`http://localhost:8080/api/auth/users/${id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: JSON.stringify(userData),
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Update failed')
+      }
+
+
+      window.location.href = '/account'
+    }
+    fetchUpdateUser()
+  }
+
+  const deleteUser = (id, accessToken) => {
+    async function fetchDeleteUser() {
+      const response = await fetch(`http://localhost:8080/api/auth/users/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Delete failed')
+      }
+
+      setUser(null)
+      localStorage.removeItem('user')
+      window.location.href = '/'
+    }
+    fetchDeleteUser()
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, deleteUser, updateUser }}>
       {children}
     </AuthContext.Provider>
   )
