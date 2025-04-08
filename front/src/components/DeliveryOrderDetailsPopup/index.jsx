@@ -8,17 +8,17 @@ const OrderDetailsPopup = ({ order, onClose }) => {
     <div className="popup-overlay">
       <div className="popup-content">
         <h2>Détails de la commande</h2>
-        <p>Restaurant : {order.restaurant}</p>
-        <p>Client : {order.client}</p>
-        <p>Adresse : {order.address}</p>
-        <p>Code de livraison : {order.deliveryCode}</p>
-        <h3>Produits :</h3>
-        <ul>
-          {order.items.map((item, i) => (
-            <li key={i}>{item.quantity} x {item.name} - {item.price}</li>
-          ))}
-        </ul>
-        <p>Total : {order.total}</p>
+        <p><strong>Commande ID :</strong> {order.order_id}</p>
+        <p><strong>User ID :</strong> {order.user_id}</p>
+        <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
+        <p><strong>Status :</strong> {
+          order.status === "Pending_Delivery" ? "En attente de livraison" :
+          order.status === "Delivered" ? "Livrée" :
+          order.status === "Cancelled" ? "Annulée" :
+          order.status === "In_Progress" ? "En cours" : "Inconnu"
+        }</p>
+        <p><strong>Prix :</strong> {order.menu_price}</p>
+        <p><strong>Adresse :</strong> {order.location}</p>
         <button className="btn" onClick={onClose}>Fermer</button>
       </div>
     </div>
