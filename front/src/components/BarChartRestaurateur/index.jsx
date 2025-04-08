@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import './index.sass'
 import axios from 'axios'
 
 export default function BarChartRestaurateur() {
+  const { user } = useAuth()
+  const [restaurantId, setRestaurantId] = useState('')
   const [data, setData] = useState([])
-  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
-  const fetchData = async () => {
+  const fetchRestaurantId = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/orders/sales-per-week/${RESTAURANT_ID}`)
+      const res = await axios.get(`http://localhost:8080/api/restaurants/user/${user.id}`)
+      setRestaurantId(res.data._id)
+    } catch (err) {
+      console.error('Erreur récupération restaurant :', err)
+    }
+  }
+
+  const fetchData = async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/orders/sales-per-week/${id}`)
       setData(res.data)
     } catch (err) {
       console.error('Erreur lors du chargement des ventes hebdo :', err)
@@ -17,14 +28,20 @@ export default function BarChartRestaurateur() {
   }
 
   useEffect(() => {
-    fetchData()
+    if (user?.id) {
+      fetchRestaurantId()
+    }
+  }, [user])
 
-    const intervalId = setInterval(() => {
-      fetchData()
-    }, 5000)
-
-    return () => clearInterval(intervalId)
-  }, [])
+  useEffect(() => {
+    if (restaurantId) {
+      fetchData(restaurantId)
+      const intervalId = setInterval(() => {
+        fetchData(restaurantId)
+      }, 5000)
+      return () => clearInterval(intervalId)
+    }
+  }, [restaurantId])
 
   return (
     <div className="bar-chart-container">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import axios from 'axios'
 import SidebarRestaurateur from '../../components/SidebarRestaurateur'
 import CardPaiement from '../../components/CardPaiement'
@@ -6,10 +7,10 @@ import GlobalPopup from '../../components/GlobalPopup'
 import './index.sass'
 
 export default function PaiementsRestaurateur() {
+  const { user } = useAuth()
+  const [restaurantId, setRestaurantId] = useState('')
   const [orders, setOrders] = useState([])
   const [showPopup, setShowPopup] = useState(false)
-
-  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   const getKnownIds = () => {
     const data = localStorage.getItem('knownPaymentIds')
@@ -20,12 +21,21 @@ export default function PaiementsRestaurateur() {
     localStorage.setItem('knownPaymentIds', JSON.stringify([...set]))
   }
 
-  const fetchOrders = async () => {
+  const fetchRestaurantId = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/restaurants/user/${user.id}`)
+      setRestaurantId(res.data._id)
+    } catch (err) {
+      console.error('Erreur lors de la récupération du restaurant :', err)
+    }
+  }
+
+  const fetchOrders = async (id) => {
     try {
       const res = await axios.get('http://localhost:8080/api/orders')
       const filtered = res.data.filter(
         (order) =>
-          order.restaurant_id === RESTAURANT_ID &&
+          order.restaurant_id === id &&
           order.status === 'Delivered'
       )
 
@@ -34,7 +44,6 @@ export default function PaiementsRestaurateur() {
 
       if (newPayments.length > 0) {
         setShowPopup(true)
-
         newPayments.forEach((o) => knownIds.add(o._id))
         saveKnownIds(knownIds)
       }
@@ -46,13 +55,20 @@ export default function PaiementsRestaurateur() {
   }
 
   useEffect(() => {
-    fetchOrders()
-    const intervalId = setInterval(() => {
-      fetchOrders()
-    }, 5000)
+    if (user?.id) {
+      fetchRestaurantId()
+    }
+  }, [user])
 
-    return () => clearInterval(intervalId)
-  }, [])
+  useEffect(() => {
+    if (restaurantId) {
+      fetchOrders(restaurantId)
+      const intervalId = setInterval(() => {
+        fetchOrders(restaurantId)
+      }, 5000)
+      return () => clearInterval(intervalId)
+    }
+  }, [restaurantId])
 
   return (
     <div className="accueil-restaurateur">
