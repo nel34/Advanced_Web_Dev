@@ -67,6 +67,14 @@ createRoot(document.getElementById('root')).render(
                 <Route path='/login' element={<AuthForm mode='login' />} />
                 <Route path='/signup' element={<AuthForm mode='signup' />} />
               </>
+            ) : subdomain === 'commercial' ? (
+              <>
+                <Route element={<ProtectedRoute role='commercial' />}>
+                  <Route path='/' element={<CommercialDashboard />} />
+                </Route>
+                <Route path='/login' element={<AuthForm mode='login' />} />
+                <Route path='/signup' element={<AuthForm mode='signup' />} />
+              </>              
             ) : subdomain === 'delivery' ? (
               <>
                 <Route element={<ProtectedRoute role='livreur' />}>
@@ -87,7 +95,6 @@ createRoot(document.getElementById('root')).render(
                 <Route path='/legal-notice' element={<LegalNotice />} />
                 <Route path='/privacy-policy' element={<PrivacyPolicy />} />
                 <Route path='/cookies' element={<Cookies />} />
-                <Route path='/commercial' element={<CommercialDashboard />} />
 
                 <Route element={<ProtectedRoute role='client' />}>
                   <Route path='/account' element={<Account />} />

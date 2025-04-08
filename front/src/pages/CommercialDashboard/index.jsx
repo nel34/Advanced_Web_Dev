@@ -15,7 +15,16 @@ export default function CommercialDashboard() {
     setError(null)
   
     try {
-      const res = await axios.get('http://localhost:8080/api/auth/users')
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
+      const accessToken = storedUser.accessToken
+
+      const res = await axios.get('http://localhost:8080/api/auth/users', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       const allUsers = res.data
       const clientsOnly = allUsers.filter(user => user.role === 'client')
   
@@ -54,12 +63,13 @@ export default function CommercialDashboard() {
   
   const handleSuspend = async (userId) => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem('user'))
-      const accessToken = storedUser?.accessToken
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+      const accessToken = userData.accessToken;
   
       await axios.put(`http://localhost:8080/api/auth/users/${userId}/suspend`, {}, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
       })
   
@@ -74,8 +84,8 @@ export default function CommercialDashboard() {
     const handleEdit = async (userId, newUsername, newEmail) => {
         if (!newUsername || !newEmail) return
     
-        const storedUser = JSON.parse(localStorage.getItem('user'))
-        const accessToken = storedUser?.accessToken
+        const userData = JSON.parse(localStorage.getItem('user') || '{}');
+        const accessToken = userData.accessToken;
 
         if (!accessToken) {
         setNotification({ type: 'error', message: 'Token d\'accès manquant' })
@@ -88,7 +98,8 @@ export default function CommercialDashboard() {
             email: newEmail
         }, {
             headers: {
-            Authorization: `Bearer ${accessToken}`
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
             }
         })
     
@@ -101,12 +112,13 @@ export default function CommercialDashboard() {
     }  
     const handleDelete = async (userId) => {
         try {
-          const storedUser = JSON.parse(localStorage.getItem('user'))
-          const accessToken = storedUser?.accessToken
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          const accessToken = userData.accessToken;
       
           await axios.delete(`http://localhost:8080/api/auth/users/${userId}`, {
             headers: {
-              Authorization: `Bearer ${accessToken}`
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json'
             }
           })
       
