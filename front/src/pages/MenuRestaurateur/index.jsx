@@ -55,30 +55,28 @@ export default function MenuRestaurateur() {
 
   return (
     <div className="accueil-restaurateur">
-      <div className="accueil-restaurateur__body">
-        <SidebarRestaurateur />
-        <main className="accueil-restaurateur__content">
-          <h2>Vos menus :</h2>
-          <div className="menu-header">
-            <button className="add-menu-btn" onClick={() => setShowModal(true)}>➕ Ajouter un menu</button>
-          </div>
+      <SidebarRestaurateur />
+      <div className="accueil-restaurateur__content">
+        <h2>Vos menus :</h2>
+        <div className="menu-header">
+          <button className="add-menu-btn" onClick={() => setShowModal(true)}>➕ Ajouter un menu</button>
+        </div>
 
-          <div className="menu-cards">
-            {menus.map(menu => (
-              <MenuCardRestaurateur
-                key={menu._id}
-                id={menu._id}
-                name={menu.name}
-                price={menu.price}
-                image={menu.image}
-                description={menu.description}
-                productId={menu.product}
-                restaurantId={menu.restaurantId}
-                onUpdate={fetchMenus}
-              />
-            ))}
-          </div>
-        </main>
+        <div className="menu-cards">
+          {menus.map(menu => (
+            <MenuCardRestaurateur
+              key={menu._id}
+              id={menu._id}
+              name={menu.name}
+              price={menu.price}
+              image={menu.image}
+              description={menu.description}
+              productId={menu.product}
+              restaurantId={menu.restaurantId}
+              onUpdate={fetchMenus}
+            />
+          ))}
+        </div>
       </div>
 
       {showModal && restaurantId && (

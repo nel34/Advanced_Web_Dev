@@ -1,25 +1,21 @@
 .accueil-restaurateur
     display: flex
-    padding-left : 50px
-    padding-top : 50px
-    flex-direction: column
-    min-height: 100vh
 
     &__content
-        padding-left: 300px   
-        padding-top: 80px      
+        padding-top: 200px
         width: 100%
-        max-width: 1200px      
-        margin: 0          
+        margin: auto
+        max-width: 1200px
         min-height: 100vh
         box-sizing: border-box
         align-items: flex-start
 
     &__sums
         display: grid
-        grid-template-columns: repeat(3, 240px) 
+        justify-content: center
+        grid-template-columns: repeat(3, 240px)
         column-gap: 90px
-        row-gap: 30px  
+        row-gap: 30px
         margin-top: 70px
 
     &__body
@@ -31,17 +27,15 @@
         margin-bottom: 100px
 
 
-
-    
 @media(max-width: 1200px)
     .accueil-restaurateur
         padding-left: 30px
         padding-top: 30px
 
         &__content
-            padding-left: 250px   
-            padding-top: 70px     
-            max-width: 1000px    
+            padding-left: 250px
+            padding-top: 70px
+            max-width: 1000px
 
         &__sums
             grid-template-columns: repeat(2, 240px)
@@ -58,8 +52,8 @@
         padding-top: 20px
 
         &__content
-            padding-left: 0   
-            padding-top: 70px     
+            padding-left: 0
+            padding-top: 70px
             max-width: 100%
 
         &__sums
@@ -68,8 +62,7 @@
             row-gap: 20px
 
         &__charts
-            margin-top: 30px        
+            margin-top: 30px
 
 .dashboard-header
   flex-direction: column
-
