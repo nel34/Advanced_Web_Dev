@@ -9,7 +9,6 @@ export default function SidebarRestaurateur() {
   const { user } = useAuth()
   const [restaurantName, setRestaurantName] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
   useEffect(() => {
     const fetchRestaurant = async () => {
