@@ -19,6 +19,10 @@ const Delivery = () => {
   useEffect(() => {
     if (deliveryPersonId) {
       fetchAvailableOrders()
+      const intervalId = setInterval(() => {
+        fetchAvailableOrders()
+      }, 5000)
+      return () => clearInterval(intervalId)
     }
   }, [deliveryPersonId])
 
@@ -98,7 +102,7 @@ const Delivery = () => {
   return (
     <div className="home home--secondary">
       <main className="delivery-container">
-
+        <h1>Dashboard de livraisons</h1>
         <section className="info-section">
           <h2>Mes livraisons en cours :</h2>
           <div className="orders-grid">
