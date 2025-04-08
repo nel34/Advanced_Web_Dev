@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         window.location.href = '/create'
         return
       }
-      window.location.href = '/login'
+      window.location.href = '/account'
     }
     fetchRegister()
   }
