@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }) => {
           return
         }
         window.location.href = '/account'
-      } catch (err) {
+      } catch {
         setNotification({ type: 'error', message: 'Erreur réseau lors de l\'inscription.' })
       }
     }
@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
 
         setNotification({ type: 'success', message: 'Compte mis à jour avec succès ✅' })
         window.location.href = '/account'
-      } catch (err) {
+      } catch {
         setNotification({ type: 'error', message: 'Erreur réseau lors de la mise à jour.' })
       }
 
@@ -170,7 +170,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null)
         localStorage.removeItem('user')
         window.location.href = '/'
-      } catch (err) {
+      } catch {
         setNotification({ type: 'error', message: 'Erreur réseau lors de la suppression.' })
       }
     }

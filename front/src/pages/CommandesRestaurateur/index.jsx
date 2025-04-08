@@ -50,24 +50,22 @@ export default function CommandesRestaurateur() {
 
   return (
     <div className="accueil-restaurateur">
-      <div className="accueil-restaurateur__body">
-        <SidebarRestaurateur />
-        <main className="accueil-restaurateur__content">
-          <h2>Vos Commandes :</h2>
-          <div className="commande-list">
-            {orders.length > 0 ? (
-              orders.map((order) => (
-                <CommandeCard
-                  key={order._id}
-                  order={order}
-                  onUpdate={() => fetchOrders(restaurantId)}
-                />
-              ))
-            ) : (
-              <p style={{ fontStyle: 'italic' }}>Aucune commande en cours.</p>
-            )}
-          </div>
-        </main>
+      <SidebarRestaurateur />
+      <div className="accueil-restaurateur__content">
+        <h2>Vos Commandes :</h2>
+        <div className="commande-list">
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <CommandeCard
+                key={order._id}
+                order={order}
+                onUpdate={() => fetchOrders(restaurantId)}
+              />
+            ))
+          ) : (
+            <p style={{ fontStyle: 'italic' }}>Aucune commande en cours.</p>
+          )}
+        </div>
       </div>
     </div>
   )

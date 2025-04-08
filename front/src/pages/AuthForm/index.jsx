@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import Button from '../../components/Button'
 import { useAuth } from '../../context/AuthContext'
 import TechnicalNotification from '../../components/TechnicalNotification'
-import { useState, useEffect } from 'react'
 
 export default function AuthForm({ mode = 'login' }) {
   const isLogin = mode === 'login'
@@ -114,7 +113,7 @@ export default function AuthForm({ mode = 'login' }) {
               } else {
                 await register({ username, email, password, referralCode, confirmPassword })
               }
-            } catch (err) {
+            } catch {
               setNotification({
                 message: 'Une erreur est survenue. Veuillez réessayer.',
                 type: 'error'

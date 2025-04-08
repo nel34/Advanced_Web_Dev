@@ -42,14 +42,11 @@ router.get('/:id', getOrderById)
  * @api {post} / Créer une nouvelle commande
  * @apiName CreateOrder
  * @apiGroup Orders
- *
- * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
  * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant
  * @apiBody {String} [delivery_person_id] ID du livreur (peut être null)
  * @apiBody {String="Pending_Restaurateur","In_Progress","Pending_Delivery","In_Delivery","Delivered","Cancelled"} [status] Statut de la commande (défaut: "Pending_Restaurateur")
- * @apiBody {Date} [estimated_time] Heure estimée de livraison
  * @apiBody {String} [delivery_person_name] Nom du livreur
  * @apiBody {String[]} menu Tableau d'IDs de menus (format: array de strings)
  * @apiBody {Number} total Montant total de la commande
@@ -63,7 +60,6 @@ router.post('/', createOrder)
  * @apiName UpdateOrder
  * @apiGroup Orders
  * @apiParam {String} id ID de la commande à modifier
- *
  * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
  * @apiBody {String} username Nom d'utilisateur

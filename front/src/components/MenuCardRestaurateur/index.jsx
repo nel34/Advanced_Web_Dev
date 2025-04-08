@@ -1,5 +1,5 @@
 import './index.sass'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 
 export default function MenuCardRestaurateur({
@@ -115,8 +115,8 @@ export default function MenuCardRestaurateur({
             </div>
 
             <div className="menu-card__modal-actions">
-              <button className="delete" onClick={handleDelete}>Supprimer</button>
-              <button className="validate" onClick={handleUpdate}>Valider</button>
+              <button onClick={handleDelete}>Supprimer</button>
+              <button onClick={handleUpdate}>Valider</button>
             </div>
           </div>
         </div>

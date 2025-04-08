@@ -91,25 +91,23 @@ export default function AccueilRestaurateur() {
 
   return (
     <div className="accueil-restaurateur">
-      <div className="accueil-restaurateur__body">
-        <SidebarRestaurateur />
-        <main className="accueil-restaurateur__content">
-          <div className="dashboard-header">
-            <p className="dashboard-header__greeting">Bonjour, {restaurantName}</p>
-            <h1 className="dashboard-header__title">Vos performances</h1>
-          </div>
-          <div className="accueil-restaurateur__sums">
-            <LargeSumRestaurateur title="Ventes du jour" value={stats ? `${stats.totalSalesToday.toFixed(2)}€` : '...'} />
-            <LargeSumRestaurateur title="Commandes du jour" value={stats ? stats.totalOrdersToday : '...'} />
-            <LargeSumRestaurateur title="Panier moyen" value={stats ? `${stats.avgOrderValueGlobal.toFixed(2)}€` : '...'} />
-            <LargeSumRestaurateur title="Ventes du mois" value={stats ? `${stats.totalSalesMonth.toFixed(2)}€` : '...'} />
-            <LargeSumRestaurateur title="Commandes du mois" value={stats ? stats.totalOrdersMonth : '...'} />
-            <LargeSumRestaurateur title="Plat du mois" value={stats ? stats.bestMenu : '...'} />
-          </div>
-          <div className="accueil-restaurateur__charts">
-            <BarChartRestaurateur />
-          </div>
-        </main>
+      <SidebarRestaurateur />
+      <div className="accueil-restaurateur__content">
+        <div className="dashboard-header">
+          <p className="dashboard-header__greeting">Bonjour, {restaurantName}</p>
+          <h1 className="dashboard-header__title">Vos performances</h1>
+        </div>
+        <div className="accueil-restaurateur__sums">
+          <LargeSumRestaurateur title="Ventes du jour" value={stats ? `${stats.totalSalesToday.toFixed(2)}€` : '...'} />
+          <LargeSumRestaurateur title="Commandes du jour" value={stats ? stats.totalOrdersToday : '...'} />
+          <LargeSumRestaurateur title="Panier moyen" value={stats ? `${stats.avgOrderValueGlobal.toFixed(2)}€` : '...'} />
+          <LargeSumRestaurateur title="Ventes du mois" value={stats ? `${stats.totalSalesMonth.toFixed(2)}€` : '...'} />
+          <LargeSumRestaurateur title="Commandes du mois" value={stats ? stats.totalOrdersMonth : '...'} />
+          <LargeSumRestaurateur title="Plat du mois" value={stats ? stats.bestMenu : '...'} />
+        </div>
+        <div className="accueil-restaurateur__charts">
+          <BarChartRestaurateur />
+        </div>
       </div>
     </div>
   )

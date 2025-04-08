@@ -18,6 +18,8 @@ const {
  * @apiBody {String} address Adresse
  * @apiBody {String} category Catégorie (ex: asiatique, italien...)
  * @apiBody {String} image URL de l'image
+ * @apiBody {Object} opening_hours Horaires d'ouverture
+ * @apiBody {String} idOwner ID de l'utilisateur propriétaire
  * @apiSuccess {Object} restaurant Restaurant créé
  * @apiError 400 Erreur de validation
  */
@@ -46,11 +48,13 @@ router.get('/:id', getRestaurantById)
  * @apiName UpdateRestaurant
  * @apiGroup Restaurants
  * @apiParam {String} id ID du restaurant
- * @apiBody {String} [name] Nom
- * @apiBody {String} [description] Description
- * @apiBody {String} [address] Adresse
- * @apiBody {String} [category] Catégorie
- * @apiBody {String} [image] URL image
+ * @apiBody {String} name Nom du restaurant
+ * @apiBody {String} description Description du restaurant
+ * @apiBody {String} address Adresse
+ * @apiBody {String} category Catégorie (ex: asiatique, italien...)
+ * @apiBody {String} image URL de l'image
+ * @apiBody {Object} opening_hours Horaires d'ouverture
+ * @apiBody {String} idOwner ID de l'utilisateur propriétaire
  * @apiSuccess {Object} restaurant Restaurant mis à jour
  * @apiError 404 Restaurant non trouvé
  */

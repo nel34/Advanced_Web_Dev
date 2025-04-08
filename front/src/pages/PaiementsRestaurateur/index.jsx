@@ -72,20 +72,18 @@ export default function PaiementsRestaurateur() {
 
   return (
     <div className="accueil-restaurateur">
-      <div className="accueil-restaurateur__body">
-        <SidebarRestaurateur />
-        <main className="accueil-restaurateur__content">
-          <h2>Vos paiements :</h2>
-          <div className="paiement-list">
-            {orders.length > 0 ? (
-              orders.map((order) => (
-                <CardPaiement key={order._id} delivery={order} />
-              ))
-            ) : (
-              <p style={{ fontStyle: 'italic' }}>Aucun paiement terminé.</p>
-            )}
-          </div>
-        </main>
+      <SidebarRestaurateur />
+      <div className="accueil-restaurateur__content">
+        <h2>Vos paiements :</h2>
+        <div className="paiement-list">
+          {orders.length > 0 ? (
+            orders.map((order) => (
+              <CardPaiement key={order._id} delivery={order} />
+            ))
+          ) : (
+            <p style={{ fontStyle: 'italic' }}>Aucun paiement terminé.</p>
+          )}
+        </div>
       </div>
 
       <GlobalPopup
