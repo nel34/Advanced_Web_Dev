@@ -99,6 +99,25 @@ const Delivery = () => {
       String(order.delivery_person_id) === String(deliveryPersonId)
   )
 
+  useEffect(() => {
+    const fetchRestaurantDetails = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/restaurants')
+        const restaurantData = res.data.reduce((acc, restaurant) => {
+          acc[restaurant._id] = restaurant
+          return acc
+        }, {})
+        setRestaurantDetails(restaurantData)
+      } catch (err) {
+        console.error('Erreur lors du chargement des détails des restaurants :', err)
+      }
+    }
+
+    fetchRestaurantDetails()
+  }, [])
+
+  const [restaurantDetails, setRestaurantDetails] = useState({})
+
   return (
     <div className="home home--secondary">
       <main className="delivery-container">
@@ -111,9 +130,14 @@ const Delivery = () => {
             ) : (
               myActiveOrders.map(order => (
                 <div key={order._id} className="order">
-                  <p><strong>Commande ID :</strong> {order._id}</p>
-                  <p><strong>Prix :</strong> {order.total} €</p>
-                  <p><strong>Adresse :</strong> {order.location}</p>
+                  <p><strong>Client :</strong> {order.username}</p>
+                  {restaurantDetails[order.restaurant_id] && (
+                    <>
+                      <p><strong>Restaurant :</strong> {restaurantDetails[order.restaurant_id].name}</p>
+                      <p><strong>Adresse du restaurant :</strong> {restaurantDetails[order.restaurant_id].address}</p>
+                    </>
+                  )}
+                  <p><strong>Adresse de livraison :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
                     <button className="btn-delivered" onClick={() => markAsDelivered(order)}>Livré</button>
@@ -127,20 +151,29 @@ const Delivery = () => {
         <section className="info-section">
           <h2>Commandes disponibles</h2>
           <div className="orders-grid">
-            {availableOrders
-              .filter(order => order.status === 'Pending_Delivery')
-              .map(order => (
-                <div key={order._id} className="order">
-                  <p><strong>Commande ID :</strong> {order._id}</p>
-                  <p><strong>Prix :</strong> {order.total} €</p>
-                  <p><strong>Adresse :</strong> {order.location}</p>
-                  <div className="order__actions">
-                    <button className="btn-accept" onClick={() => acceptOrder(order)}>Accepter</button>
-                    <button className="btn-refuse" onClick={() => refuseOrder(order)}>Refuser</button>
-                    <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
+            {availableOrders.filter(order => order.status === 'Pending_Delivery').length === 0 ? (
+              <p>Aucune commande disponible</p>
+            ) : (
+              availableOrders
+                .filter(order => order.status === 'Pending_Delivery')
+                .map(order => (
+                  <div key={order._id} className="order">
+                    <p><strong>Client :</strong> {order.username}</p>
+                    {restaurantDetails[order.restaurant_id] && (
+                      <>
+                        <p><strong>Restaurant :</strong> {restaurantDetails[order.restaurant_id].name}</p>
+                        <p><strong>Adresse du restaurant :</strong> {restaurantDetails[order.restaurant_id].address}</p>
+                      </>
+                    )}
+                    <p><strong>Adresse de livraison :</strong> {order.location}</p>
+                    <div className="order__actions">
+                      <button className="btn-accept" onClick={() => acceptOrder(order)}>Accepter</button>
+                      <button className="btn-refuse" onClick={() => refuseOrder(order)}>Refuser</button>
+                      <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+            )}
           </div>
         </section>
 
@@ -152,9 +185,14 @@ const Delivery = () => {
             ) : (
               myDeliveredOrders.map(order => (
                 <div key={order._id} className="order">
-                  <p><strong>Commande ID :</strong> {order._id}</p>
-                  <p><strong>Prix :</strong> {order.total} €</p>
-                  <p><strong>Adresse :</strong> {order.location}</p>
+                  <p><strong>Client :</strong> {order.username}</p>
+                  {restaurantDetails[order.restaurant_id] && (
+                    <>
+                      <p><strong>Restaurant :</strong> {restaurantDetails[order.restaurant_id].name}</p>
+                      <p><strong>Adresse du restaurant :</strong> {restaurantDetails[order.restaurant_id].address}</p>
+                    </>
+                  )}
+                  <p><strong>Adresse de livraison :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
                   </div>
@@ -166,7 +204,11 @@ const Delivery = () => {
 
         {/* Popups */}
         {showDetails && (
-          <OrderDetailsPopup order={selectedOrder} onClose={toggleDetails} />
+          <OrderDetailsPopup 
+            order={selectedOrder} 
+            restaurantDetails={restaurantDetails[selectedOrder?.restaurant_id] || {}} 
+            onClose={toggleDetails} 
+          />
         )}
       </main>
     </div>
