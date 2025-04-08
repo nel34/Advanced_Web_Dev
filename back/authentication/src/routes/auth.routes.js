@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser, toggleSuspension } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
-const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = require('../middlewares/role.middleware')
+const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician, isCommercial } = require('../middlewares/role.middleware')
 
 /**
  * @api {post} /register Créer un utilisateur
@@ -12,7 +12,7 @@ const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = requi
  * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} email Adresse e-mail
  * @apiBody {String} password Mot de passe
- * @apiBody {String="client","livreur","restaurateur","developer","technician"} role Rôle de l'utilisateur
+ * @apiBody {String="client","livreur","restaurateur","developer","technician", "commercial"} role Rôle de l'utilisateur
  * @apiBody {String} [referralCodeInput] Code de parrainage (facultatif)
  *
  * @apiSuccess {String} message Message de confirmation
@@ -135,6 +135,20 @@ router.get('/developer', authenticateToken, isDeveloper, (req, res) => {
 // Route accessible uniquement au Techniciens
 router.get('/technician', authenticateToken, isTechnician, (req, res) => {
   res.json({ message: 'Bienvenue technicien !' })
+})
+
+/**
+ * @api {get} /commercial Accès commercials
+ * @apiName CommercialAccess
+ * @apiGroup Roles
+ *
+ * @apiHeader {String} Authorization Bearer token d'accès
+ *
+ * @apiSuccess {String} message Message de bienvenue commercial
+ */
+// Route accessible uniquement au Techniciens
+router.get('/commercial', authenticateToken, isCommercial, (req, res) => {
+  res.json({ message: 'Bienvenue commercial !' })
 })
 
 /**
@@ -278,5 +292,22 @@ router.put('/users/:id', authenticateToken, updateUser)
  * @apiError 500 Erreur serveur
  */
 router.delete('/users/:id', authenticateToken, deleteUser)
+
+/**
+ * @api {put} /users/:id/suspend Suspendre ou réactiver un utilisateur
+ * @apiName ToggleSuspension
+ * @apiGroup Auth
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ *
+ * @apiParam {Number} id ID de l'utilisateur à suspendre/réactiver
+ *
+ * @apiSuccess {String} message Message de confirmation
+ * @apiSuccess {Boolean} isSuspended Statut mis à jour (true si suspendu)
+ *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 500 Erreur serveur
+ */
+router.put('/users/:id/suspend', authenticateToken, isCommercial, toggleSuspension)
 
 module.exports = router

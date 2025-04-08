@@ -45,13 +45,14 @@ router.get('/:id', getOrderById)
  *
  * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
+ * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant
- * @apiBody {String} delivery_person_id ID du livreur
- * @apiBody {String="Pending_Restaurateur","In_Progress","Pending_Delivery","In_Delivery","Delivered","Cancelled"} status Statut de la commande
+ * @apiBody {String} [delivery_person_id] ID du livreur (peut être null)
+ * @apiBody {String="Pending_Restaurateur","In_Progress","Pending_Delivery","In_Delivery","Delivered","Cancelled"} [status] Statut de la commande (défaut: "Pending_Restaurateur")
  * @apiBody {Date} [estimated_time] Heure estimée de livraison
  * @apiBody {String} [delivery_person_name] Nom du livreur
- * @apiBody {String} menu_name Nom du menu commandé
- * @apiBody {Number} menu_price Prix du menu
+ * @apiBody {String[]} menu Tableau d'IDs de menus (format: array de strings)
+ * @apiBody {Number} total Montant total de la commande
  * @apiBody {String} location Adresse de livraison (ex: "81 rue de la Montre")
  * @apiSuccess {Object} order Commande créée
  */
@@ -65,13 +66,14 @@ router.post('/', createOrder)
  *
  * @apiBody {String} order_id ID unique de la commande
  * @apiBody {String} user_id ID de l'utilisateur
+ * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} restaurant_id ID du restaurant
- * @apiBody {String} delivery_person_id ID du livreur
- * @apiBody {String="Pending_Restaurateur","In_Progress","Pending_Delivery","In_Delivery","Delivered","Cancelled"} status Statut de la commande
+ * @apiBody {String} [delivery_person_id] ID du livreur (peut être null)
+ * @apiBody {String="Pending_Restaurateur","In_Progress","Pending_Delivery","In_Delivery","Delivered","Cancelled"} [status] Statut de la commande
  * @apiBody {Date} [estimated_time] Heure estimée de livraison
  * @apiBody {String} [delivery_person_name] Nom du livreur
- * @apiBody {String} menu_name Nom du menu commandé
- * @apiBody {Number} menu_price Prix du menu
+ * @apiBody {String[]} menu Tableau d'IDs de menus (format: array de strings)
+ * @apiBody {Number} total Montant total de la commande
  * @apiBody {String} location Adresse de livraison (ex: "81 rue de la Montre")
  * @apiSuccess {Object} order Commande mise à jour
  */

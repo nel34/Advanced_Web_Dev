@@ -4,6 +4,7 @@ const OrderSchema = new mongoose.Schema({
   order_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },
   user_id: { type: String, required: true },
+  username: { type: String, required: true },
   delivery_person_id: { type: String, required: false, default: null },
   status: {
     type: String,
@@ -20,8 +21,8 @@ const OrderSchema = new mongoose.Schema({
   },
   estimated_time: { type: Date },
   delivery_person_name: { type: String, required: false, default: null },
-  menu_name: { type: String, required: true },
-  menu_price: { type: Number, required: true },
+  menu: [{ type: String, required: true }],
+  total: { type: Number, required: true },
   location: { type: String, required: true }
 }, {
   timestamps: true

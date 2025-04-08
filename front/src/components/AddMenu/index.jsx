@@ -66,12 +66,18 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
 
   const handleCreateMenu = async () => {
     try {
-      const newMenu = { ...formData, restaurantId }
+      const newMenu = {
+        ...formData,
+        restaurantId,
+        price: parseFloat(formData.price), 
+      }
+
+      console.log('Menu envoyé :', newMenu)
       const res = await axios.post('http://localhost:8080/api/menus', newMenu)
       onMenuCreated(res.data)
       onClose()
     } catch (err) {
-      console.error('Erreur lors de la création du menu :', err)
+      console.error('Erreur lors de la création du menu :', err.response?.data || err.message)
     }
   }
 

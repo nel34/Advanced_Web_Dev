@@ -32,3 +32,10 @@ exports.isTechnician = (req, res, next) => {
   }
   return res.status(403).json({ error: 'Accès réservé aux techniciens' })
 }
+
+exports.isCommercial = (req, res, next) => {
+  if (req.user && req.user.role === 'commercial') {
+    return next()
+  }
+  return res.status(403).json({ error: 'Accès réservé aux Commercials' })
+}

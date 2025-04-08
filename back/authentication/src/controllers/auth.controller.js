@@ -6,7 +6,7 @@ dotenv.config()
 
 exports.register = async (req, res) => {
   const { username, email, password, role, referralCodeInput } = req.body;
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician'];
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician', 'commercial'];
 
   if (!rolesAutorises.includes(role)) {
     return res.status(400).json({ error: 'Rôle invalide' });
@@ -85,6 +85,10 @@ exports.login = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ error: 'Utilisateur introuvable' })
+    }
+
+    if (user.isSuspended) {
+      return res.status(403).json({ error: 'Compte suspendu. Veuillez contacter le support.' })
     }
 
     const isValid = await bcrypt.compare(password, user.password)
@@ -220,7 +224,7 @@ exports.validateApiKey = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy', 'isSuspended', 'createdAt', 'updatedAt'],
     })
 
     res.status(200).json(users)
@@ -233,7 +237,7 @@ exports.getUserById = async (req, res) => {
   const { id } = req.params
   try {
     const user = await User.findByPk(id, {
-      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy'],
     })
 
     if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
@@ -245,7 +249,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { username, email, role, apiKey, password } = req.body
+  const { username, email, role, password } = req.body
 
   try {
     const user = await User.findByPk(id)
@@ -276,6 +280,25 @@ exports.deleteUser = async (req, res) => {
 
     await user.destroy()
     res.status(200).json({ message: 'Utilisateur supprimé avec succès' })
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur serveur', details: err.message })
+  }
+}
+
+exports.toggleSuspension = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findByPk(id)
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+
+    user.isSuspended = !user.isSuspended
+    await user.save()
+
+    res.status(200).json({
+      message: `Utilisateur ${user.isSuspended ? 'suspendu' : 'réactivé'} avec succès`,
+      isSuspended: user.isSuspended
+    })
   } catch (err) {
     res.status(500).json({ error: 'Erreur serveur', details: err.message })
   }

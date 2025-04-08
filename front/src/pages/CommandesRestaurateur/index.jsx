@@ -5,33 +5,30 @@ import CommandeCard from '../../components/CommandeCard'
 import './index.sass'
 
 export default function CommandesRestaurateur() {
-  const [deliveries, setDeliveries] = useState([])
+  const [orders, setOrders] = useState([])
+  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
 
-  const RESTAURANT_ID = '670000000000000000000001' // ID restaurateur en dur
-
-  const fetchDeliveries = async () => {
+  const fetchOrders = async () => {
     try {
-      const res = await axios.get('http://localhost:8080/api/deliveries')
+      const res = await axios.get(`http://localhost:8080/api/orders`)
       const filtered = res.data.filter(
-        (delivery) =>
-          delivery.restaurant_id === RESTAURANT_ID &&
-          delivery.status !== 'refused' &&
-          delivery.status !== 'finished'
+        (order) =>
+          order.restaurant_id === RESTAURANT_ID &&
+          order.status !== 'Delivered' &&
+          order.status !== 'Cancelled'
       )
-      setDeliveries(filtered)
+      
+      
+      setOrders(filtered)
     } catch (err) {
-      console.error('Erreur lors du chargement des livraisons :', err)
+      console.error('Erreur lors du chargement des commandes :', err)
     }
   }
 
   useEffect(() => {
-    fetchDeliveries() // initial load
-
-    const intervalId = setInterval(() => {
-      fetchDeliveries() // refresh every 5 sec
-    }, 5000)
-
-    return () => clearInterval(intervalId) // cleanup on unmount
+    fetchOrders()
+    const intervalId = setInterval(fetchOrders, 5000)
+    return () => clearInterval(intervalId)
   }, [])
 
   return (
@@ -41,12 +38,12 @@ export default function CommandesRestaurateur() {
         <main className="accueil-restaurateur__content">
           <h2>Vos Commandes :</h2>
           <div className="commande-list">
-            {deliveries.length > 0 ? (
-              deliveries.map((delivery) => (
+            {orders.length > 0 ? (
+              orders.map((order) => (
                 <CommandeCard
-                  key={delivery._id}
-                  delivery={delivery}
-                  onUpdate={fetchDeliveries}
+                  key={order._id}
+                  order={order}
+                  onUpdate={fetchOrders}
                 />
               ))
             ) : (

@@ -31,7 +31,7 @@ exports.createMenu = async (req, res) => {
     }
 
     // Vérifier si tous les produits existent
-    for (const productId of req.body.productId) {
+    for (const productId of req.body.product) {
       const productResponse = await axios.get(`http://nginx:8080/api/products/${productId}`)
       if (productResponse.status !== 200) {
         return res.status(404).json({ message: `Product with ID ${productId} not found` })
