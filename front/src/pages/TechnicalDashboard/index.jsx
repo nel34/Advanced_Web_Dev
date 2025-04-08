@@ -70,7 +70,7 @@ export default function TechnicalPage() {
 
   return (
     <div className="technical-page">
-      <h1 className="dashboard-title" onClick={() => window.location.href = 'http://localhost/technical'}>
+      <h1 className="dashboard-title" onClick={() => window.location.href = '/technical'}>
         Dashboard Technicien
       </h1>
 
