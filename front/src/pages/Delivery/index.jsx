@@ -49,6 +49,24 @@ const Delivery = () => {
     }
   }
 
+  const refuseOrder = async (order) => {
+    try {
+      const updatedOrder = {
+        ...order,
+        status: 'Cancelled'
+      }
+  
+      await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
+  
+      setTimeout(() => {
+        fetchAvailableOrders()
+      }, 300)
+    } catch (err) {
+      console.error("Erreur lors du refus de la commande :", err)
+    }
+  }
+  
+
   const markAsDelivered = async (order) => {
     try {
       const updatedOrder = {
@@ -117,7 +135,7 @@ const Delivery = () => {
                   <p><strong>Adresse :</strong> {order.location}</p>
                   <div className="order__actions">
                     <button className="btn-accept" onClick={() => acceptOrder(order)}>Accepter</button>
-                    <button className="btn-refuse">Refuser</button>
+                    <button className="btn-refuse" onClick={() => refuseOrder(order)}>Refuser</button>
                     <button className="btn-details" onClick={() => toggleDetails(order)}>Voir les détails</button>
                   </div>
                 </div>
