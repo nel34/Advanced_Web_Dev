@@ -2,15 +2,24 @@ import './index.sass'
 import { Link } from 'react-router-dom'
 import Button from '../../components/Button'
 import { useAuth } from '../../context/AuthContext'
+import TechnicalNotification from '../../components/TechnicalNotification'
+import { useState, useEffect } from 'react'
 
 export default function AuthForm({ mode = 'login' }) {
   const isLogin = mode === 'login'
-  const { login, register } = useAuth()
+  const { login, register, notification, setNotification } = useAuth()
   const subdomain = window.location.hostname.split('.')[0]
 
   return (
     <div className="home home--center">
       <h1>{isLogin ? 'Se connecter' : 'S\'inscrire'}</h1>
+      {notification && (
+        <TechnicalNotification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}      
       <form className='form'>
 
         {isLogin ? (
@@ -87,20 +96,29 @@ export default function AuthForm({ mode = 'login' }) {
           content={isLogin ? 'Se connecter' : 'S\'inscrire'}
           onClick={async (e) => {
             e.preventDefault()
-
+            setNotification(null) // reset
+          
             const identifier = isLogin ? document.getElementById('identifier').value : null
             const email = !isLogin ? document.getElementById('email').value : null
             const username = !isLogin ? document.getElementById('username').value : null
             const password = document.getElementById('password').value
             const confirmPassword = !isLogin ? document.getElementById('confirmPassword').value : null
-
-            if (isLogin) {
-              const payload = identifier.includes('@')
-                ? { email: identifier, password }
-                : { username: identifier, password }
-              await login(payload)
-            } else {
-              await register({ username, email, password, confirmPassword })
+            const referralCode = document.getElementById('referralCode')?.value
+          
+            try {
+              if (isLogin) {
+                const payload = identifier.includes('@')
+                  ? { email: identifier, password }
+                  : { username: identifier, password }
+                await login(payload)
+              } else {
+                await register({ username, email, password, referralCode, confirmPassword })
+              }
+            } catch (err) {
+              setNotification({
+                message: "Une erreur est survenue. Veuillez réessayer.",
+                type: "error"
+              })
             }
           }}
         />
