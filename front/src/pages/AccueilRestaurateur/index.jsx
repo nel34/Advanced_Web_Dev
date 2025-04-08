@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import SidebarRestaurateur from '../../components/SidebarRestaurateur'
 import LargeSumRestaurateur from '../../components/LargeSumRestaurateur'
 import BarChartRestaurateur from '../../components/BarChartRestaurateur'
@@ -6,16 +7,27 @@ import './index.sass'
 import axios from 'axios'
 
 export default function AccueilRestaurateur() {
-  const [stats, setStats] = useState(null)
+  const { user } = useAuth()
+  const [restaurantId, setRestaurantId] = useState('')
   const [restaurantName, setRestaurantName] = useState('')
-  const RESTAURANT_ID = '67f3d283bdc278e3e020baef'
+  const [stats, setStats] = useState(null)
 
-  const fetchStats = async () => {
+  const fetchRestaurantInfo = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/restaurants/user/${user.id}`)
+      setRestaurantId(res.data._id)
+      setRestaurantName(res.data.name)
+    } catch (err) {
+      console.error('Erreur lors de la récupération du restaurant :', err)
+    }
+  }
+
+  const fetchStats = async (id) => {
     try {
       const resOrders = await axios.get('http://localhost:8080/api/orders')
       const filteredOrders = resOrders.data.filter(
         (order) =>
-          order.restaurant_id === RESTAURANT_ID &&
+          order.restaurant_id === id &&
           order.status === 'Delivered'
       )
 
@@ -61,25 +73,21 @@ export default function AccueilRestaurateur() {
     }
   }
 
-  const fetchRestaurantName = async () => {
-    try {
-      const res = await axios.get(`http://localhost:8080/api/restaurants/${RESTAURANT_ID}`)
-      setRestaurantName(res.data.name)
-    } catch (err) {
-      console.error('Erreur lors de la récupération du nom du restaurant :', err)
+  useEffect(() => {
+    if (user?.id) {
+      fetchRestaurantInfo()
     }
-  }
+  }, [user])
 
   useEffect(() => {
-    fetchStats()
-    fetchRestaurantName()
-
-    const intervalId = setInterval(() => {
-      fetchStats()
-    }, 5000)
-
-    return () => clearInterval(intervalId)
-  }, [])
+    if (restaurantId) {
+      fetchStats(restaurantId)
+      const intervalId = setInterval(() => {
+        fetchStats(restaurantId)
+      }, 5000)
+      return () => clearInterval(intervalId)
+    }
+  }, [restaurantId])
 
   return (
     <div className="accueil-restaurateur">

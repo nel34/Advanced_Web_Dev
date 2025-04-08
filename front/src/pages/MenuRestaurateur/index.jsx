@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
 import axios from 'axios'
 import SidebarRestaurateur from '../../components/SidebarRestaurateur'
 import MenuCardRestaurateur from '../../components/MenuCardRestaurateur'
@@ -6,16 +7,33 @@ import AddMenuModal from '../../components/AddMenu'
 import './index.sass'
 
 export default function MenuRestaurateur() {
+  const { user } = useAuth()
+  const [restaurantId, setRestaurantId] = useState('')
   const [menus, setMenus] = useState([])
   const [availableProducts, setAvailableProducts] = useState([])
   const [showModal, setShowModal] = useState(false)
 
-  const restaurantId = '67f3d283bdc278e3e020baef'
+  useEffect(() => {
+    if (user?.id) {
+      fetchRestaurantId()
+    }
+  }, [user])
 
   useEffect(() => {
-    fetchMenus()
-    fetchProducts()
-  }, [])
+    if (restaurantId) {
+      fetchMenus()
+      fetchProducts()
+    }
+  }, [restaurantId])
+
+  const fetchRestaurantId = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/restaurants/user/${user.id}`)
+      setRestaurantId(res.data._id)
+    } catch (err) {
+      console.error('Erreur lors de la récupération de l’ID du restaurant :', err)
+    }
+  }
 
   const fetchMenus = async () => {
     try {
@@ -63,7 +81,7 @@ export default function MenuRestaurateur() {
         </main>
       </div>
 
-      {showModal && (
+      {showModal && restaurantId && (
         <AddMenuModal
           restaurantId={restaurantId}
           onClose={() => setShowModal(false)}
