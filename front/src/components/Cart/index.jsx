@@ -28,16 +28,20 @@ export default function Cart({ onClose }) {
         {cart.length === 0 ? (
           <p>Votre panier est vide</p>
         ) : (
-          cart.map((item) => (
-            <CartItem key={item._id} data={item} />
-          ))
+          <>
+            <div className='cart__info__items'>
+              {cart.map((item) => (
+                <CartItem key={item._id} data={item} />
+              ))}
+            </div>
+            <div className='cart__info__total'>
+              <p>Total: {getTotalPrice()} €</p>
+              <Link to='/checkout'>
+                <Button content='Valider la commande' onClick={closeCart} />
+              </Link>
+            </div>
+          </>
         )}
-        <div className='cart__info__total'>
-          <p>Total: {getTotalPrice()} €</p>
-          <Link to='/checkout'>
-            <Button content='Valider la commande' onClick={closeCart} />
-          </Link>
-        </div>
       </div>
     </div>
   )

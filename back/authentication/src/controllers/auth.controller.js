@@ -5,40 +5,53 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 exports.register = async (req, res) => {
-  const { username, email, password, role } = req.body
-  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer','technician']
+  const { username, email, password, role, referralCodeInput } = req.body;
+  const rolesAutorises = ['client', 'restaurateur', 'livreur', 'developer', 'technician', 'commercial'];
 
   if (!rolesAutorises.includes(role)) {
-    return res.status(400).json({ error: 'Rôle invalide' })
+    return res.status(400).json({ error: 'Rôle invalide' });
   }
 
   try {
-    const existingUser = await User.findOne({ where: { email } })
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' })
+      return res.status(400).json({ error: 'Cette adresse email est déjà utilisée' });
     }
 
-    const existingUsername = await User.findOne({ where: { username } })
+    const existingUsername = await User.findOne({ where: { username } });
     if (existingUsername) {
-      return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' })
+      return res.status(400).json({ error: 'Ce nom d\'utilisateur est déjà pris' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase()
-    const apiKey = require('crypto').randomBytes(32).toString('hex')
+    // Vérification du code de parrainage s'il est fourni
+    let referredBy = null;
+    if (referralCodeInput) {
+      const parrain = await User.findOne({ where: { referralCode: referralCodeInput } });
+      if (!parrain) {
+        return res.status(400).json({ error: 'Code de parrainage invalide' });
+      }
+      referredBy = referralCodeInput;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const apiKey = require('crypto').randomBytes(32).toString('hex');
+
     const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
       role,
       referralCode,
-      apiKey: role === 'developer' ? apiKey : null    })
+      apiKey: role === 'developer' ? apiKey : null,
+      referredBy
+    });
 
-    res.status(201).json({ message: 'Utilisateur enregistré' })
+    res.status(201).json({ message: 'Utilisateur enregistré' });
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message })
+    res.status(500).json({ error: 'Erreur lors de l’inscription', details: error.message });
   }
-}
+};
 
 exports.login = async (req, res) => {
   const { email, username, password } = req.body
@@ -54,6 +67,10 @@ exports.login = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ error: 'Utilisateur introuvable' })
+    }
+
+    if (user.isSuspended) {
+      return res.status(403).json({ error: 'Compte suspendu. Veuillez contacter le support.' })
     }
 
     const isValid = await bcrypt.compare(password, user.password)
@@ -139,18 +156,6 @@ exports.logout = async (req, res) => {
   }
 }
 
-exports.authenticate = (req, res) => {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-
-  if (!token) {return res.status(401).json({ message: 'Token manquant' })}
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {return res.status(401).json({ message: 'Token invalide ou expiré' })}
-    return res.status(200).json({ message: 'Token valide', user: decoded })
-  })
-}
-
 exports.getApiKey = async (req, res) => {
   const user = await User.findByPk(req.user.id)
   if (!user || user.role !== 'developer') {
@@ -197,7 +202,7 @@ exports.validateApiKey = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'referralCode']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy', 'isSuspended', 'createdAt', 'updatedAt'],
     })
 
     res.status(200).json(users)
@@ -210,7 +215,7 @@ exports.getUserById = async (req, res) => {
   const { id } = req.params
   try {
     const user = await User.findByPk(id, {
-      attributes: ['id', 'username', 'email', 'role', 'referralCode']
+      attributes: ['id', 'username', 'email', 'role', 'referralCode', 'referredBy'],
     })
 
     if (!user) {return res.status(404).json({ error: 'Utilisateur non trouvé' })}
@@ -222,7 +227,7 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { username, email, password } = req.body
+  const { username, email, role, password } = req.body
 
   try {
     const user = await User.findByPk(id)
@@ -230,6 +235,7 @@ exports.updateUser = async (req, res) => {
 
     if (username) {user.username = username}
     if (email) {user.email = email}
+    if (role) {user.role = role}
     if (password) {
       const hashedPassword = await bcrypt.hash(password, 10)
       user.password = hashedPassword
@@ -252,6 +258,25 @@ exports.deleteUser = async (req, res) => {
 
     await user.destroy()
     res.status(200).json({ message: 'Utilisateur supprimé avec succès' })
+  } catch (err) {
+    res.status(500).json({ error: 'Erreur serveur', details: err.message })
+  }
+}
+
+exports.toggleSuspension = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findByPk(id)
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé' })
+
+    user.isSuspended = !user.isSuspended
+    await user.save()
+
+    res.status(200).json({
+      message: `Utilisateur ${user.isSuspended ? 'suspendu' : 'réactivé'} avec succès`,
+      isSuspended: user.isSuspended
+    })
   } catch (err) {
     res.status(500).json({ error: 'Erreur serveur', details: err.message })
   }

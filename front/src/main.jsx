@@ -22,6 +22,8 @@ import ThirdDeveloper from './pages/ThirdDeveloper'
 import ProtectedRoute from './components/ProtectedRoute'
 import TechnicalDashboard from './pages/TechnicalDashboard'
 import Delivery from './pages/Delivery'
+import CommercialDashboard from './pages/CommercialDashboard'
+import RestaurantCreation from './pages/RestaurantCreation'
 
 const getSubdomain = () => {
   const host = window.location.hostname
@@ -54,6 +56,7 @@ createRoot(document.getElementById('root')).render(
                   <Route path='/paiements' element={<PaiementsRestaurateur />} />
                   <Route path='/commandes' element={<CommandesRestaurateur />} />
                   <Route path='/menu' element={<MenuRestaurateur />} />
+                  <Route path='/restaurant-creation' element={<RestaurantCreation />} />
                 </Route>
                 <Route path='/login' element={<AuthForm mode='login' />} />
                 <Route path='/signup' element={<AuthForm mode='signup' />} />
@@ -66,6 +69,14 @@ createRoot(document.getElementById('root')).render(
                 <Route path='/login' element={<AuthForm mode='login' />} />
                 <Route path='/signup' element={<AuthForm mode='signup' />} />
               </>
+            ) : subdomain === 'commercial' ? (
+              <>
+                <Route element={<ProtectedRoute role='commercial' />}>
+                  <Route path='/' element={<CommercialDashboard />} />
+                </Route>
+                <Route path='/login' element={<AuthForm mode='login' />} />
+                <Route path='/signup' element={<AuthForm mode='signup' />} />
+              </>              
             ) : subdomain === 'delivery' ? (
               <>
                 <Route element={<ProtectedRoute role='livreur' />}>
@@ -82,10 +93,6 @@ createRoot(document.getElementById('root')).render(
                 <Route path='/signup' element={<AuthForm mode='signup' />} />
                 <Route path='/restaurant/:idRestaurant' element={<Restaurant />} />
                 <Route path='/restaurant/:idRestaurant/:idMenu' element={<Menu />} />
-                <Route path='/help' element={<HelpPage />} />
-                <Route path='/legal-notice' element={<LegalNotice />} />
-                <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-                <Route path='/cookies' element={<Cookies />} />
 
                 <Route element={<ProtectedRoute role='client' />}>
                   <Route path='/account' element={<Account />} />
@@ -94,6 +101,10 @@ createRoot(document.getElementById('root')).render(
                 </Route>
               </>
             )}
+            <Route path='/help' element={<HelpPage />} />
+            <Route path='/legal-notice' element={<LegalNotice />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+            <Route path='/cookies' element={<Cookies />} />
             <Route path='*' element={<Navigate to='/' replace />} />
           </Routes>
         </Layout>

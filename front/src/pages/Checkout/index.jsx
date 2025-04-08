@@ -29,16 +29,16 @@ export default function Checkout() {
         <div className='info-section'>
           <h2>Total de la commande</h2>
           <div className='total-price'>
-            <div>
+            <div className='total-price__item'>
               <p>Sous-total</p>
               <p>{getTotalPrice()} €</p>
             </div>
-            <div>
+            <div className='total-price__item'>
               <p>Frais de livraison</p>
               <p>{deliveryPrice} €</p>
             </div>
             <div className='line'></div>
-            <div>
+            <div className='total-price__item'>
               <p>Total</p>
               <p>{getTotalPrice() + deliveryPrice} €</p>
             </div>

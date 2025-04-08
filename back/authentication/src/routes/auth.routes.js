@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { register, login, refreshToken, logout, authenticate, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser } = require('../controllers/auth.controller')
+const { register, login, refreshToken, logout, getApiKey, regenerateApiKey, getAllUsers, validateApiKey, getUserById, updateUser, deleteUser, toggleSuspension } = require('../controllers/auth.controller')
 const  authenticateToken  = require('../middlewares/auth.middleware')
-const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = require('../middlewares/role.middleware')
+const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician, isCommercial } = require('../middlewares/role.middleware')
 
 /**
  * @api {post} /register Créer un utilisateur
@@ -12,12 +12,16 @@ const { isClient, isLivreur, isRestaurateur, isDeveloper, isTechnician } = requi
  * @apiBody {String} username Nom d'utilisateur
  * @apiBody {String} email Adresse e-mail
  * @apiBody {String} password Mot de passe
- * @apiBody {String="client","livreur","restaurateur","developer","technician"} role Rôle de l'utilisateur
+ * @apiBody {String="client","livreur","restaurateur","developer","technician", "commercial"} role Rôle de l'utilisateur
+ * @apiBody {String} [referralCodeInput] Code de parrainage (facultatif)
  *
  * @apiSuccess {String} message Message de confirmation
- * @apiSuccess {Object} user Données de l'utilisateur créé
+ *
+ * @apiError 400 Adresse email ou nom d'utilisateur déjà utilisé
+ * @apiError 400 Code de parrainage invalide
+ * @apiError 500 Erreur serveur
  */
-router.post('/register', register)
+router.post('/register', register);
 
 /**
  * @api {post} /login Connexion d'un utilisateur
@@ -134,16 +138,37 @@ router.get('/technician', authenticateToken, isTechnician, (req, res) => {
 })
 
 /**
+ * @api {get} /commercial Accès commercials
+ * @apiName CommercialAccess
+ * @apiGroup Roles
+ *
+ * @apiHeader {String} Authorization Bearer token d'accès
+ *
+ * @apiSuccess {String} message Message de bienvenue commercial
+ */
+// Route accessible uniquement au Techniciens
+router.get('/commercial', authenticateToken, isCommercial, (req, res) => {
+  res.json({ message: 'Bienvenue commercial !' })
+})
+
+/**
  * @api {get} /authenticate Vérifie la validité d'un token
  * @apiName Authenticate
  * @apiGroup Auth
  *
- * @apiHeader {String} Authorization Bearer token
+ * @apiHeader {String} Authorization Token d'accès (avec ou sans "Bearer ")
  *
  * @apiSuccess {String} message Token valide
- * @apiSuccess {Object} user Données utilisateur décodées du token
+ * @apiSuccess {Object} user Données utilisateur décodées
+ * @apiError 401 Token manquant
+ * @apiError 403 Token invalide ou expiré
  */
-router.get('/authenticate', authenticate)
+router.get('/authenticate', authenticateToken, (req, res) => {
+  return res.status(200).json({
+    message: 'Token valide',
+    user: req.user
+  });
+});
 
 /**
  * @api {get} /developer/key Récupérer la clé API du développeur
@@ -196,15 +221,20 @@ router.put('/developer/regenerate', authenticateToken, isDeveloper, regenerateAp
  * @apiName GetAllUsers
  * @apiGroup Auth
  *
- * @apiHeader {String} Authorization Token JWT (Bearer)
- * @apiSampleRequest off
+ * @apiHeader {String} Authorization Token JWT au format `Bearer <token>`
  *
- * @apiSuccess {Object[]} users Liste de tous les utilisateurs
- * @apiSuccess {Number} users.id ID
+ * @apiDescription Cette route permet de récupérer la liste de tous les utilisateurs enregistrés. Elle est protégée par un token JWT. Assurez-vous de fournir un en-tête `Authorization` avec un token valide.
+ *
+ * @apiSuccess {Object[]} users Liste des utilisateurs
+ * @apiSuccess {Number} users.id ID de l'utilisateur
  * @apiSuccess {String} users.username Nom d'utilisateur
- * @apiSuccess {String} users.email Email
- * @apiSuccess {String} users.role Rôle (client, livreur, etc.)
- * @apiError 500 Erreur interne
+ * @apiSuccess {String} users.email Adresse email
+ * @apiSuccess {String} users.role Rôle de l'utilisateur (client, livreur, restaurateur, etc.)
+ * @apiSuccess {String} users.referralCode Code de parrainage
+ * @apiSuccess {String} [users.apiKey] Clé API (si développeur)
+ *
+ * @apiError 401 Token manquant ou invalide
+ * @apiError 500 Erreur serveur
  */
 router.get('/users', authenticateToken, getAllUsers)
 
@@ -262,5 +292,22 @@ router.put('/users/:id', authenticateToken, updateUser)
  * @apiError 500 Erreur serveur
  */
 router.delete('/users/:id', authenticateToken, deleteUser)
+
+/**
+ * @api {put} /users/:id/suspend Suspendre ou réactiver un utilisateur
+ * @apiName ToggleSuspension
+ * @apiGroup Auth
+ *
+ * @apiHeader {String} Authorization Token JWT (Bearer)
+ *
+ * @apiParam {Number} id ID de l'utilisateur à suspendre/réactiver
+ *
+ * @apiSuccess {String} message Message de confirmation
+ * @apiSuccess {Boolean} isSuspended Statut mis à jour (true si suspendu)
+ *
+ * @apiError 404 Utilisateur introuvable
+ * @apiError 500 Erreur serveur
+ */
+router.put('/users/:id/suspend', authenticateToken, isCommercial, toggleSuspension)
 
 module.exports = router

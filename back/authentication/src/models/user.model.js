@@ -34,6 +34,15 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  referredBy: {
+    type: DataTypes.STRING,
+    allowNull: true, 
+  },
+  isSuspended: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 })
 
 module.exports = User
