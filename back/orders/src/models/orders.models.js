@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const OrderSchema = new mongoose.Schema({
-  order_id: { type: String, required: true },
   restaurant_id: { type: String, required: true },
   user_id: { type: String, required: true },
   username: { type: String, required: true },
@@ -17,9 +16,8 @@ const OrderSchema = new mongoose.Schema({
       'Cancelled'
     ],
     default: 'Pending_Restaurateur',
-    required: true
+    required: false
   },
-  estimated_time: { type: Date },
   delivery_person_name: { type: String, required: false, default: null },
   menu: [{ type: String, required: true }],
   total: { type: Number, required: true },
