@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import ClientCard from '../../components/ClientCard'
+import CommercialStats from '../../components/CommercialStats'
 import NotificationPopupTechnical from '../../components/TechnicalNotification'
 import './index.sass'
 
 export default function CommercialDashboard() {
   const [clients, setClients] = useState([])
+  const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -28,13 +30,11 @@ export default function CommercialDashboard() {
       const allUsers = res.data
       const clientsOnly = allUsers.filter(user => user.role === 'client')
 
-      // Créer une map referralCode → username
       const referralMap = {}
       allUsers.forEach(user => {
         referralMap[user.referralCode] = user.username
       })
 
-      // Remplacer referredBy par le nom du parrain si trouvé
       const enrichedClients = clientsOnly.map(client => ({
         ...client,
         referredByName: referralMap[client.referredBy] || null
@@ -49,16 +49,27 @@ export default function CommercialDashboard() {
     }
   }
 
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/orders')
+      setOrders(res.data)
+    } catch (err) {
+      console.error('Erreur lors de la récupération des commandes :', err)
+    }
+  }
+
   useEffect(() => {
     fetchClients()
+    fetchOrders()
   }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetchClients() // actualisation silencieuse
-    }, 10000) // 10 secondes, à adapter si besoin
+      fetchClients()
+      fetchOrders()
+    }, 10000)
 
-    return () => clearInterval(interval) // nettoyage
+    return () => clearInterval(interval)
   }, [])
 
   const handleSuspend = async (userId) => {
@@ -110,6 +121,7 @@ export default function CommercialDashboard() {
       setNotification({ type: 'error', message: 'Erreur lors de la modification du compte' })
     }
   }
+
   const handleDelete = async (userId) => {
     try {
       const userData = JSON.parse(localStorage.getItem('user') || '{}')
@@ -138,7 +150,6 @@ export default function CommercialDashboard() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const usersPerPage = 4
-
   const [search, setSearch] = useState('')
 
   const filteredClients = clients.filter(client => {
@@ -165,8 +176,9 @@ export default function CommercialDashboard() {
   return (
     <div className="commercial-dashboard">
       <h1 className="page-title" onClick={() => window.location.href = '/commercial'}>
-                Dashboard Commercial
+        Dashboard Commercial
       </h1>
+
       {notification && (
         <NotificationPopupTechnical
           type={notification.type}
@@ -174,6 +186,7 @@ export default function CommercialDashboard() {
           onClose={() => setNotification(null)}
         />
       )}
+
       <div className="dashboard-header">
         <h2>Gestion des comptes clients</h2>
         <input
@@ -203,6 +216,10 @@ export default function CommercialDashboard() {
           <p>{clients.filter(c => c.referredBy).length}</p>
         </div>
       </div>
+
+      {/* ✅ Affichage de toutes les commandes */}
+      <CommercialStats orders={orders} />
+
       {loading && <p>Chargement en cours...</p>}
       {error && <p className="error">{error}</p>}
 
@@ -218,6 +235,7 @@ export default function CommercialDashboard() {
           />
         ))}
       </div>
+
       <div className="pagination">
         <button onClick={handlePrev} disabled={currentPage === 1}>◀ Précédent</button>
         <span>Page {currentPage} / {totalPages}</span>
