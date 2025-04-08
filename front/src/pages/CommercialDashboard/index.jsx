@@ -56,7 +56,7 @@ export default function CommercialDashboard() {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchClients() // actualisation silencieuse
-    }, 10000) // 10 secondes, à adapter si besoin
+    }, 30000) // 10 secondes, à adapter si besoin
 
     return () => clearInterval(interval) // nettoyage
   }, [])

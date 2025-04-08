@@ -41,7 +41,7 @@ async function initDatabase() {
     try {
       await sequelize.authenticate()
       console.log('Connexion à MySQL réussie')
-      await sequelize.sync({ alter: true })
+      await sequelize.sync();
       console.log('Tables synchronisées')
       break
     } catch (err) {
