@@ -12,7 +12,7 @@ export default function AccueilRestaurateur() {
 
   const fetchStats = async () => {
     try {
-      const resOrders = await axios.get(`http://localhost:8080/api/orders`)
+      const resOrders = await axios.get('http://localhost:8080/api/orders')
       const filteredOrders = resOrders.data.filter(
         (order) =>
           order.restaurant_id === RESTAURANT_ID &&

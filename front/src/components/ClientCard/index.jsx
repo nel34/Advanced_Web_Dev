@@ -32,9 +32,9 @@ export default function ClientCard({ client, onUpdate, onSuspend, onEdit, onDele
   }
 
   const [confirmDelete, setConfirmDelete] = useState(false)
-  
+
   const handleDeleteConfirm = (userId) => {
-    const confirm = window.confirm("Êtes-vous sûr de vouloir supprimer ce compte client ? Cette action est irréversible.")
+    const confirm = window.confirm('Êtes-vous sûr de vouloir supprimer ce compte client ? Cette action est irréversible.')
     if (confirm) {
       onDelete(userId)
     }
@@ -42,28 +42,28 @@ export default function ClientCard({ client, onUpdate, onSuspend, onEdit, onDele
 
   return (
     <div className="client-card">
-        <div className="card-header">
+      <div className="card-header">
         <h3>{isEditing ? (
-            <input
+          <input
             type="text"
             value={editedUsername}
             onChange={(e) => setEditedUsername(e.target.value)}
-            />
+          />
         ) : username}</h3>
 
         <div className="card-tools">
-            <span className={`status ${isSuspended ? 'suspended' : 'active'}`}>
+          <span className={`status ${isSuspended ? 'suspended' : 'active'}`}>
             {isSuspended ? 'Suspendu' : 'Actif'}
-            </span>
-            <button
-                className="delete-btn"
-                title="Supprimer ce compte"
-                onClick={() => handleDeleteConfirm(id)}
-            >
+          </span>
+          <button
+            className="delete-btn"
+            title="Supprimer ce compte"
+            onClick={() => handleDeleteConfirm(id)}
+          >
                 🗑️
-            </button>
+          </button>
         </div>
-        </div>
+      </div>
 
       <div className="card-content">
         <p><strong>ID du client :</strong> {id}</p>

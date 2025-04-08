@@ -19,7 +19,7 @@ export default function AuthForm({ mode = 'login' }) {
           type={notification.type}
           onClose={() => setNotification(null)}
         />
-      )}      
+      )}
       <form className='form'>
 
         {isLogin ? (
@@ -97,14 +97,14 @@ export default function AuthForm({ mode = 'login' }) {
           onClick={async (e) => {
             e.preventDefault()
             setNotification(null) // reset
-          
+
             const identifier = isLogin ? document.getElementById('identifier').value : null
             const email = !isLogin ? document.getElementById('email').value : null
             const username = !isLogin ? document.getElementById('username').value : null
             const password = document.getElementById('password').value
             const confirmPassword = !isLogin ? document.getElementById('confirmPassword').value : null
             const referralCode = document.getElementById('referralCode')?.value
-          
+
             try {
               if (isLogin) {
                 const payload = identifier.includes('@')
@@ -116,8 +116,8 @@ export default function AuthForm({ mode = 'login' }) {
               }
             } catch (err) {
               setNotification({
-                message: "Une erreur est survenue. Veuillez réessayer.",
-                type: "error"
+                message: 'Une erreur est survenue. Veuillez réessayer.',
+                type: 'error'
               })
             }
           }}

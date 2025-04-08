@@ -12,10 +12,10 @@ const OrderDetailsPopup = ({ order, onClose }) => {
         <p><strong>User ID :</strong> {order.user_id}</p>
         <p><strong>Restaurant ID :</strong> {order.restaurant_id}</p>
         <p><strong>Status :</strong> {
-          order.status === "Pending_Delivery" ? "En attente de livraison" :
-          order.status === "Delivered" ? "Livrée" :
-          order.status === "Cancelled" ? "Annulée" :
-          order.status === "In_Progress" ? "En cours" : "Inconnu"
+          order.status === 'Pending_Delivery' ? 'En attente de livraison' :
+            order.status === 'Delivered' ? 'Livrée' :
+              order.status === 'Cancelled' ? 'Annulée' :
+                order.status === 'In_Progress' ? 'En cours' : 'Inconnu'
         }</p>
         <p><strong>Prix :</strong> {order.total} €</p>
         <p><strong>Adresse :</strong> {order.location}</p>

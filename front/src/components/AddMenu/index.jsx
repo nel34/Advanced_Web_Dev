@@ -69,7 +69,7 @@ export default function AddMenuModal({ restaurantId, onClose, onMenuCreated }) {
       const newMenu = {
         ...formData,
         restaurantId,
-        price: parseFloat(formData.price), 
+        price: parseFloat(formData.price),
       }
 
       console.log('Menu envoyé :', newMenu)

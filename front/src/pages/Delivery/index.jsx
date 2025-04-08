@@ -45,7 +45,7 @@ const Delivery = () => {
         fetchAvailableOrders()
       }, 300)
     } catch (err) {
-      console.error("Erreur lors de l'acceptation de la commande :", err)
+      console.error('Erreur lors de l\'acceptation de la commande :', err)
     }
   }
 
@@ -55,17 +55,16 @@ const Delivery = () => {
         ...order,
         status: 'Cancelled'
       }
-  
+
       await axios.put(`http://localhost:8080/api/orders/${order.order_id}`, updatedOrder)
-  
+
       setTimeout(() => {
         fetchAvailableOrders()
       }, 300)
     } catch (err) {
-      console.error("Erreur lors du refus de la commande :", err)
+      console.error('Erreur lors du refus de la commande :', err)
     }
   }
-  
 
   const markAsDelivered = async (order) => {
     try {
@@ -80,7 +79,7 @@ const Delivery = () => {
         fetchAvailableOrders()
       }, 300)
     } catch (err) {
-      console.error("Erreur lors de la mise à jour de la commande :", err)
+      console.error('Erreur lors de la mise à jour de la commande :', err)
     }
   }
 

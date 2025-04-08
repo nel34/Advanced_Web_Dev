@@ -10,15 +10,14 @@ export default function CommandesRestaurateur() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/orders`)
+      const res = await axios.get('http://localhost:8080/api/orders')
       const filtered = res.data.filter(
         (order) =>
           order.restaurant_id === RESTAURANT_ID &&
           order.status !== 'Delivered' &&
           order.status !== 'Cancelled'
       )
-      
-      
+
       setOrders(filtered)
     } catch (err) {
       console.error('Erreur lors du chargement des commandes :', err)
