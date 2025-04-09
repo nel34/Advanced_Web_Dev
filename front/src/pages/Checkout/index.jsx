@@ -27,8 +27,13 @@ export default function Checkout() {
       user_id: user.id,
       username: data.username,
       menu: cart.flatMap((item) => Array(item.quantity).fill(item._id)),
-      total: getTotalPrice() + deliveryPrice,
+      total: (getTotalPrice() + deliveryPrice).toFixed(2),
       location: document.getElementById('address').value
+    }
+
+    if (order.location === '') {
+      alert('Veuillez entrer une adresse de livraison')
+      return
     }
 
     const response = await fetch('http://localhost:8080/api/orders', {
@@ -78,7 +83,7 @@ export default function Checkout() {
             <div className='line'></div>
             <div className='total-price__item'>
               <p>Total</p>
-              <p>{getTotalPrice() + deliveryPrice} €</p>
+              <p>{(getTotalPrice() + deliveryPrice).toFixed(2)} €</p>
             </div>
             <Button content={'Valider la commande'} type='primary' onClick={handleCheckout} />
           </div>
