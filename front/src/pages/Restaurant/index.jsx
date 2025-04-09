@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useFetch } from '../../utils/hooks'
-import SearchBar from '../../components/SearchBar'
 import MenuCard from '../../components/MenuCard'
+import { useEffect } from 'react'
 import './index.sass'
 
 export default function Restaurant() {
@@ -9,10 +9,17 @@ export default function Restaurant() {
   const { isLoading, data, error } = useFetch(`http://localhost:8080/api/restaurants/${idRestaurant}`)
   const { isLoading: isLoadingMenus, data: dataMenus, error: errorMenus } = useFetch(`http://localhost:8080/api/menus/restaurants/${idRestaurant}`)
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long' })
 
   return (
     <div className='home'>
+      <Link to={'/'} className='home__back'>
+        <p>Retour à l'accueil</p>
+      </Link>
       <div className='restaurant-banner'>
         <img src={data.image} alt='Restaurant' />
       </div>

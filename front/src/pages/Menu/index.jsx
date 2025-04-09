@@ -2,12 +2,17 @@ import { useParams, Link } from 'react-router-dom'
 import { useFetch } from '../../utils/hooks'
 import Button from '../../components/Button'
 import { useCart } from '../../context/CartContext'
+import { useEffect } from 'react'
 import './index.sass'
 
 export default function Menu() {
   const { idRestaurant, idMenu } = useParams()
   const { isLoading, data, error } = useFetch(`http://localhost:8080/api/menus/${idMenu}`)
   const { addToCart } = useCart()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const handleAddToCart = () => {
     addToCart(data)

@@ -4,11 +4,20 @@ import CartItem from '../../components/CartItem'
 import Button from '../../components/Button'
 import { useAuth } from '../../context/AuthContext'
 import { useFetchWithAuth } from '../../utils/hooks'
+import { useEffect } from 'react'
 
 export default function Checkout() {
   const { cart, getTotalPrice } = useCart()
   const deliveryPrice = 5
   const { user } = useAuth()
+
+  if (cart.length === 0) {
+    window.location.href = '/'
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const { isLoading, data, error } = useFetchWithAuth('GET', `http://localhost:8080/api/auth/users/${user.id}`)
 
@@ -17,12 +26,10 @@ export default function Checkout() {
       restaurant_id: cart[0].restaurantId,
       user_id: user.id,
       username: data.username,
-      menu: cart.map((item) => item._id),
+      menu: cart.flatMap((item) => Array(item.quantity).fill(item._id)),
       total: getTotalPrice() + deliveryPrice,
       location: document.getElementById('address').value
     }
-
-    console.log(order)
 
     const response = await fetch('http://localhost:8080/api/orders', {
       method: 'POST',
@@ -32,6 +39,11 @@ export default function Checkout() {
       },
       body: JSON.stringify(order)
     })
+
+    const created_order = await response.json()
+
+    localStorage.removeItem('cart')
+    window.location.href = `/order/${created_order._id}`
   }
 
   return (
