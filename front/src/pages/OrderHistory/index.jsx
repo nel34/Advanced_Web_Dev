@@ -6,6 +6,15 @@ export default function OrderHistory() {
 
   const { isLoading, data, error } = useFetchWithAuth('GET', `http://localhost:8080/api/orders/users/${user.id}`)
 
+  const status = {
+    Pending_Restaurateur: 'En attente du restaurateur',
+    In_Progress: 'En préparation',
+    Pending_Delivery: 'En attente de livraison',
+    In_Delivery: 'En livraison',
+    Delivered: 'Livré',
+    Cancelled: 'Annulé'
+  }
+
   return (
     <div className='home'>
       <a href='#' onClick={() => window.history.back()}>Retour au compte</a>
@@ -22,7 +31,8 @@ export default function OrderHistory() {
             <a key={order._id} href={`/order/${order._id}`} className='order-history__item'>
               <div key={order._id} className='order-history__item'>
                 <h3>Commande n°{order._id}</h3>
-                <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                <p className='status-text'>Statut: {status[order.status]}</p>
+                <>Date: {new Date(order.createdAt).toLocaleDateString('fr-FR')}</>
                 <p>Total: {order.total} €</p>
               </div>
             </a>

@@ -93,7 +93,7 @@ export default function AccueilRestaurateur() {
     <div className="accueil-restaurateur">
       <SidebarRestaurateur />
       <div className="accueil-restaurateur__content">
-        <div className="dashboard-header">
+        <div className="dashboard-header--2">
           <p className="dashboard-header__greeting">Bonjour, {restaurantName}</p>
           <h1 className="dashboard-header__title">Vos performances</h1>
         </div>
