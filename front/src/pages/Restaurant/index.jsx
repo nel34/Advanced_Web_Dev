@@ -18,7 +18,7 @@ export default function Restaurant() {
   return (
     <div className='home'>
       <Link to={'/'} className='home__back'>
-        <p>Retour à l'accueil</p>
+        <p>← Retour à l'accueil</p>
       </Link>
       <div className='restaurant-banner'>
         <img src={data.image} alt='Restaurant' />
