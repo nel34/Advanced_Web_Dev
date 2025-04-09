@@ -44,6 +44,9 @@ export default function Account() {
 
   return (
     <div className='home home--secondary'>
+      <a href="#" onClick={() => window.location.href = '/'} className="order-back-link">
+        ← Retour à l'accueil
+      </a>
       {isLoading ? (
         <div className='home__loading'>
           <h2>Chargement...</h2>

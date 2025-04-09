@@ -84,18 +84,26 @@ export default function OrderStatus() {
           }
         })
         const updatedData = await res.json()
+
         if (updatedData.status && updatedData.status !== previousStatusRef.current) {
           setLiveStatus(updatedData.status)
           previousStatusRef.current = updatedData.status
+
           setNotification({
             type: 'info',
             message: `Nouveau statut : ${status[updatedData.status] || updatedData.status}`
           })
+
+          // Recharger la page si le statut devient "In_Delivery"
+          if (updatedData.status === 'In_Delivery') {
+            window.location.reload()
+          }
         }
       } catch (err) {
         console.error('Erreur lors du rafraîchissement du statut :', err)
       }
     }, 5000)
+
     return () => clearInterval(interval)
   }, [idOrder])
 
@@ -117,6 +125,10 @@ export default function OrderStatus() {
 
   return (
     <div className='home home--secondary'>
+      <a href="#" onClick={() => window.location.href = '/order-history'} className="order-back-link">
+        ← Voir l'historique des commandes
+      </a>
+
       <div className='info-section'>
         {notification && (
           <TechnicalNotification
@@ -134,7 +146,10 @@ export default function OrderStatus() {
               <h2>Commande n°{data._id}</h2>
               <p className='status-text'>Statut : {status[liveStatus]}</p>
               <p>Total: {data.total} €</p>
-              <p>Livraison à : {data.location}</p>
+              <p>Adresse de livraison : {data.location}</p>
+              {data.delivery_person_name && (
+                <p>Nom du livreur : {data.delivery_person_name}</p>
+              )}
             </div>
 
             {restaurantDetails && (
