@@ -8,13 +8,18 @@ const Delivery = () => {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [availableOrders, setAvailableOrders] = useState([])
   const [myDeliveredOrders, setMyDeliveredOrders] = useState([])
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
   const [ordersPerPage] = useState(3)  // Number of orders per page
 
   const userData = JSON.parse(localStorage.getItem('user') || '{}')
   const deliveryPersonId = userData?.id || ''
+
+  const accessTokenData = JSON.parse(localStorage.getItem('user') || '{}')
+  const accessToken = accessTokenData?.accessToken || ''
+
+  console.log(accessToken)
 
   const toggleDetails = (order = null) => {
     setSelectedOrder(order)
@@ -54,19 +59,48 @@ const Delivery = () => {
 
   const acceptOrder = async (order) => {
     try {
-      const updatedOrder = {
-        ...order,
-        status: 'In_Delivery',
-        delivery_person_id: deliveryPersonId
+      if (!accessToken) {
+        console.error('Token d\'accès manquant.')
+        return
       }
 
-      await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
+      const deliveryPersonId = userData?.id || ''
+      if (!deliveryPersonId) {
+        console.error('ID du livreur manquant.')
+        return
+      }
 
-      setTimeout(() => {
-        fetchAvailableOrders()
-      }, 300)
+      console.log('Tentative de récupération des détails du livreur avec ID:', deliveryPersonId)
+
+      // Corrected: Use accessToken for Authorization header
+      const userDetailsRes = await axios.get(`http://localhost:8080/api/auth/users/${deliveryPersonId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (userDetailsRes && userDetailsRes.data) {
+        console.log('Détails du livreur récupérés:', userDetailsRes.data)
+        const deliveryPersonName = userDetailsRes.data.username
+
+        const updatedOrder = {
+          ...order,
+          status: 'In_Delivery',
+          delivery_person_id: deliveryPersonId,
+          delivery_person_name: deliveryPersonName
+        }
+
+        await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
+        console.log('Commande mise à jour avec succès.')
+
+        setTimeout(() => {
+          fetchAvailableOrders()
+        }, 300)
+      } else {
+        console.error('Aucun détail de livreur trouvé dans la réponse de l\'API')
+      }
     } catch (err) {
-      console.error('Erreur lors de l\'acceptation de la commande :', err)
+      console.error('Erreur lors de l\'acceptation de la commande:', err)
     }
   }
 
