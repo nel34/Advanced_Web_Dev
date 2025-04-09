@@ -4,12 +4,14 @@ import CartItem from '../../components/CartItem'
 import Button from '../../components/Button'
 import { useAuth } from '../../context/AuthContext'
 import { useFetchWithAuth } from '../../utils/hooks'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import TechnicalNotification from '../../components/TechnicalNotification'
 
 export default function Checkout() {
   const { cart, getTotalPrice } = useCart()
   const deliveryPrice = 5
   const { user } = useAuth()
+  const [notification, setNotification] = useState(null)
 
   if (cart.length === 0) {
     window.location.href = '/'
@@ -32,7 +34,10 @@ export default function Checkout() {
     }
 
     if (order.location === '') {
-      alert('Veuillez entrer une adresse de livraison')
+      setNotification({
+        type: 'warning',
+        message: 'Veuillez entrer une adresse de livraison.'
+      })
       return
     }
 
@@ -53,6 +58,13 @@ export default function Checkout() {
 
   return (
     <div className='home home--secondary'>
+      {notification && (
+        <TechnicalNotification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <div className='info-section'>
         <h2>Détails de la livraison</h2>
         <div className='form__input'>

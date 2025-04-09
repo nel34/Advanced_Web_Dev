@@ -5,7 +5,7 @@ export default function NotificationPopupTechnical({ type = 'info', message, onC
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose()
-    }, 10000)
+    }, 5000)
 
     return () => clearTimeout(timer)
   }, [onClose])
