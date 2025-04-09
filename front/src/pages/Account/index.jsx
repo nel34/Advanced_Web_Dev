@@ -24,7 +24,10 @@ export default function Account() {
 
   const handleProfileUpdate = (e) => {
     e.preventDefault()
-    updateUser({ username, email }, user.id, user.accessToken)
+    updateUser({
+      username: username?.toLowerCase(),
+      email: email?.toLowerCase()
+    }, user.id, user.accessToken) 
   }
 
   const handlePasswordUpdate = (e) => {
