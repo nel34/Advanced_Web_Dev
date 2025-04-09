@@ -24,7 +24,10 @@ export default function Account() {
 
   const handleProfileUpdate = (e) => {
     e.preventDefault()
-    updateUser({ username, email }, user.id, user.accessToken)
+    updateUser({
+      username: username?.toLowerCase(),
+      email: email?.toLowerCase()
+    }, user.id, user.accessToken) 
   }
 
   const handlePasswordUpdate = (e) => {
@@ -115,7 +118,7 @@ export default function Account() {
             <div className='gap-50'>
               <div className='info-section'>
                 <h2>Historique des commandes</h2>
-                <a href='#'>Voir l'historique des commandes</a>
+                <a href='/order-history'>Voir l'historique des commandes</a>
               </div>
 
               <div className='info-section'>

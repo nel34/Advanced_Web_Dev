@@ -4,11 +4,22 @@ import CartItem from '../../components/CartItem'
 import Button from '../../components/Button'
 import { useAuth } from '../../context/AuthContext'
 import { useFetchWithAuth } from '../../utils/hooks'
+import { useEffect, useState } from 'react'
+import TechnicalNotification from '../../components/TechnicalNotification'
 
 export default function Checkout() {
   const { cart, getTotalPrice } = useCart()
   const deliveryPrice = 5
   const { user } = useAuth()
+  const [notification, setNotification] = useState(null)
+
+  if (cart.length === 0) {
+    window.location.href = '/'
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const { isLoading, data, error } = useFetchWithAuth('GET', `http://localhost:8080/api/auth/users/${user.id}`)
 
@@ -17,12 +28,18 @@ export default function Checkout() {
       restaurant_id: cart[0].restaurantId,
       user_id: user.id,
       username: data.username,
-      menu: cart.map((item) => item._id),
-      total: getTotalPrice() + deliveryPrice,
+      menu: cart.flatMap((item) => Array(item.quantity).fill(item._id)),
+      total: (getTotalPrice() + deliveryPrice).toFixed(2),
       location: document.getElementById('address').value
     }
 
-    console.log(order)
+    if (order.location === '') {
+      setNotification({
+        type: 'warning',
+        message: 'Veuillez entrer une adresse de livraison.'
+      })
+      return
+    }
 
     const response = await fetch('http://localhost:8080/api/orders', {
       method: 'POST',
@@ -32,10 +49,22 @@ export default function Checkout() {
       },
       body: JSON.stringify(order)
     })
+
+    const created_order = await response.json()
+
+    localStorage.removeItem('cart')
+    window.location.href = `/order/${created_order._id}`
   }
 
   return (
     <div className='home home--secondary'>
+      {notification && (
+        <TechnicalNotification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
       <div className='info-section'>
         <h2>Détails de la livraison</h2>
         <div className='form__input'>
@@ -66,7 +95,7 @@ export default function Checkout() {
             <div className='line'></div>
             <div className='total-price__item'>
               <p>Total</p>
-              <p>{getTotalPrice() + deliveryPrice} €</p>
+              <p>{(getTotalPrice() + deliveryPrice).toFixed(2)} €</p>
             </div>
             <Button content={'Valider la commande'} type='primary' onClick={handleCheckout} />
           </div>

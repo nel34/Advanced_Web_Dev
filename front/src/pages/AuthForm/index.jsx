@@ -109,9 +109,19 @@ export default function AuthForm({ mode = 'login' }) {
                 const payload = identifier.includes('@')
                   ? { email: identifier, password }
                   : { username: identifier, password }
-                await login(payload)
+                await login({
+                  ...payload,
+                  username: payload.username?.toLowerCase(),
+                  email: payload.email?.toLowerCase()
+                })
               } else {
-                await register({ username, email, password, referralCode, confirmPassword })
+                await register({
+                  username: username?.toLowerCase(),
+                  email: email?.toLowerCase(),
+                  password,
+                  confirmPassword,
+                  referralCode
+                })
               }
             } catch {
               setNotification({

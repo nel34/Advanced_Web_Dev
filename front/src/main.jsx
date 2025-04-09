@@ -24,6 +24,8 @@ import TechnicalDashboard from './pages/TechnicalDashboard'
 import Delivery from './pages/Delivery'
 import CommercialDashboard from './pages/CommercialDashboard'
 import RestaurantInfo from './pages/RestaurantInfo'
+import OrderStatus from './pages/OrderStatus'
+import OrderHistory from './pages/OrderHistory'
 
 const getSubdomain = () => {
   const host = window.location.hostname
@@ -101,6 +103,8 @@ createRoot(document.getElementById('root')).render(
                   <Route path='/account' element={<Account />} />
                   <Route path='/checkout' element={<Checkout />} />
                   <Route path='/account/orders' element={<Account />} />
+                  <Route path='/order/:idOrder' element={<OrderStatus />} />
+                  <Route path='/order-history' element={<OrderHistory />} />
                 </Route>
               </>
             )}
