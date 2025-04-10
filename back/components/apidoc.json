@@ -1,6 +1,6 @@
 {
   "name": "Components Microservice - CESI Eats",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "API pour la gestion technique des composants React et supervision",
   "title": "Components Service Documentation",
   "url": "/api/components",

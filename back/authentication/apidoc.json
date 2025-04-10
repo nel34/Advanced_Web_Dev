@@ -1,6 +1,6 @@
 {
   "name": "Authentification Microservice - CESI Eats",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "API REST pour l'authentification et de gestion des rôles (client, livreur, restaurateur, developer, technician, commercial)",
   "title": "Authentification Service Documentation",
   "url": "/api/auth",

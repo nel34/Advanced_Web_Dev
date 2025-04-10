@@ -1,6 +1,6 @@
 {
   "name": "Orders Microservice - CESI Eats",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "API REST de gestion des commandes dans le système de restauration CESI Eats.",
   "title": "Orders Service Documentation",
   "url": "/api/orders",

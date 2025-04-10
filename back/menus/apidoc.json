@@ -1,6 +1,6 @@
 {
     "name": "Menu Microservice - CESI Eats",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "API REST de gestion des menus pour restaurants",
     "title": "Menu Service Documentation",
     "url": "/api/menus",
