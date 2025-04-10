@@ -7,9 +7,17 @@ const Delivery = () => {
   const [showDetails, setShowDetails] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [availableOrders, setAvailableOrders] = useState([])
+  const [myDeliveredOrders, setMyDeliveredOrders] = useState([])
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const [ordersPerPage] = useState(3)  // Number of orders per page
 
   const userData = JSON.parse(localStorage.getItem('user') || '{}')
   const deliveryPersonId = userData?.id || ''
+
+  const accessTokenData = JSON.parse(localStorage.getItem('user') || '{}')
+  const accessToken = accessTokenData?.accessToken || ''
 
   const toggleDetails = (order = null) => {
     setSelectedOrder(order)
@@ -19,8 +27,10 @@ const Delivery = () => {
   useEffect(() => {
     if (deliveryPersonId) {
       fetchAvailableOrders()
+      fetchDeliveredOrders()
       const intervalId = setInterval(() => {
         fetchAvailableOrders()
+        fetchDeliveredOrders()
       }, 5000)
       return () => clearInterval(intervalId)
     }
@@ -35,21 +45,58 @@ const Delivery = () => {
     }
   }
 
+  const fetchDeliveredOrders = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/orders')
+      const deliveredOrders = res.data.filter(order => order.status === 'Delivered' && String(order.delivery_person_id) === String(deliveryPersonId))
+      setMyDeliveredOrders(deliveredOrders)
+    } catch (err) {
+      console.error('Erreur lors du chargement des commandes livrées :', err)
+    }
+  }
+
   const acceptOrder = async (order) => {
     try {
-      const updatedOrder = {
-        ...order,
-        status: 'In_Delivery',
-        delivery_person_id: deliveryPersonId
+      if (!accessToken) {
+        console.error('Token d\'accès manquant.')
+        return
       }
 
-      await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
+      const deliveryPersonId = userData?.id || ''
+      if (!deliveryPersonId) {
+        console.error('ID du livreur manquant.')
+        return
+      }
 
-      setTimeout(() => {
-        fetchAvailableOrders()
-      }, 300)
+      // Corrected: Use accessToken for Authorization header
+      const userDetailsRes = await axios.get(`http://localhost:8080/api/auth/users/${deliveryPersonId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (userDetailsRes && userDetailsRes.data) {
+        console.log('Détails du livreur récupérés:', userDetailsRes.data)
+        const deliveryPersonName = userDetailsRes.data.username
+
+        const updatedOrder = {
+          ...order,
+          status: 'In_Delivery',
+          delivery_person_id: deliveryPersonId,
+          delivery_person_name: deliveryPersonName
+        }
+
+        await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
+        console.log('Commande mise à jour avec succès.')
+
+        setTimeout(() => {
+          fetchAvailableOrders()
+        }, 300)
+      } else {
+        console.error('Aucun détail de livreur trouvé dans la réponse de l\'API')
+      }
     } catch (err) {
-      console.error('Erreur lors de l\'acceptation de la commande :', err)
+      console.error('Erreur lors de l\'acceptation de la commande:', err)
     }
   }
 
@@ -80,7 +127,7 @@ const Delivery = () => {
       await axios.put(`http://localhost:8080/api/orders/${order._id}`, updatedOrder)
 
       setTimeout(() => {
-        fetchAvailableOrders()
+        fetchDeliveredOrders()
       }, 300)
     } catch (err) {
       console.error('Erreur lors de la mise à jour de la commande :', err)
@@ -93,11 +140,18 @@ const Delivery = () => {
       String(order.delivery_person_id) === String(deliveryPersonId)
   )
 
-  const myDeliveredOrders = availableOrders.filter(
-    order =>
-      order.status === 'Delivered' &&
-      String(order.delivery_person_id) === String(deliveryPersonId)
-  )
+  // Paginate the delivered orders
+  const indexOfLastOrder = currentPage * ordersPerPage
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+  const currentOrders = myDeliveredOrders.slice(indexOfFirstOrder, indexOfLastOrder)
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+  const pageNumbers = []
+  for (let i = 1; i <= Math.ceil(myDeliveredOrders.length / ordersPerPage); i++) {
+    pageNumbers.push(i)
+  }
 
   useEffect(() => {
     const fetchRestaurantDetails = async () => {
@@ -122,6 +176,8 @@ const Delivery = () => {
     <div className="home home--secondary">
       <main className="delivery-container">
         <h1>Dashboard de livraisons</h1>
+
+        {/* Section pour les commandes en cours */}
         <section className="info-section">
           <h2>Mes livraisons en cours :</h2>
           <div className="orders-grid">
@@ -148,6 +204,7 @@ const Delivery = () => {
           </div>
         </section>
 
+        {/* Section pour les commandes disponibles */}
         <section className="info-section">
           <h2>Commandes disponibles</h2>
           <div className="orders-grid">
@@ -177,13 +234,14 @@ const Delivery = () => {
           </div>
         </section>
 
-        <section className="info-section">
-          <h2>Commandes livrées</h2>
+        {/* Historique des commandes */}
+        <section className="info-section order-history">
+          <h2>Historique des commandes</h2>
           <div className="orders-grid">
-            {myDeliveredOrders.length === 0 ? (
+            {currentOrders.length === 0 ? (
               <p>Aucune commande livrée</p>
             ) : (
-              myDeliveredOrders.map(order => (
+              currentOrders.map(order => (
                 <div key={order._id} className="order">
                   <p><strong>Client :</strong> {order.username}</p>
                   {restaurantDetails[order.restaurant_id] && (
@@ -200,14 +258,27 @@ const Delivery = () => {
               ))
             )}
           </div>
+
+          {/* Pagination */}
+          <div className="pagination">
+            {pageNumbers.map(number => (
+              <button
+                key={number}
+                onClick={() => paginate(number)}
+                className={`pagination-button ${number === currentPage ? 'active' : ''}`}
+              >
+                {number}
+              </button>
+            ))}
+          </div>
         </section>
 
         {/* Popups */}
         {showDetails && (
-          <OrderDetailsPopup 
-            order={selectedOrder} 
-            restaurantDetails={restaurantDetails[selectedOrder?.restaurant_id] || {}} 
-            onClose={toggleDetails} 
+          <OrderDetailsPopup
+            order={selectedOrder}
+            restaurantDetails={restaurantDetails[selectedOrder?.restaurant_id] || {}}
+            onClose={toggleDetails}
           />
         )}
       </main>

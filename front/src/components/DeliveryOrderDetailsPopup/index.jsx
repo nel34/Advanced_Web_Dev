@@ -22,8 +22,7 @@ const OrderDetailsPopup = ({ order, onClose, restaurantDetails }) => {
             order.status === 'Delivered' ? 'Livrée' :
               order.status === 'Cancelled' ? 'Annulée' :
                 order.status === 'In_Progress' ? 'En cours' :
-                  order.status === 'In_Delivery' ? 'En livraison' :
-                  'Statut inconnu'
+                  order.status === 'In_Delivery' ? 'En livraison' : 'Statut inconnu'
         }</p>
         <p><strong>Prix :</strong> {order.total} €</p>
         <p><strong>Adresse :</strong> {order.location}</p>
