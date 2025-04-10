@@ -19,8 +19,6 @@ const Delivery = () => {
   const accessTokenData = JSON.parse(localStorage.getItem('user') || '{}')
   const accessToken = accessTokenData?.accessToken || ''
 
-  console.log(accessToken)
-
   const toggleDetails = (order = null) => {
     setSelectedOrder(order)
     setShowDetails(!showDetails)
@@ -69,8 +67,6 @@ const Delivery = () => {
         console.error('ID du livreur manquant.')
         return
       }
-
-      console.log('Tentative de récupération des détails du livreur avec ID:', deliveryPersonId)
 
       // Corrected: Use accessToken for Authorization header
       const userDetailsRes = await axios.get(`http://localhost:8080/api/auth/users/${deliveryPersonId}`, {
@@ -269,7 +265,7 @@ const Delivery = () => {
               <button
                 key={number}
                 onClick={() => paginate(number)}
-                className={number === currentPage ? 'active' : ''}
+                className={`pagination-button ${number === currentPage ? 'active' : ''}`}
               >
                 {number}
               </button>
