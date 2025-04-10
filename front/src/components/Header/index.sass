@@ -1,0 +1,51 @@
+.header
+    position: fixed
+    display: flex
+    align-items: center
+    justify-content: space-between
+    top: 0
+    height: 80px
+    width: 100%
+    padding: 0 50px
+    background: var(--white)
+    border-bottom: 1px solid var(--grey)
+    z-index: 10
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)
+
+    &__logo
+        display: flex
+        align-items: center
+        height: 25px
+
+    &__icon
+        display: flex
+        align-items: center
+        cursor: pointer
+
+    &__content
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        gap: 40px
+        height: 100%
+        width: 50%
+
+@media (max-width: 768px)
+    .header
+        padding: 0 20px
+
+        &__logo img
+            width: 35px
+            height: 35px
+
+        &__link
+            font-size: 14px
+
+
+
+@media (min-width: 1200px)
+    .header
+        padding: 0 80px
+
+        &__link
+            font-size: 18px

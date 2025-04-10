@@ -1,0 +1,42 @@
+.info-section
+    display: flex
+    flex-direction: column
+    gap: 25px
+    width: 100%
+    padding: 25px
+    background: var(--white)
+    border-radius: var(--rounded-10)
+
+.total-price
+    display: flex
+    flex-direction: column
+    gap: 20px
+
+    &__item
+        display: flex
+        justify-content: space-between
+        align-items: center
+        font-size: 16px
+
+@for $i from 1 through 6
+    .info-section-layout--#{$i}
+        display: grid
+        gap: 50px
+        grid-template-columns: repeat($i, 1fr)
+
+.cart-item__info__quantity
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+  button
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 24px
+    height: 24px
+    font-size: 16px
+    border-radius: 4px
+
+  span
+    padding: 0 8px

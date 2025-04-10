@@ -1,0 +1,21 @@
+{
+  "name": "menus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "doc": "apidoc -i src/ -o docs/"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.1",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "apidoc": "^1.2.0",
+    "nodemon": "^3.1.9"
+  }
+}

@@ -1,0 +1,90 @@
+.commande-card
+  background: #e9e9e9
+  border-radius: var(--rounded-10)
+  padding: 20px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 20px
+  margin-bottom: 25px
+
+  &__left
+    display: flex
+    gap: 15px
+    align-items: center
+
+    img
+      width: 40px
+      height: 40px
+      border-radius: 50%
+
+    div
+      display: flex
+      flex-direction: column
+      gap: 3px
+
+    p
+      margin: 0
+
+    p:first-child
+      font-weight: 700
+      font-size: 20px
+      color: #000
+
+    p:nth-child(2) // Menu
+      font-weight: 500
+      font-size: 15px
+      color: #333
+
+    p:nth-child(3) // Total
+      font-weight: 500
+      font-size: 15px
+      color: #222
+
+  &__order
+    font-size: 14px
+    color: #555
+
+  &__menu
+    font-size: 14px
+    color: #777
+
+  &__date
+    font-size: 13px
+    color: #999
+
+  &__right
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+    button
+      padding: 8px 12px
+      border: none
+      border-radius: 6px
+      font-weight: bold
+      cursor: pointer
+      transition: background-color 0.2s ease
+
+      &.reject
+        background-color: #eee
+        color: #222
+
+      &:not(.reject)
+        background-color: #222
+        color: white
+
+      &:hover
+        opacity: 0.85
+
+    .accepted-text
+      font-weight: bold
+      color: #28a745
+
+    .waiting-text
+      font-weight: bold
+      color: #f0ad4e
+
+    .delivery-text
+      font-weight: bold
+      color: #007bff

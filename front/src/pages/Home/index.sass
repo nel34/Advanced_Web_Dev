@@ -1,0 +1,21 @@
+.home
+    display: flex
+    flex-direction: column
+    gap: 50px
+    padding: 10% 10%
+    min-height: 100vh
+
+    &--secondary
+        background: var(--grey)
+
+    &--center
+        justify-content: center
+        align-items: center
+
+.home__restaurants
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr))
+    justify-content: center
+    justify-items: center
+    align-items: center
+    gap: 50px

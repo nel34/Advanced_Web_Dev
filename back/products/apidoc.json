@@ -1,0 +1,13 @@
+{
+    "name": "Products Microservice - CESI Eats",
+    "version": "1.0.0",
+    "description": "API REST pour la gestion des produits d'un restaurant dans le système de commande.",
+    "title": "Products Service Documentation",
+    "url": "/api/products",
+    "sampleUrl": "http://localhost:8080/api/products",
+    "order": ["GetAllProducts", "GetProductById", "CreateProduct", "UpdateProduct", "DeleteProduct"],
+    "template": {
+      "withCompare": true,
+      "withGenerator": true
+    }
+  }

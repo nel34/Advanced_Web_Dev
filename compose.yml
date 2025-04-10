@@ -1,0 +1,289 @@
+services:
+
+  mysql-db:
+    image: mysql:9
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    networks:
+      - cesieats-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - .env
+
+  mysqld-exporter:
+    image: quay.io/prometheus/mysqld-exporter:v0.14.0
+    container_name: mysqld-exporter
+    env_file:
+      - .env
+    environment:
+      - DATA_SOURCE_NAME=${MYSQL_USER}:${MYSQL_PASSWORD}@tcp(mysql-db:3306)/
+    ports:
+      - "9104:9104"
+    networks:
+      - cesieats-network
+    depends_on:
+      - mysql-db
+
+  mongo-db:
+    image: mongo:7
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    networks:
+      - cesieats-network
+    volumes:
+      - mongodb_data:/data/db
+
+  mongodb-exporter:
+    image: bitnami/mongodb-exporter:latest
+    container_name: mongodb-exporter
+    ports:
+      - "9216:9216"
+    environment:
+      - MONGODB_URI=mongodb://mongo-db:27017
+    networks:
+      - cesieats-network
+    depends_on:
+      - mongo-db
+
+  authentication:
+    build: ./back/authentication
+    container_name: authentication
+    ports:
+      - "4000:4000"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/authentication/.env
+    depends_on:
+      - mysql-db
+      - mongo-db
+
+  products:
+    build: ./back/products
+    container_name: products
+    ports:
+      - "3010:3010"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/products/.env
+    depends_on:
+      - mongo-db
+
+  menus:
+    build: ./back/menus
+    container_name: menus
+    ports:
+      - "3020:3020"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/menus/.env
+    depends_on:
+      - mongo-db
+
+  orders:
+    build: ./back/orders
+    container_name: orders
+    ports:
+      - "3030:3030"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/orders/.env
+    depends_on:
+      - mongo-db
+
+  restaurants:
+    build: ./back/restaurants
+    container_name: restaurants
+    ports:
+      - "3050:3050"
+    networks:
+      - cesieats-network
+    env_file:
+      - ./back/restaurants/.env
+    depends_on:
+      - mongo-db
+
+  components:
+    build: ./back/components
+    container_name: components
+    ports:
+      - "3080:3080"
+    networks:
+      - cesieats-network
+    volumes:
+      - ./front/src/components:/app/components
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:8080"
+    networks:
+      - cesieats-network
+    depends_on:
+      - authentication
+      - menus
+      - products
+      - orders
+      - restaurants
+      - components
+
+  front:
+    build: ./front
+    container_name: front
+    ports:
+      - "80:80"
+    networks:
+      - cesieats-network
+    depends_on:
+      - nginx
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    ports:
+      - "9000:9000"
+      - "9010:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - cesieats-network    
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "9020:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - cesieats-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - cesieats-network 
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "9040:3000"
+    volumes:
+      - ./monitoring/grafana/dashboards:/etc/grafana/dashboards
+      - ./monitoring/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    env_file:
+      - .env
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    networks:
+      - cesieats-network
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - network.host=0.0.0.0
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - cesieats-network
+    ports:
+      - "9200:9200" 
+    restart: always
+
+  graylog:
+    image: graylog/graylog:6.1
+    container_name: graylog
+    depends_on:
+      - mongo-db
+      - elasticsearch
+    networks:
+      - cesieats-network
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    ports:
+      - "9050:9000"
+      - "12201:12201/udp"
+    env_file:
+      - .env
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD_SECRET}
+      - GRAYLOG_ROOT_PASSWORD_SHA2=${GRAYLOG_ROOT_PASSWORD_SHA2}
+      - GRAYLOG_HTTP_EXTERNAL_URI=${GRAYLOG_HTTP_EXTERNAL_URI}
+      - GRAYLOG_MONGODB_URI=${GRAYLOG_MONGODB_URI}
+      - GRAYLOG_ELASTICSEARCH_HOSTS=${GRAYLOG_ELASTICSEARCH_HOSTS}
+    restart: always
+
+  gen-mapping:
+    build: ./monitoring/graylog/gen-mapping
+    container_name: gen-mapping
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./monitoring/graylog/gen-mapping/container-map.json:/app/container-map.json
+      - ./monitoring/graylog/gen-mapping/shared-logs:/app/enriched-logs
+    env_file:
+      - ./monitoring/graylog/gen-mapping/.env
+    depends_on:
+      - graylog
+    networks:
+      - cesieats-network
+
+  fluentbit:
+    image: fluent/fluent-bit:1.8
+    container_name: fluentbit
+    volumes:
+      - ./monitoring/graylog/gen-mapping/shared-logs:/fluent-bit/enriched-logs:ro
+      - ./monitoring/graylog/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./monitoring/graylog/fluent-bit/parsers.conf:/fluent-bit/etc/parsers.conf
+    depends_on:
+      - graylog
+      - gen-mapping
+    environment:
+      - HOSTNAME=fluentbit-node
+    networks:
+      - cesieats-network
+
+networks:
+  cesieats-network:
+
+volumes:
+  mysql_data:
+  mongodb_data:
+  portainer_data:
+  grafana_data:
+  prometheus_data:
+  elasticsearch_data:
+  graylog_data:
