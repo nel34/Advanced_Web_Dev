@@ -27,7 +27,7 @@ export default function Account() {
     updateUser({
       username: username?.toLowerCase(),
       email: email?.toLowerCase()
-    }, user.id, user.accessToken) 
+    }, user.id, user.accessToken)
   }
 
   const handlePasswordUpdate = (e) => {
